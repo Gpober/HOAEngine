@@ -4,7 +4,7 @@ import { DemoCard } from "@/components/portfolio/DemoCard";
 import { Card, IconWell } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { associations } from "@/data/associations";
+import { getAllAssociations } from "@/lib/associations-source";
 import { brand } from "@/lib/brand";
 import { noIndexRobots, placeholderOgImage } from "@/lib/seo";
 
@@ -50,7 +50,12 @@ const principles = [
   },
 ];
 
-export default function DemoIndexPage() {
+/** Kept in step with the individual demo routes. */
+export const revalidate = 300;
+
+export default async function DemoIndexPage() {
+  const associations = await getAllAssociations();
+
   return (
     <div className="min-h-screen bg-surface">
       <a
@@ -94,10 +99,9 @@ export default function DemoIndexPage() {
               Website concepts for associations that deserve a better front door
             </h1>
             <p className="mt-5 max-w-prose text-lg leading-relaxed text-ink-soft">
-              Five homepage designs for homeowner and condominium associations —
-              built for communities with no website, an outdated one, or nothing
-              more than a page of contact details. Each concept uses fictional
-              placeholder data.
+              Homepage designs for homeowner and condominium associations — built
+              for communities with no website, an outdated one, or nothing more
+              than a page of contact details.
             </p>
             <p className="mt-6 max-w-prose rounded-card border border-line bg-card p-5 text-base leading-relaxed text-ink-soft shadow-soft">
               <strong className="font-semibold text-ink">
@@ -112,7 +116,7 @@ export default function DemoIndexPage() {
         <Section id="concepts" tone="surface" labelledBy="concepts-heading">
           <SectionHeading
             id="concepts-heading"
-            eyebrow="Five designs"
+            eyebrow={`${associations.length} design${associations.length === 1 ? "" : "s"}`}
             title="Choose a concept to preview"
             description="Each demo is a full homepage — hero, quick links, announcements, meetings, documents, amenities, contact, and FAQ."
           />

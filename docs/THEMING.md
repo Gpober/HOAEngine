@@ -142,7 +142,11 @@ heroImage: {
 
 - **Local files:** drop them in `public/images/…` and reference them as
   `/images/…`.
-- **Remote files:** add the host to `remotePatterns` in `next.config.mjs`.
+- **Supabase Storage:** upload to the `hoa-engine-media` bucket and use the
+  object path (`harborlight/hero.jpg`); it resolves to a public URL
+  automatically. See [SUPABASE.md](SUPABASE.md).
+- **Other remote hosts:** add the host to `remotePatterns` in `next.config.mjs`.
+  `*.supabase.co` is already whitelisted.
 - **Only use imagery you have the rights to.** Do not reuse photographs from an
   association's own website.
 - `alt` is required on every image, with or without `src`.

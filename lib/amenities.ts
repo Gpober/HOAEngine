@@ -130,6 +130,9 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
   },
 };
 
+/** Every valid amenity key — used to validate externally-sourced records. */
+export const amenityKeys = Object.keys(amenityCatalogue) as AmenityKey[];
+
 export function getAmenities(keys: AmenityKey[]): AmenityDefinition[] {
   // Unknown keys are dropped rather than guessed at.
   return keys.map((key) => amenityCatalogue[key]).filter(Boolean);
