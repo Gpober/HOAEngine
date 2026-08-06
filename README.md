@@ -49,7 +49,18 @@ npm run typecheck  # tsc --noEmit
 npm run lint       # eslint
 ```
 
-No database, no backend, no environment variables required.
+No environment variables are required — the site runs from the bundled records
+in `data/associations.ts`.
+
+Optionally, connect Supabase to manage association records and community
+photography without a code deploy:
+
+```bash
+cp .env.example .env.local   # then fill in the two Supabase values
+```
+
+See **[docs/SUPABASE.md](docs/SUPABASE.md)**. With the variables unset,
+everything falls back to the bundled records.
 
 ## Folder structure
 
@@ -79,11 +90,13 @@ components/
                           CommunityImage (+ generated placeholder scenes)
 
 data/
-  associations.ts         The five fictional placeholder records
+  associations.ts         The five fictional placeholder records (offline fallback)
   association-template.ts Reusable configuration template — start here
 
 lib/
   types.ts                Association shape and content types
+  associations-source.ts  Bundled records + published Supabase rows, merged
+  supabase.ts             Read-only client and media URL resolution
   themes.ts               Five colour palettes as CSS custom properties
   design-styles.ts        Typography, radii, hero layout, type scale
   amenities.ts            Amenity catalogue (label, blurb, icon)
@@ -99,8 +112,8 @@ docs/                     Data replacement, theming, and QC guides
 ## How a demo is assembled
 
 ```
-data/associations.ts        one Association object
-        │
+data/associations.ts  +  Supabase hoa_associations   one Association object
+        │                 (published rows win on slug)
         ├── accentTheme  ──→ lib/themes.ts        → CSS custom properties
         ├── designStyle  ──→ lib/design-styles.ts → fonts, radii, hero layout
         │
@@ -119,6 +132,8 @@ single conditional class name anywhere in the section components.
   data with a real association, and the rules that apply when you do
 - **[docs/THEMING.md](docs/THEMING.md)** — changing colours, fonts, radii, and
   images
+- **[docs/SUPABASE.md](docs/SUPABASE.md)** — the optional database and photo
+  storage integration: schema, RLS, uploading images, adding demos via SQL
 - **[docs/QUALITY-CONTROL.md](docs/QUALITY-CONTROL.md)** — the responsive,
   accessibility, disclaimer, and visual-consistency review
 
@@ -127,11 +142,16 @@ single conditional class name anywhere in the section components.
 1. Push this repository to GitHub.
 2. In Vercel, **Add New → Project**, import the repository.
 3. Framework preset **Next.js**; build command `npm run build`; output is
-   detected automatically. No environment variables are required.
-4. Optional — set `NEXT_PUBLIC_SITE_URL` to the deployment URL (for example
-   `https://hoa-engine.vercel.app`) so Open Graph image URLs resolve to absolute
-   paths. Without it, local development falls back to `http://localhost:3000`.
-5. Deploy. All six routes are statically prerendered.
+   detected automatically.
+4. Optional environment variables (**Settings → Environment Variables**):
+   - `NEXT_PUBLIC_SITE_URL` — the deployment URL, so Open Graph image URLs
+     resolve to absolute paths. Without it, local development falls back to
+     `http://localhost:3000`.
+   - `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` —
+     enable database-backed records and photo storage. See
+     [docs/SUPABASE.md](docs/SUPABASE.md).
+5. Deploy. Pages are prerendered and revalidate every five minutes, so demo
+   edits made in Supabase go live without a redeploy.
 
 Or from the CLI:
 
@@ -157,7 +177,9 @@ These are baked into the project. Please keep them that way.
 - **`noindex, nofollow` stays on.** Set in `app/layout.tsx`, reinforced per page
   via `lib/seo.ts`, and backed by `app/robots.ts` returning `Disallow: /`.
 - **No invented facts.** Every factual field on `Association` is optional and
-  the UI omits what is missing. Where contact details are absent, the site shows
+  the UI omits what is missing. This holds for database rows too — they are
+  validated on the way in, and unknown themes or amenity keys are dropped
+  rather than rendered. Where contact details are absent, the site shows
   *"Contact information available upon official site setup."*
 - **No scraped or copyrighted material.** No stock photography is bundled — the
   imagery is generated SVG. Do not copy an association's text, photographs,

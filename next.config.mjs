@@ -2,9 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    // Demo images are local SVG/placeholder assets by default. If you add remote
-    // photography, whitelist the host here (see README "Replacing images").
-    remotePatterns: [],
+    // Community photography served from Supabase Storage. Any other remote host
+    // must be whitelisted here too (see docs/THEMING.md "Changing images").
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
   },
 };
 

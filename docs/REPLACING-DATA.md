@@ -26,6 +26,15 @@ These apply to every concept you build for a named, real-world association.
    `555-01xx` phone range and `example.com` / `example.org` email domains — or
    omit the field entirely, which is usually better.
 
+## Two routes: file or database
+
+You can add a concept either as a TypeScript record (below) or as a row in
+Supabase (see [SUPABASE.md](SUPABASE.md)). The rules in this document apply
+identically to both. Database rows win over file records on matching `slug`.
+
+Use the file route for concepts you want versioned in git; use the database
+route when someone non-technical needs to create or edit demos without a deploy.
+
 ## Step 1 — copy the template
 
 ```bash

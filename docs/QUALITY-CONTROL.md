@@ -158,6 +158,43 @@ Two visual defects were found and fixed:
 
 ---
 
+---
+
+## 5. Supabase integration
+
+**Method.** Schema and RLS inspected via SQL; the mapping layer exercised
+against a real row; the mapped record rendered through the real component tree.
+
+**Result: pass, with one thing I could not test here.**
+
+| Check | Result |
+| --- | --- |
+| Migration is additive | Pass — `condo_projects` (6,319), `condo_projects_legacy` (12,390), and `leads` (1) unchanged; no existing table, policy, or function modified |
+| RLS on `hoa_associations` | Pass — 5 policies. Anonymous read is limited to `published` rows; all writes require the project's existing `is_admin()` |
+| Storage bucket | Pass — `hoa-engine-media`, public read, admin write, 10 MB cap, image MIME types only |
+| Security advisors after migration | Pass — 64 advisories exist project-wide, **none** relates to an `hoa_` object |
+| Row → Association mapping | Pass — snake_case to camelCase, nulls omitted rather than rendered, unknown amenity key dropped, unknown theme rejects the row |
+| DB-sourced record renders | Pass — full component tree renders with the sample-design label, unofficial notice, footer disclaimer, and the contact fallback all intact |
+| Fallback when Supabase is unreachable | Pass — demonstrated unintentionally but conclusively (see below) |
+| **Live fetch from the deployed app** | **Not verified here** |
+
+**What I could not test, and why.** This build sandbox blocks outbound requests
+to `*.supabase.co` — the egress proxy answers `403` to `CONNECT`. My SQL worked
+because the Supabase MCP server reaches the project through separate
+infrastructure, but the Next.js build in the container cannot open a socket to
+it. A build with credentials present therefore fell back to the bundled records
+and prerendered exactly five slugs.
+
+That is a genuine gap: **the end-to-end fetch has not been exercised against a
+running app.** It also, incidentally, proved the fallback path works under a
+real network failure rather than a simulated one.
+
+Confirm on the first deploy: set the two environment variables, deploy, and
+check that a change made to a row in Supabase appears on the corresponding
+`/demo/<slug>` page within the five-minute revalidation window. If it does not,
+the likely causes are missing environment variables (the app falls back
+silently by design) or `published` still being `false`.
+
 ## Re-running this review
 
 ```bash
@@ -187,3 +224,4 @@ Then, against the running server:
 | Keyboard and semantics | Pass |
 | Disclaimers and `noindex` | Pass on all six routes |
 | Visual consistency | Pass |
+| Supabase schema, RLS, mapping | Pass — live fetch unverified in this sandbox (see section 5) |
