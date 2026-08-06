@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /*
+   * Sensible defaults so a demo page still renders reasonably before a theme
+   * wrapper sets its own values. Each `<DemoSite>` overrides these inline.
+   */
+  :root {
+    --hoa-surface: 247 249 251;
+    --hoa-surface-alt: 238 242 246;
+    --hoa-card: 255 255 255;
+    --hoa-ink: 18 28 40;
+    --hoa-ink-soft: 51 63 78;
+    --hoa-ink-muted: 88 101 116;
+    --hoa-accent: 20 57 94;
+    --hoa-accent-strong: 13 39 64;
+    --hoa-accent-soft: 220 233 244;
+    --hoa-accent-ink: 255 255 255;
+    --hoa-secondary: 168 138 95;
+    --hoa-secondary-soft: 242 234 222;
+    --hoa-secondary-ink: 85 69 47;
+    --hoa-line: 219 226 234;
+    --hoa-shadow: 15 32 51;
+
+    --hoa-font-display: var(--font-fraunces), Georgia, serif;
+    --hoa-font-body: var(--font-inter), system-ui, -apple-system, sans-serif;
+    --hoa-radius-card: 1rem;
+    --hoa-radius-pill: 999px;
+    --hoa-heading-tracking: -0.015em;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    /* Never below 16px for primary content. */
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--hoa-font-body);
+    background-color: rgb(var(--hoa-surface));
+    color: rgb(var(--hoa-ink));
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--hoa-font-display);
+    letter-spacing: var(--hoa-heading-tracking);
+    text-wrap: balance;
+  }
+
+  /* In-page anchors must clear the sticky header. */
+  [id] {
+    scroll-margin-top: 6.5rem;
+  }
+
+  /* A single, consistent, always-visible focus treatment. */
+  :focus-visible {
+    outline: 3px solid rgb(var(--hoa-accent));
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Focus rings on dark accent backgrounds need the inverse colour. */
+  .on-accent :focus-visible {
+    outline-color: rgb(var(--hoa-accent-ink));
+  }
+
+  ::selection {
+    background-color: rgb(var(--hoa-accent) / 0.16);
+  }
+}
+
+@layer components {
+  /*
+   * Accessibility: the "active-adult" design style opts into a larger type
+   * scale. Tailwind's `text-*` utilities are root-relative rems, so scaling has
+   * to be done by overriding the utilities inside the scoped subtree rather
+   * than by changing a font-size on the wrapper.
+   */
+  [data-type-scale="large"] .text-sm {
+    font-size: 1rem;
+    line-height: 1.6rem;
+  }
+  [data-type-scale="large"] .text-base {
+    font-size: 1.125rem;
+    line-height: 1.85rem;
+  }
+  [data-type-scale="large"] .text-lg {
+    font-size: 1.25rem;
+    line-height: 1.95rem;
+  }
+  [data-type-scale="large"] .text-xl {
+    font-size: 1.4rem;
+    line-height: 2rem;
+  }
+  /* `text-xs` is only ever used for eyebrows and chips, never body copy. */
+  [data-type-scale="large"] .text-xs {
+    font-size: 0.9375rem;
+    line-height: 1.4rem;
+  }
+}
+
+@layer utilities {
+  .hoa-shell {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .hoa-shell {
+      padding-inline: 2rem;
+    }
+  }
+
+  /* Subtle paper-like texture behind hero areas. */
+  .hoa-grain {
+    background-image: radial-gradient(
+      rgb(var(--hoa-ink) / 0.035) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
+}
+
+/* Respect the user's motion preference — animations here are decorative only. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
