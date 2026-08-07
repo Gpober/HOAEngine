@@ -26,7 +26,17 @@ export function CinemaHero({ association }: { association: Association }) {
     .join("  ·  ");
 
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate bg-ink">
+    /*
+     * No viewport height of its own: the homepage wraps the disclaimer and
+     * this section in one `min-h-[100svh]` column and the hero takes `flex-1`,
+     * so it fills exactly what the disclaimer leaves. A self-measured 100svh
+     * here would push the bottom of the hero — and the scroll cue — below the
+     * fold by the height of the disclaimer, which on a phone is two lines.
+     */
+    <section
+      aria-labelledby="hero-heading"
+      className="relative isolate flex flex-1 flex-col bg-ink"
+    >
       <div className="absolute inset-0">
         <CommunityImage
           image={association.heroImage}
@@ -52,7 +62,7 @@ export function CinemaHero({ association }: { association: Association }) {
 
       <CinemaNav association={association} />
 
-      <div className="relative flex min-h-[100svh] flex-col items-center justify-center gap-6 px-6 pb-24 pt-28 text-center">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-24 pt-28 text-center">
         {eyebrow ? (
           <p className="hoa-hero-line text-sm font-medium uppercase tracking-eyebrow text-white/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
             {eyebrow}
@@ -90,11 +100,13 @@ export function CinemaHero({ association }: { association: Association }) {
         ) : null}
       </div>
 
-      {/* Scroll cue: the only call to action the opening needs. */}
+      {/* Scroll cue: the only call to action the opening needs. Sits above
+          the floating badge row on phones, where the badge's right-aligned
+          pill reaches past the horizontal centre of the screen. */}
       <a
         href="#explore"
         aria-label="Scroll to explore the community"
-        className="absolute bottom-6 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-pill text-white/90 transition-colors hover:text-white"
+        className="absolute bottom-20 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-pill text-white/90 transition-colors hover:text-white sm:bottom-6"
       >
         <ChevronDown
           className="hoa-bob h-7 w-7 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]"
