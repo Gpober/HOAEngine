@@ -2,7 +2,7 @@ import { Mail, Phone } from "lucide-react";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { brand } from "@/lib/brand";
-import { locationLabel, monogramFor, primaryNav } from "@/lib/content";
+import { demoPages, locationLabel, monogramFor } from "@/lib/content";
 import type { Association } from "@/lib/types";
 
 export function SiteFooter({ association }: { association: Association }) {
@@ -43,14 +43,17 @@ export function SiteFooter({ association }: { association: Association }) {
               Navigation
             </h2>
             <ul className="mt-4 flex flex-col gap-1">
-              {primaryNav.map((item) => (
+              {[
+                { label: "Home", href: `/demo/${association.slug}` },
+                ...demoPages(association.slug),
+              ].map((item) => (
                 <li key={item.href}>
-                  <a
+                  <Link
                     href={item.href}
                     className="inline-flex min-h-[2.5rem] items-center text-base text-accent-ink/90 no-underline hover:text-accent-ink hover:underline"
                   >
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

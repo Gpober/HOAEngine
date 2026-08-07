@@ -76,11 +76,13 @@ app/
     [slug]/page.tsx       One route per association (static, noindex)
 
 components/
-  DemoSite.tsx            Composes a whole homepage from one Association object
+  DemoSite.tsx            The demo homepage: opening, photos, numbers, previews
+  DemoSubPage.tsx         Shared frame for the demo sub-pages (nav, banner, footer)
   ConceptBadge.tsx        Floating sales badge + native <dialog> modal
   site/                   The page sections
-    SiteHeader.tsx  DisclaimerBar.tsx  HeroSection.tsx  QuickLinks.tsx
-    CommunityOverview.tsx  Announcements.tsx  UpcomingMeetings.tsx
+    CinemaHero.tsx  CinemaNav.tsx  IntroReveal.tsx  DisclaimerBar.tsx
+    PhotoBand.tsx  ByTheNumbers.tsx  HomeHighlights.tsx  ExploreGrid.tsx
+    PageHero.tsx  CommunityOverview.tsx  Announcements.tsx  UpcomingMeetings.tsx
     DocumentsAndForms.tsx  Amenities.tsx  ManagementContact.tsx
     FaqSection.tsx  SiteFooter.tsx
   portfolio/
