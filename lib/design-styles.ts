@@ -14,6 +14,8 @@ export type HeroLayout = "split" | "overlay" | "stacked" | "panel";
  * opens on its documents, even before anyone notices the typeface.
  */
 export type SectionKey =
+  | "photos"
+  | "numbers"
   | "quickLinks"
   | "overview"
   | "announcements"
@@ -64,8 +66,8 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     // Waterfront condominium: the place sells itself, so the shared
     // surroundings come before the paperwork.
     sectionOrder: [
-      "overview", "amenities", "quickLinks", "announcements",
-      "meetings", "documents", "contact", "faq",
+      "overview", "photos", "numbers", "amenities", "quickLinks",
+      "announcements", "meetings", "documents", "contact", "faq",
     ],
   },
   "modern-resort": {
@@ -81,8 +83,8 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     // Resort master association: opens on what there is to do, because that
     // is what its residents chose it for.
     sectionOrder: [
-      "amenities", "overview", "announcements", "quickLinks",
-      "meetings", "documents", "contact", "faq",
+      "photos", "amenities", "numbers", "overview", "announcements",
+      "quickLinks", "meetings", "documents", "contact", "faq",
     ],
   },
   "friendly-community": {
@@ -99,8 +101,8 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     // Resident-resource forward: forms and documents are the reason people
     // visit a small self-managed HOA's site at all.
     sectionOrder: [
-      "quickLinks", "documents", "announcements", "meetings",
-      "overview", "amenities", "contact", "faq",
+      "photos", "quickLinks", "documents", "announcements", "meetings",
+      "overview", "numbers", "amenities", "contact", "faq",
     ],
   },
   "urban-condominium": {
@@ -116,8 +118,8 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     // Urban building: dense and operational. What is happening and what is
     // filed, first; the tour second.
     sectionOrder: [
-      "quickLinks", "meetings", "announcements", "documents",
-      "overview", "amenities", "contact", "faq",
+      "photos", "numbers", "quickLinks", "meetings", "announcements",
+      "documents", "overview", "amenities", "contact", "faq",
     ],
   },
   "active-adult": {
@@ -134,8 +136,8 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     // Built for an audience that would rather telephone than hunt: the office
     // is near the top, and everything below it is in plain order.
     sectionOrder: [
-      "quickLinks", "contact", "meetings", "announcements",
-      "documents", "overview", "amenities", "faq",
+      "photos", "quickLinks", "contact", "numbers", "meetings",
+      "announcements", "documents", "overview", "amenities", "faq",
     ],
   },
 };

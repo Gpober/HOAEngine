@@ -29,6 +29,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Community pool area with seasonal hours posted by the association.",
     icon: Waves,
     placeholder: "pool",
+    photo: "amenities/pool.png",
   },
   clubhouse: {
     key: "clubhouse",
@@ -36,6 +37,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Shared indoor space for meetings, gatherings, and reservations.",
     icon: Building2,
     placeholder: "clubhouse",
+    photo: "amenities/clubhouse.png",
   },
   fitness: {
     key: "fitness",
@@ -43,6 +45,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "On-site exercise space available to residents.",
     icon: Dumbbell,
     placeholder: "interior",
+    photo: "amenities/fitness.png",
   },
   parking: {
     key: "parking",
@@ -50,6 +53,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Assigned or shared parking managed under association rules.",
     icon: Car,
     placeholder: "village",
+    photo: "amenities/parking.png",
   },
   security: {
     key: "security",
@@ -57,6 +61,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Controlled access and community safety procedures.",
     icon: ShieldCheck,
     placeholder: "village",
+    photo: "amenities/security.png",
   },
   waterfront: {
     key: "waterfront",
@@ -64,6 +69,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Shared waterfront frontage or walkway maintained by the association.",
     icon: Sailboat,
     placeholder: "waterfront",
+    photo: "amenities/waterfront.png",
   },
   tennis: {
     key: "tennis",
@@ -71,6 +77,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Court facilities available under posted community guidelines.",
     icon: Trophy,
     placeholder: "courtyard",
+    photo: "amenities/tennis.png",
   },
   pickleball: {
     key: "pickleball",
@@ -78,6 +85,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Court facilities available under posted community guidelines.",
     icon: CircleDot,
     placeholder: "courtyard",
+    photo: "amenities/pickleball.png",
   },
   dock: {
     key: "dock",
@@ -85,6 +93,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Boat slips or dock access administered by the association.",
     icon: Anchor,
     placeholder: "waterfront",
+    photo: "amenities/dock.png",
   },
   grounds: {
     key: "grounds",
@@ -92,6 +101,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Maintained common areas, walking paths, and green space.",
     icon: Trees,
     placeholder: "garden",
+    photo: "amenities/grounds.png",
   },
   elevator: {
     key: "elevator",
@@ -99,6 +109,7 @@ export const amenityCatalogue: Record<AmenityKey, AmenityDefinition> = {
     blurb: "Elevator service to residential floors and common areas.",
     icon: MoveVertical,
     placeholder: "interior",
+    photo: "amenities/elevator.png",
   },
   petArea: {
     key: "petArea",

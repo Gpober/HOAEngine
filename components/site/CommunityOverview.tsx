@@ -1,6 +1,5 @@
 import { Building2, CalendarRange, Home, Landmark, MapPin, Sparkles } from "lucide-react";
 import { Card, IconWell } from "@/components/ui/Card";
-import { CommunityImage } from "@/components/ui/CommunityImage";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { getAmenities } from "@/lib/amenities";
 import { locationLabel, sectionIds } from "@/lib/content";
@@ -110,39 +109,10 @@ export function CommunityOverview({ association }: { association: Association })
       </div>
 
       {/*
-       * The photographs get the full width and equal weight.
-       *
-       * They used to sit in a five-column sidebar beside the facts, which laid
-       * three of them out one under another — 457x313 each, running a thousand
-       * pixels down the page while the text column ended level with the first
-       * one. Good photography rendered as a list of thumbnails.
-       *
-       * Equal columns, one shared aspect ratio, one gap: the three read as a
-       * set rather than a stack. The breakpoint goes straight from one column
-       * to three and never passes through two, because three items in two
-       * columns leaves an orphan on the second row — which is the asymmetry
-       * that makes a gallery look accidental.
+       * The photographs used to live here. They are now a full-bleed band of
+       * their own (`PhotoBand`), because a container-width column is the wrong
+       * home for the only thing on the page that sells.
        */}
-      {association.galleryImages.length ? (
-        <ul className="mt-10 grid gap-5 md:grid-cols-3 md:gap-6">
-          {association.galleryImages.slice(0, 3).map((image) => (
-            <li key={image.alt}>
-              <figure className="flex h-full flex-col">
-                <CommunityImage
-                  image={image}
-                  sizes="(min-width: 768px) 31vw, 92vw"
-                  className="aspect-[4/3] w-full"
-                />
-                {image.caption ? (
-                  <figcaption className="mt-3 text-center text-sm font-semibold uppercase tracking-eyebrow text-ink-muted">
-                    {image.caption}
-                  </figcaption>
-                ) : null}
-              </figure>
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </Section>
   );
 }

@@ -3,6 +3,8 @@ import { Concierge } from "@/components/demo/Concierge";
 import { CONCIERGE_SLUGS } from "@/lib/concierge/enabled";
 import { suggestedQuestions } from "@/lib/concierge/context";
 import { Amenities } from "@/components/site/Amenities";
+import { ByTheNumbers } from "@/components/site/ByTheNumbers";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import { Announcements } from "@/components/site/Announcements";
 import { CommunityOverview } from "@/components/site/CommunityOverview";
 import { DisclaimerBar } from "@/components/site/DisclaimerBar";
@@ -32,6 +34,8 @@ const SECTIONS: Record<
   SectionKey,
   ({ association }: { association: Association }) => React.ReactNode
 > = {
+  photos: PhotoBand,
+  numbers: ByTheNumbers,
   quickLinks: QuickLinks,
   overview: CommunityOverview,
   announcements: Announcements,
