@@ -17,8 +17,18 @@ export function Card({
     <Tag
       className={cn(
         "rounded-card border border-line bg-card shadow-soft",
+        /*
+         * `relative` is part of `interactive`, not optional styling.
+         *
+         * Interactive cards contain a stretched link (`after:absolute inset-0`)
+         * so the whole card is clickable. That pseudo-element anchors to the
+         * nearest positioned ancestor — without `relative` here it escapes to
+         * the viewport, covers the entire page, and silently swallows every
+         * click on the document. Keeping it on the component makes the pattern
+         * safe by construction instead of relying on each caller remembering.
+         */
         interactive &&
-          "transition-shadow duration-200 hover:shadow-lift focus-within:shadow-lift",
+          "relative transition-shadow duration-200 hover:shadow-lift focus-within:shadow-lift",
         className,
       )}
     >
