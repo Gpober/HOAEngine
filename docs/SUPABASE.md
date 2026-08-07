@@ -144,6 +144,35 @@ stays labelled, and the disclaimers and `noindex` stay in place. Those labels
 are enforced in the application layer, so they cannot be switched off from the
 database — which is deliberate.
 
+## Enquiries: `public.hoa_leads`
+
+The contact form on the marketing page writes here. The security shape is
+deliberately asymmetric — **the public may write and may never read**:
+
+| Policy | Effect |
+| --- | --- |
+| `Anyone may submit a lead` | INSERT for everyone, but only where `source = 'website'`, `status = 'new'`, and `notes is null` |
+| `Admins read / update / delete hoa_leads` | Everything else requires `public.is_admin()` |
+
+There is no SELECT policy for anonymous callers at all, so a read is refused
+rather than filtered. A visitor who fills in the form cannot turn around and
+enumerate everyone else who did. The insert policy also pins `status` and
+`notes`, so a crafted request cannot file itself as already won or inject
+internal notes.
+
+**Never chain `.select()` onto an insert here.** Returning the inserted row
+needs SELECT permission on it, which the public role does not have, so
+`INSERT ... RETURNING` fails while the identical insert without it succeeds.
+`supabase-js`'s bare `.insert()` sends `Prefer: return=minimal` and is correct.
+
+Enquiries are read at `/admin/leads`, behind a Supabase session. That gate is a
+redirect for people, not the security boundary — RLS is. A request that somehow
+reached the page without an admin session would still read nothing.
+
+Authentication adds no new environment variables: `@supabase/ssr` uses the same
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as the
+public read path, and there is no service-role key anywhere in the app.
+
 ## What lives where
 
 | | Source of truth | Why |

@@ -13,6 +13,7 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
 import { CommunityImage } from "@/components/ui/CommunityImage";
+import { ContactForm } from "./contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { associations } from "@/data/associations";
@@ -357,41 +358,44 @@ export default function HomePage() {
 
         {/* Contact -------------------------------------------------------- */}
         <Section id="contact" tone="surface" labelledBy="contact-heading">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2
-              id="contact-heading"
-              className="font-display text-3xl font-semibold text-ink md:text-4xl"
-            >
-              Ask for a concept for your community
-            </h2>
-            <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-              Tell us the association name and where it is. We will build a
-              concept and send you a link — free, and with nothing to sign.
-            </p>
-            {site.contactEmail || site.phone ? (
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                {site.contactEmail ? (
-                  <ButtonLink href={`mailto:${site.contactEmail}`} size="lg">
-                    Email us
-                  </ButtonLink>
-                ) : null}
-                {site.phone ? (
-                  <ButtonLink
-                    href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}
-                    size="lg"
-                    variant="outline"
-                  >
-                    {site.phone}
-                  </ButtonLink>
-                ) : null}
-              </div>
-            ) : (
-              <p className="mt-8 rounded-card border border-line bg-card p-5 text-base text-ink-soft shadow-soft">
-                Contact details are being set up. Add an email address or phone
-                number in <code className="font-mono text-sm">lib/site.ts</code>{" "}
-                and it will appear here.
+          <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2
+                id="contact-heading"
+                className="font-display text-3xl font-semibold text-ink md:text-4xl"
+              >
+                Ask for a concept for your community
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+                Tell us the association name and where it is. We will build a
+                concept and send you a link — free, and with nothing to sign.
               </p>
-            )}
+            </div>
+
+            <div className="mt-8">
+              <ContactForm />
+            </div>
+
+            {/*
+             * The form is the route that always works, so it leads. A published
+             * address or number is an addition to it, never a replacement — and
+             * where neither is set nothing is shown, rather than an apology for
+             * a channel that does not exist.
+             */}
+            {site.contactEmail || site.phone ? (
+              <p className="mt-6 text-center text-base text-ink-soft">
+                Prefer not to use a form?{" "}
+                {site.contactEmail ? (
+                  <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+                ) : null}
+                {site.contactEmail && site.phone ? " or " : null}
+                {site.phone ? (
+                  <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}>
+                    {site.phone}
+                  </a>
+                ) : null}
+              </p>
+            ) : null}
           </div>
         </Section>
       </main>
