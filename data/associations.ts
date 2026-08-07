@@ -91,7 +91,8 @@ const harborlightPoint: Association = {
   emergencyContact: "(555) 010-0199 — after-hours line",
   officeAddress: "100 Placeholder Way, Suite 200",
   heroImage: {
-    alt: "Illustrated placeholder of a waterfront condominium community at sunrise.",
+    src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/harborlight-point-hero.png",
+    alt: "A low-rise waterfront condominium community at golden hour, seen across calm bay water.",
     placeholder: "waterfront",
   },
   galleryImages: [
@@ -185,7 +186,8 @@ const velaRidge: Association = {
   officeHours: "Monday – Friday, 8:30 AM – 5:00 PM",
   emergencyContact: "(555) 010-0188 — 24-hour emergency line",
   heroImage: {
-    alt: "Illustrated placeholder of a resort-style community with a pool courtyard.",
+    src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/vela-ridge-hero.png",
+    alt: "A resort-style residential community with a wide pool courtyard, palms, and desert mountains beyond.",
     placeholder: "resort",
   },
   galleryImages: [
@@ -279,7 +281,8 @@ const cedarHollow: Association = {
   // Phone and email intentionally omitted — the contact section falls back to
   // "Contact information available upon official site setup."
   heroImage: {
-    alt: "Illustrated placeholder of a tree-lined residential neighbourhood.",
+    src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/cedar-hollow-hero.png",
+    alt: "A quiet tree-lined neighbourhood street of single-family homes on an overcast morning.",
     placeholder: "village",
   },
   galleryImages: [
@@ -374,7 +377,8 @@ const marquetteNinth: Association = {
   emergencyContact: "(555) 010-0133 — building emergency line",
   officeAddress: "900 Placeholder Avenue, Lobby Level",
   heroImage: {
-    alt: "Illustrated placeholder of a mid-rise condominium building against a city skyline.",
+    src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/marquette-hero.png",
+    alt: "A contemporary mid-rise condominium building on a city corner at blue hour, lobby lit at street level.",
     placeholder: "skyline",
   },
   galleryImages: [
@@ -468,7 +472,8 @@ const sunfieldVillage: Association = {
   officeHours: "Monday – Friday, 9:00 AM – 4:00 PM",
   // Emergency contact intentionally omitted for this record.
   heroImage: {
-    alt: "Illustrated placeholder of a community clubhouse with gardens and walking paths.",
+    src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/sunfield-village-hero.png",
+    alt: "A single-storey community clubhouse with a covered porch, accessible walkway, and flowering beds.",
     placeholder: "clubhouse",
   },
   galleryImages: [
