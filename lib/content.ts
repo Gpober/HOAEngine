@@ -1,6 +1,6 @@
-import type { Association, FaqItem, QuickLink } from "./types";
+import type { Association, FaqItem } from "./types";
 
-/** Anchor ids shared by the nav, quick links, and footer. */
+/** Section ids, kept for in-page landmarks on the sub-pages. */
 export const sectionIds = {
   overview: "community-information",
   announcements: "announcements",
@@ -12,85 +12,57 @@ export const sectionIds = {
   resources: "resident-resources",
 } as const;
 
-/** Header navigation. Kept short so it stays scannable on every screen size. */
-export const primaryNav = [
-  { label: "Community", href: `#${sectionIds.overview}` },
-  { label: "Announcements", href: `#${sectionIds.announcements}` },
-  { label: "Meetings", href: `#${sectionIds.meetings}` },
-  { label: "Documents", href: `#${sectionIds.documents}` },
-  { label: "Amenities", href: `#${sectionIds.amenities}` },
-  { label: "Contact", href: `#${sectionIds.contact}` },
-];
-
 /**
- * Reduced desktop navigation for the enlarged type scale.
- *
- * At that scale six links plus the association name no longer fit on one row,
- * and squeezing them would mean smaller targets — the opposite of what that
- * design style is for. The full list stays in the mobile menu and the footer.
+ * The demo sites are multi-page. The homepage carries only the showpiece —
+ * opening, photography, numbers, a preview of what's new — and everything
+ * practical lives on its own page under the demo's slug. These five pages are
+ * the whole information architecture; the nav, the footer, and the explore
+ * cards on the homepage are all derived from this one list.
  */
-export const compactNav = [
-  { label: "Community", href: `#${sectionIds.overview}` },
-  { label: "Meetings", href: `#${sectionIds.meetings}` },
-  { label: "Documents", href: `#${sectionIds.documents}` },
-  { label: "Contact", href: `#${sectionIds.contact}` },
-];
+export interface DemoNavItem {
+  /** Route segment under `/demo/[slug]/`. */
+  segment: string;
+  label: string;
+  /** One line for the homepage explore card. */
+  description: string;
+  href: string;
+}
 
-/**
- * The seven quick-link cards. `iconKey` is resolved to a Lucide icon in the
- * QuickLinks component so this module stays free of JSX imports.
- */
-export const quickLinks: (QuickLink & { iconKey: string })[] = [
-  {
-    id: "community-information",
-    iconKey: "info",
-    label: "Community Information",
-    description: "Property details, location, and community overview.",
-    href: `#${sectionIds.overview}`,
-  },
-  {
-    id: "contact-information",
-    iconKey: "phone",
-    label: "Contact Information",
-    description: "How to reach the association office.",
-    href: `#${sectionIds.contact}`,
-  },
-  {
-    id: "management-company",
-    iconKey: "briefcase",
-    label: "Management Company",
-    description: "The company handling day-to-day management.",
-    href: `#${sectionIds.contact}`,
-  },
-  {
-    id: "forms",
-    iconKey: "clipboard",
-    label: "Forms",
-    description: "Architectural requests and resident forms.",
-    href: `#${sectionIds.documents}`,
-  },
-  {
-    id: "faq",
-    iconKey: "help",
-    label: "FAQ",
-    description: "Answers to the questions residents ask most.",
-    href: `#${sectionIds.faq}`,
-  },
-  {
-    id: "meeting-dates",
-    iconKey: "calendar",
-    label: "Meeting Dates",
-    description: "Board, annual, and committee meeting schedule.",
-    href: `#${sectionIds.meetings}`,
-  },
-  {
-    id: "resident-resources",
-    iconKey: "users",
-    label: "Resident Resources",
-    description: "Documents, rules, and everyday resident tools.",
-    href: `#${sectionIds.documents}`,
-  },
-];
+export function demoPages(slug: string): DemoNavItem[] {
+  const base = `/demo/${slug}`;
+  return [
+    {
+      segment: "community",
+      label: "Community",
+      description: "Property details, location, and the story of the community.",
+      href: `${base}/community`,
+    },
+    {
+      segment: "amenities",
+      label: "Amenities",
+      description: "The pool, the clubhouse, the grounds — everything shared.",
+      href: `${base}/amenities`,
+    },
+    {
+      segment: "news",
+      label: "News & Meetings",
+      description: "Announcements and the full board meeting schedule.",
+      href: `${base}/news`,
+    },
+    {
+      segment: "documents",
+      label: "Documents",
+      description: "Governing documents, forms, and resident resources.",
+      href: `${base}/documents`,
+    },
+    {
+      segment: "contact",
+      label: "Contact",
+      description: "Reach the office, the management company, and the FAQ.",
+      href: `${base}/contact`,
+    },
+  ];
+}
 
 /**
  * Fallback FAQ set. Answers describe the *general* process an association

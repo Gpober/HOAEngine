@@ -1,53 +1,56 @@
 import {
   ArrowUpRight,
-  Briefcase,
-  CalendarDays,
-  ClipboardList,
-  HelpCircle,
-  Info,
+  FileText,
+  Landmark,
+  Newspaper,
   PhoneCall,
-  Users,
+  Waves,
   type LucideIcon,
 } from "lucide-react";
+import Link from "next/link";
 import { Card, IconWell } from "@/components/ui/Card";
 import { Section, SectionHeading } from "@/components/ui/Section";
-import { quickLinks } from "@/lib/content";
+import { demoPages } from "@/lib/content";
 import { designStyles } from "@/lib/design-styles";
 import type { Association } from "@/lib/types";
 
 const icons: Record<string, LucideIcon> = {
-  info: Info,
-  phone: PhoneCall,
-  briefcase: Briefcase,
-  clipboard: ClipboardList,
-  help: HelpCircle,
-  calendar: CalendarDays,
-  users: Users,
+  community: Landmark,
+  amenities: Waves,
+  news: Newspaper,
+  documents: FileText,
+  contact: PhoneCall,
 };
 
-export function QuickLinks({ association }: { association: Association }) {
+/**
+ * The doors to the rest of the site: one card per page, derived from the same
+ * list the nav and footer use. This is the homepage's whole answer to "where
+ * is everything?" — the sections themselves live on their own pages.
+ */
+export function ExploreGrid({ association }: { association: Association }) {
   const design = designStyles[association.designStyle];
+  const pages = demoPages(association.slug);
 
   return (
     <Section
-      id="quick-links"
-      tone="surface"
+      id="explore-pages"
+      tone="alt"
       padding={design.sectionPadding}
-      labelledBy="quick-links-heading"
+      labelledBy="explore-heading"
     >
       <SectionHeading
-        id="quick-links-heading"
-        eyebrow="Start here"
+        id="explore-heading"
+        eyebrow="Find your way"
         eyebrowStyle={design.eyebrow}
-        title="Quick links for residents"
-        description="The pages residents ask for most, one tap away on any device."
+        title="Explore the community site"
+        description="Everything practical has a page of its own — pick where you're headed."
       />
 
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {quickLinks.map((link) => {
-          const Icon = icons[link.iconKey] ?? Info;
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        {pages.map((page) => {
+          const Icon = icons[page.segment] ?? Landmark;
           return (
-            <li key={link.id}>
+            <li key={page.href}>
               <Card interactive className="group relative h-full p-6">
                 <IconWell>
                   <Icon className="h-6 w-6" aria-hidden="true" />
@@ -57,15 +60,15 @@ export function QuickLinks({ association }: { association: Association }) {
                     The stretched link makes the whole card clickable while
                     keeping a single, properly-labelled focus target.
                   */}
-                  <a
-                    href={link.href}
+                  <Link
+                    href={page.href}
                     className="no-underline after:absolute after:inset-0 after:content-['']"
                   >
-                    {link.label}
-                  </a>
+                    {page.label}
+                  </Link>
                 </h3>
                 <p className="mt-2 text-base leading-relaxed text-ink-soft">
-                  {link.description}
+                  {page.description}
                 </p>
                 <ArrowUpRight
                   aria-hidden="true"

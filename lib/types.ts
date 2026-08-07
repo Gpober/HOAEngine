@@ -126,13 +126,6 @@ export interface FaqItem {
   answer: string;
 }
 
-export interface QuickLink {
-  id: string;
-  label: string;
-  description: string;
-  href: string;
-}
-
 /* -------------------------------------------------------------------------- */
 /*  Association configuration                                                  */
 /* -------------------------------------------------------------------------- */

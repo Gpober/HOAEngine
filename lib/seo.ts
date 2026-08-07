@@ -30,6 +30,24 @@ export const noIndexRobots: Metadata["robots"] = {
   googleBot: { index: false, follow: false, noimageindex: true },
 };
 
+/** Metadata for a demo sub-page: the homepage's, retitled and re-canonicalised. */
+export function demoSubPageMetadata(
+  association: Association,
+  pageTitle: string,
+  segment: string,
+): Metadata {
+  const base = demoMetadata(association);
+  const title = `${pageTitle} — ${association.name} Concept`;
+  const url = `/demo/${association.slug}/${segment}`;
+  return {
+    ...base,
+    title,
+    alternates: { canonical: url },
+    openGraph: { ...base.openGraph, title, url },
+    twitter: { ...base.twitter, title },
+  };
+}
+
 export function demoMetadata(association: Association): Metadata {
   const location = locationLabel(association);
   const where = location ? ` in ${location}` : "";

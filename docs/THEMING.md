@@ -107,8 +107,8 @@ Edit `lib/design-styles.ts`:
 `typeScale: "large"` sets `data-type-scale="large"` on the wrapper. Because
 Tailwind's `text-*` utilities are root-relative rems, the scale is applied by
 overriding those utilities inside that subtree — see the rules at the bottom of
-`app/globals.css`. It also switches the header to a shorter four-item desktop
-nav (`compactNav` in `lib/content.ts`) so touch targets stay generous.
+`app/globals.css`. The navigation itself stays sparse at every scale — two
+links a side plus the full-screen menu — so touch targets stay generous.
 
 ### Changing fonts
 

@@ -2,26 +2,15 @@ import type { CSSProperties } from "react";
 import type { DesignStyle } from "./types";
 
 /**
- * The sections a demo homepage can carry, below the hero.
+ * The blocks a demo *homepage* can carry, below the hero — and nothing more.
  *
- * Order is per design, not global. Palette and type alone were never enough:
- * five sites with identical information architecture read as one template
- * wearing five coats of paint, however different the colours are. What a
- * visitor actually registers is what comes first — a resort community that
- * opens on its amenities is a different site from a self-managed HOA that
- * opens on its documents, even before anyone notices the typeface.
+ * The homepage is deliberately short: the opening, the photography, the
+ * numbers, a glimpse of what's new, and doors to the rest of the site. About,
+ * amenities, documents, the full schedule, FAQ, and contact each live on their
+ * own page under the demo's slug. Order is still per design, because what
+ * comes first after the hero is the thing a visitor actually registers.
  */
-export type SectionKey =
-  | "photos"
-  | "numbers"
-  | "quickLinks"
-  | "overview"
-  | "announcements"
-  | "meetings"
-  | "documents"
-  | "amenities"
-  | "contact"
-  | "faq";
+export type SectionKey = "photos" | "numbers" | "highlights" | "explore";
 
 export interface DesignStyleTokens {
   /** Font stack for headings — a CSS value, usually a `next/font` variable. */
@@ -57,12 +46,9 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.015em",
-    // Waterfront condominium: the place sells itself, so the shared
-    // surroundings come before the paperwork.
-    sectionOrder: [
-      "overview", "photos", "numbers", "amenities", "quickLinks",
-      "announcements", "meetings", "documents", "contact", "faq",
-    ],
+    // Waterfront condominium: the place sells itself — photography first,
+    // then the numbers, and the practical pages last.
+    sectionOrder: ["photos", "numbers", "highlights", "explore"],
   },
   "modern-resort": {
     fontDisplay: "var(--font-manrope), system-ui, sans-serif",
@@ -73,12 +59,9 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-28",
     headingTracking: "-0.02em",
-    // Resort master association: opens on what there is to do, because that
-    // is what its residents chose it for.
-    sectionOrder: [
-      "photos", "amenities", "numbers", "overview", "announcements",
-      "quickLinks", "meetings", "documents", "contact", "faq",
-    ],
+    // Resort master association: pure showpiece — the tour runs long before
+    // anything practical appears.
+    sectionOrder: ["photos", "highlights", "numbers", "explore"],
   },
   "friendly-community": {
     fontDisplay: "var(--font-nunito), system-ui, sans-serif",
@@ -89,12 +72,9 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
-    // Resident-resource forward: forms and documents are the reason people
-    // visit a small self-managed HOA's site at all.
-    sectionOrder: [
-      "photos", "quickLinks", "documents", "announcements", "meetings",
-      "overview", "numbers", "amenities", "contact", "faq",
-    ],
+    // Resident-resource forward: the doors to the practical pages come first,
+    // because that is why people visit a self-managed HOA's site at all.
+    sectionOrder: ["explore", "highlights", "photos", "numbers"],
   },
   "urban-condominium": {
     fontDisplay: "var(--font-inter), system-ui, -apple-system, sans-serif",
@@ -105,12 +85,9 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-14 md:py-20",
     headingTracking: "-0.025em",
-    // Urban building: dense and operational. What is happening and what is
-    // filed, first; the tour second.
-    sectionOrder: [
-      "photos", "numbers", "quickLinks", "meetings", "announcements",
-      "documents", "overview", "amenities", "contact", "faq",
-    ],
+    // Urban building: dense and operational — what's happening first, the
+    // tour second.
+    sectionOrder: ["numbers", "highlights", "photos", "explore"],
   },
   "active-adult": {
     fontDisplay: "var(--font-fraunces), Georgia, 'Times New Roman', serif",
@@ -122,12 +99,9 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
-    // Built for an audience that would rather telephone than hunt: the office
-    // is near the top, and everything below it is in plain order.
-    sectionOrder: [
-      "photos", "quickLinks", "contact", "numbers", "meetings",
-      "announcements", "documents", "overview", "amenities", "faq",
-    ],
+    // Built for an audience that would rather not hunt: what's coming up and
+    // the doors to every page sit right under the hero.
+    sectionOrder: ["highlights", "explore", "photos", "numbers"],
   },
 };
 

@@ -2,48 +2,40 @@ import { ConceptBadge } from "@/components/ConceptBadge";
 import { Concierge } from "@/components/demo/Concierge";
 import { CONCIERGE_SLUGS } from "@/lib/concierge/enabled";
 import { suggestedQuestions } from "@/lib/concierge/context";
-import { Amenities } from "@/components/site/Amenities";
 import { ByTheNumbers } from "@/components/site/ByTheNumbers";
-import { PhotoBand } from "@/components/site/PhotoBand";
-import { Announcements } from "@/components/site/Announcements";
-import { CommunityOverview } from "@/components/site/CommunityOverview";
-import { DisclaimerBar } from "@/components/site/DisclaimerBar";
-import { DocumentsAndForms } from "@/components/site/DocumentsAndForms";
-import { FaqSection } from "@/components/site/FaqSection";
 import { CinemaHero } from "@/components/site/CinemaHero";
+import { DisclaimerBar } from "@/components/site/DisclaimerBar";
+import { ExploreGrid } from "@/components/site/ExploreGrid";
+import { HomeHighlights } from "@/components/site/HomeHighlights";
 import { IntroReveal } from "@/components/site/IntroReveal";
-import { ManagementContact } from "@/components/site/ManagementContact";
-import { QuickLinks } from "@/components/site/QuickLinks";
+import { PhotoBand } from "@/components/site/PhotoBand";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { UpcomingMeetings } from "@/components/site/UpcomingMeetings";
 import { designStyleVars, designStyles, type SectionKey } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
 import type { Association } from "@/lib/types";
 
 /**
- * One association configuration in, one complete homepage out.
+ * The demo homepage: the showpiece and nothing else.
  *
- * The palette and typography arrive as CSS custom properties on this wrapper.
- * The *order* of the page comes from the design's `sectionOrder`, which is what
- * stops five sites built from one component tree reading as one template in
- * five colours — the first thing below the hero differs per design, and that is
- * the thing a visitor actually registers.
+ * Cinematic opening, photography, the numbers, a glimpse of what's new, and
+ * doors to the rest of the site. About, amenities, documents, the full
+ * schedule, FAQ, and contact each live on their own page (see `DemoSubPage`
+ * and `app/demo/[slug]/*`), because a homepage that carries everything is a
+ * homepage nobody reads.
+ *
+ * The palette and typography arrive as CSS custom properties on the wrapper;
+ * the *order* of the four blocks below the hero comes from the design's
+ * `sectionOrder`, so the five concepts still differ in what a visitor sees
+ * first.
  */
-/** Keyed so a design's `sectionOrder` is the only thing deciding what renders. */
 const SECTIONS: Record<
   SectionKey,
   ({ association }: { association: Association }) => React.ReactNode
 > = {
   photos: PhotoBand,
   numbers: ByTheNumbers,
-  quickLinks: QuickLinks,
-  overview: CommunityOverview,
-  announcements: Announcements,
-  meetings: UpcomingMeetings,
-  documents: DocumentsAndForms,
-  amenities: Amenities,
-  contact: ManagementContact,
-  faq: FaqSection,
+  highlights: HomeHighlights,
+  explore: ExploreGrid,
 };
 
 export function DemoSite({ association }: { association: Association }) {
@@ -80,7 +72,7 @@ export function DemoSite({ association }: { association: Association }) {
 
         <main id="main-content">
           <CinemaHero association={association} />
-          {/* Anchor for the hero's scroll cue: whatever section a design puts
+          {/* Anchor for the hero's scroll cue: whatever block a design puts
               first, this is where the chevron lands. */}
           <div id="explore" aria-hidden="true" />
           {design.sectionOrder.map((key) => {
