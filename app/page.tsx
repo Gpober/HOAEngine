@@ -8,6 +8,7 @@ import {
   Type,
 } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
@@ -125,27 +126,70 @@ export default function HomePage() {
 
       <main id="main">
         {/* Hero ----------------------------------------------------------- */}
-        <div className="hoa-grain border-b border-line bg-surface-alt">
-          <Container className="py-16 md:py-24">
-            <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.1] text-ink md:text-5xl lg:text-6xl">
+        {/*
+         * `on-accent` inverts the focus ring for this subtree; `isolate` keeps
+         * the -z-10 photograph and scrims behind the copy but in front of the
+         * page background, rather than letting them escape the stacking context.
+         *
+         * The photograph is site chrome supplied by the site owner — a city
+         * skyline, not any client community — so it carries no alt text and
+         * makes no claim about an association.
+         */}
+        <div className="on-accent relative isolate overflow-hidden border-b border-line">
+          <Image
+            src="/hero-skyline.webp"
+            alt=""
+            aria-hidden="true"
+            fill
+            priority
+            sizes="100vw"
+            /*
+             * Horizontal position only — `cover` on a 2:1 source in a tall
+             * phone-width frame crops the sides, never the top and bottom, so
+             * the vertical value does nothing. Biased right of centre because
+             * that slice holds the densest run of towers; dead centre lands on
+             * a gap in the skyline and reads as empty sky on a phone.
+             */
+            style={{ objectPosition: "68% 50%" }}
+            className="-z-10 object-cover"
+          />
+          {/*
+           * Two scrims, measured rather than eyeballed. The flat one is a floor
+           * for the whole frame — small screens crop the photograph hard and
+           * the copy runs the full width there. The gradient adds weight on the
+           * left, where the copy actually sits, and thins to the right so the
+           * skyline is still visible. Both are kept as light as the contrast
+           * measurements allow; a heavier scrim was legible but turned the
+           * photograph into a flat navy panel, which defeats having one.
+           */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-ink/45"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/75 via-ink/60 to-ink/30"
+          />
+          <Container className="py-20 md:py-32">
+            <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
               Websites for homeowner and condominium associations
             </h1>
-            <p className="mt-6 max-w-prose text-lg leading-relaxed text-ink-soft">
+            <p className="mt-6 max-w-prose text-lg leading-relaxed text-accent-ink/90">
               Most associations have no public website, or one that has not been
               touched in a decade. We build a clear, mobile-friendly page that
               shows residents, buyers, agents, and lenders that the community
               exists and is well run.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="#contact" size="lg">
+              <ButtonLink href="#contact" size="lg" variant="inverse">
                 Ask for a free concept
                 <ArrowRight className="h-5 w-5" aria-hidden="true" />
               </ButtonLink>
-              <ButtonLink href="#designs" size="lg" variant="outline">
+              <ButtonLink href="#designs" size="lg" variant="inverse-outline">
                 See the designs
               </ButtonLink>
             </div>
-            <p className="mt-6 max-w-prose text-base text-ink-muted">
+            <p className="mt-6 max-w-prose text-base text-accent-ink/85">
               We build a concept for your community first, at no cost and with no
               obligation.
             </p>

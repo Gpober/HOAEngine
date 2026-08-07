@@ -2,7 +2,13 @@ import Link from "next/link";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Variant = "primary" | "secondary" | "outline" | "quiet";
+type Variant =
+  | "primary"
+  | "secondary"
+  | "outline"
+  | "quiet"
+  | "inverse"
+  | "inverse-outline";
 type Size = "md" | "lg";
 
 const variants: Record<Variant, string> = {
@@ -13,6 +19,16 @@ const variants: Record<Variant, string> = {
   outline:
     "border border-accent/35 bg-card text-accent hover:bg-accent-soft hover:border-accent/60",
   quiet: "text-accent hover:bg-accent-soft",
+  /*
+   * For buttons sitting on a photograph or other dark field. These exist as
+   * variants rather than as `className` overrides because `cn()` is a plain
+   * joiner, not tailwind-merge — passing `bg-card` alongside `bg-accent` emits
+   * both and lets Tailwind's own ordering decide, which is not something to
+   * rely on. Pair with `on-accent` on an ancestor so focus rings invert too.
+   */
+  inverse: "bg-accent-ink text-accent shadow-lift hover:bg-accent-soft",
+  "inverse-outline":
+    "border border-accent-ink/70 bg-accent-ink/10 text-accent-ink hover:border-accent-ink hover:bg-accent-ink/20",
 };
 
 const sizes: Record<Size, string> = {
