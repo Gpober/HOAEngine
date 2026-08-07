@@ -31,6 +31,12 @@ export function AdminHeader({
           >
             Enquiries
           </Link>
+          <Link
+            href="/admin/assistant"
+            className="inline-flex min-h-[2.75rem] items-center rounded-pill px-3.5 text-base font-medium text-ink-soft no-underline hover:bg-accent-soft hover:text-accent"
+          >
+            Zordon
+          </Link>
           <form action={signOut}>
             <Button type="submit" variant="outline">
               Sign out
