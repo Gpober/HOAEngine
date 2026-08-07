@@ -12,6 +12,26 @@ export interface ContactState {
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 const ROLES = new Set(["board", "manager", "resident", "other"]);
+const TIME_WINDOWS = new Set(["morning", "afternoon", "evening"]);
+
+/**
+ * A requested call date must be a real calendar date, today or later, and
+ * within about a year — the same bounds the column's check constraint
+ * enforces, validated here so a typo gets a friendly message instead of a
+ * database error.
+ */
+function cleanPreferredDate(value: FormDataEntryValue | null): string | null | "invalid" {
+  const raw = String(value ?? "").trim();
+  if (!raw) return null;
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return "invalid";
+  const date = new Date(`${raw}T12:00:00Z`);
+  if (Number.isNaN(date.getTime())) return "invalid";
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const max = today.getTime() + 365 * 24 * 3600 * 1000;
+  if (date.getTime() < today.getTime() || date.getTime() > max) return "invalid";
+  return raw;
+}
 
 /** Trim, collapse whitespace, and cap — the column has a length check too. */
 function clean(value: FormDataEntryValue | null, max: number): string {
@@ -47,6 +67,15 @@ export async function submitLead(
   const location = clean(formData.get("location"), 200);
   const roleRaw = clean(formData.get("role"), 40);
   const message = clean(formData.get("message"), 4000);
+  const preferredTimeRaw = clean(formData.get("preferred_time"), 20);
+  const preferredDate = cleanPreferredDate(formData.get("preferred_date"));
+
+  if (preferredDate === "invalid") {
+    return {
+      status: "error",
+      message: "The call date needs to be today or later, within the next year.",
+    };
+  }
 
   if (!name) {
     return { status: "error", message: "Please add your name.", field: "name" };
@@ -84,6 +113,8 @@ export async function submitLead(
     location: location || null,
     role: ROLES.has(roleRaw) ? roleRaw : null,
     message: message || null,
+    preferred_date: preferredDate,
+    preferred_time: TIME_WINDOWS.has(preferredTimeRaw) ? preferredTimeRaw : null,
     source: "website",
   });
 
@@ -97,7 +128,8 @@ export async function submitLead(
 
   return {
     status: "success",
-    message:
-      "Thanks — your enquiry is in. We'll build a concept for your community and send you the link.",
+    message: preferredDate
+      ? "Thanks — your enquiry is in. We'll confirm your call time by email and send a link to your concept."
+      : "Thanks — your enquiry is in. We'll build a concept for your community and send you the link.",
   };
 }

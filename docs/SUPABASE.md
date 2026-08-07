@@ -160,6 +160,12 @@ enumerate everyone else who did. The insert policy also pins `status` and
 `notes`, so a crafted request cannot file itself as already won or inject
 internal notes.
 
+The form's optional "Schedule a call" section writes `preferred_date` (a
+`date`, checked to fall between today-ish and about a year out) and
+`preferred_time` (`morning` · `afternoon` · `evening`). It is a request, not a
+booking — the reply email confirms the actual time. Like the rest of the row,
+both are readable only by admins.
+
 **Never chain `.select()` onto an insert here.** Returning the inserted row
 needs SELECT permission on it, which the public role does not have, so
 `INSERT ... RETURNING` fails while the identical insert without it succeeds.

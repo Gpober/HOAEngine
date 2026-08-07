@@ -24,7 +24,7 @@ export const ASSISTANT_TOOLS: Anthropic.Tool[] = [
   {
     name: "list_enquiries",
     description:
-      "List enquiries from the marketing site contact form (the sales pipeline), newest first. Each has name, email, phone, association_name, location, role (board/manager/resident/other), message, status (new/contacted/qualified/won/lost), and internal notes.",
+      "List enquiries from the marketing site contact form (the sales pipeline), newest first. Each has name, email, phone, association_name, location, role (board/manager/resident/other), message, status (new/contacted/qualified/won/lost), internal notes, and — when the visitor requested a call — preferred_date and preferred_time (morning/afternoon/evening).",
     input_schema: {
       type: "object",
       properties: {
@@ -130,7 +130,7 @@ async function listEnquiries(
   let query = supabase
     .from("hoa_leads")
     .select(
-      "id, created_at, name, email, phone, association_name, location, role, message, status, notes",
+      "id, created_at, name, email, phone, association_name, location, role, message, status, notes, preferred_date, preferred_time",
     )
     .order("created_at", { ascending: false })
     .limit(clampInt(limit, 50, 1, 200));

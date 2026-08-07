@@ -140,6 +140,51 @@ export function ContactForm() {
           </div>
         </div>
 
+        {/*
+         * Scheduling: a requested day and time window, not a hard booking —
+         * there is no shared calendar to promise against, so the reply email
+         * confirms the actual time. Both fields optional; the form is exactly
+         * the old form when they're left blank.
+         */}
+        <fieldset>
+          <legend className={labelClass}>
+            Schedule a call{" "}
+            <span className="font-normal text-ink-muted">
+              (optional — pick a day and we&apos;ll confirm by email)
+            </span>
+          </legend>
+          <div className="grid gap-5 sm:grid-cols-2">
+            <div>
+              <label className="sr-only" htmlFor="preferred_date">
+                Preferred day for a call
+              </label>
+              <input
+                id="preferred_date"
+                name="preferred_date"
+                type="date"
+                min={new Date().toISOString().slice(0, 10)}
+                className={fieldClass}
+              />
+            </div>
+            <div>
+              <label className="sr-only" htmlFor="preferred_time">
+                Preferred time of day
+              </label>
+              <select
+                id="preferred_time"
+                name="preferred_time"
+                className={fieldClass}
+                defaultValue=""
+              >
+                <option value="">Any time of day</option>
+                <option value="morning">Morning</option>
+                <option value="afternoon">Afternoon</option>
+                <option value="evening">Evening</option>
+              </select>
+            </div>
+          </div>
+        </fieldset>
+
         <div>
           <label className={labelClass} htmlFor="message">
             Anything else{" "}
