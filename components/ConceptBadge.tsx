@@ -11,7 +11,7 @@ import { brand } from "@/lib/brand";
  * Uses a native `<dialog>`: focus trapping, Escape-to-close, and inertness of
  * the page behind it come from the platform rather than hand-rolled JS.
  */
-export function HoaDaddyBadge() {
+export function ConceptBadge() {
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   const open = useCallback(() => dialogRef.current?.showModal(), []);
@@ -38,7 +38,7 @@ export function HoaDaddyBadge() {
       <dialog
         ref={dialogRef}
         onClick={onDialogClick}
-        aria-labelledby="hoa-daddy-modal-title"
+        aria-labelledby="concept-modal-title"
         className="w-[min(32rem,calc(100vw-2rem))] rounded-card border border-line bg-card p-0 text-ink shadow-lift backdrop:bg-ink/50 backdrop:backdrop-blur-sm"
       >
         <div className="relative p-6 sm:p-8">
@@ -55,7 +55,7 @@ export function HoaDaddyBadge() {
             {brand.name}
           </p>
           <h2
-            id="hoa-daddy-modal-title"
+            id="concept-modal-title"
             className="mt-2 max-w-[22ch] font-display text-2xl font-semibold leading-snug text-ink"
           >
             {brand.modalHeadline}

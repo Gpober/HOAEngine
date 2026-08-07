@@ -73,7 +73,7 @@ heading at **2.57:1** and the paragraph at **3.15:1**. With in-scale stops
 | --- | --- |
 | First `Tab` reaches a visible "Skip to main content" link | Pass |
 | Focus indicator | 3 px accent outline with 3 px offset, applied globally via `:focus-visible`; inverted on dark accent surfaces |
-| HOA Daddy modal | Native `<dialog>` + `showModal()` — focus moves inside, is trapped, Escape closes, backdrop click closes |
+| Concept badge modal | Native `<dialog>` + `showModal()` — focus moves inside, is trapped, Escape closes, backdrop click closes |
 | FAQ disclosures | Native `<details>`/`<summary>`; open with Enter or Space; work with JavaScript disabled |
 | Mobile menu | `aria-expanded` toggles, `hidden` toggles, Escape closes |
 | Landmarks | Exactly one `<main>`, one `<header>`, one `<footer>`, one `<h1>` per page |
@@ -105,7 +105,7 @@ string; inspected robots metadata.
 
 | Requirement | Status |
 | --- | --- |
-| "Sample Design by HOA Daddy" | Present on all six routes — top bar and footer watermark |
+| "Sample Design by Condoseen" | Present on all six routes — top bar and footer watermark |
 | "Unofficial concept. Not affiliated with or endorsed by the association." | Present on all six routes — top bar and footer |
 | Full footer disclaimer | Present on all six routes; also in the badge modal and the contact panel |
 | `noindex, nofollow` meta | `<meta name="robots" content="noindex, nofollow, nocache">` on every route |

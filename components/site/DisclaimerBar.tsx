@@ -4,7 +4,7 @@ import { brand } from "@/lib/brand";
 
 /**
  * Required top-of-page notice. Both lines are mandatory on every demo:
- * the "Sample Design by HOA Daddy" credit and the unofficial-concept notice.
+ * the "Sample Design by ..." credit and the unofficial-concept notice.
  */
 export function DisclaimerBar() {
   return (

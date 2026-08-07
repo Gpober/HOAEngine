@@ -1,7 +1,7 @@
 # HOA Engine
 
 Sample homepage concepts for homeowner and condominium associations, built for
-sales demonstrations by **HOA Daddy**.
+sales demonstrations by **Condoseen**.
 
 Five visually distinct designs share one component system. Each site is
 generated from a single configuration object, so a new concept is a data change
@@ -9,7 +9,7 @@ rather than a design project.
 
 > **Every page carries these two labels, and they are not optional:**
 >
-> - **Sample Design by HOA Daddy**
+> - **Sample Design by Condoseen**
 > - **Unofficial concept. Not affiliated with or endorsed by the association.**
 
 ---
@@ -29,7 +29,7 @@ rather than a design project.
 Every homepage includes: header with resident-login (marked **Demo**), hero,
 quick links, community overview, announcements, upcoming meetings, documents and
 forms, amenities, management contact, FAQ, and footer with the watermark and
-disclaimer — plus the floating **Website Concept by HOA Daddy** badge and modal.
+disclaimer — plus the floating **Website Concept by Condoseen** badge and modal.
 
 ## Setup
 
@@ -77,7 +77,7 @@ app/
 
 components/
   DemoSite.tsx            Composes a whole homepage from one Association object
-  HoaDaddyBadge.tsx       Floating sales badge + native <dialog> modal
+  ConceptBadge.tsx        Floating sales badge + native <dialog> modal
   site/                   The page sections
     SiteHeader.tsx  DisclaimerBar.tsx  HeroSection.tsx  QuickLinks.tsx
     CommunityOverview.tsx  Announcements.tsx  UpcomingMeetings.tsx
@@ -101,7 +101,7 @@ lib/
   design-styles.ts        Typography, radii, hero layout, type scale
   amenities.ts            Amenity catalogue (label, blurb, icon)
   content.ts              Navigation, quick links, default FAQ, helpers
-  brand.ts                HOA Daddy strings and every disclaimer
+  brand.ts                Attribution strings and every disclaimer
   seo.ts                  Metadata builder + the shared noindex rule
   cn.ts                   Class-name joiner
 

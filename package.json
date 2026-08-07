@@ -2,7 +2,7 @@
   "name": "hoa-engine",
   "version": "0.1.0",
   "private": true,
-  "description": "HOA Engine — demo website concepts for HOA and condominium associations, by HOA Daddy.",
+  "description": "HOA Engine — demo website concepts for HOA and condominium associations, by Condoseen.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
