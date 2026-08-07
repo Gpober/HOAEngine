@@ -77,6 +77,8 @@ export interface AmenityDefinition {
   blurb: string;
   icon: LucideIcon;
   placeholder: PlaceholderScene;
+  /** Object path in the media bucket. Falls back to `placeholder` when absent. */
+  photo?: string;
 }
 
 /* -------------------------------------------------------------------------- */

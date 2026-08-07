@@ -1,4 +1,4 @@
-import { PlaceholderScene } from "@/components/ui/CommunityImage";
+import { CommunityImage } from "@/components/ui/CommunityImage";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { getAmenities } from "@/lib/amenities";
 import { sectionIds } from "@/lib/content";
@@ -48,10 +48,22 @@ export function Amenities({ association }: { association: Association }) {
             <li key={amenity.key}>
               <div className="relative isolate h-full overflow-hidden rounded-card border border-line bg-accent-soft">
                 <div className="relative aspect-[4/3] w-full">
-                  <PlaceholderScene
-                    scene={amenity.placeholder}
-                    alt={`Illustration representing ${amenity.label.toLowerCase()}.`}
+                  {/*
+                   * A real photograph where one exists, the generated scene
+                   * otherwise. `CommunityImage` already makes that choice from
+                   * whether `src` is set, so an amenity added later without a
+                   * photograph still renders rather than breaking the grid.
+                   */}
+                  <CommunityImage
+                    image={{
+                      src: amenity.photo,
+                      alt: `${amenity.label} at the community.`,
+                      placeholder: amenity.placeholder,
+                    }}
+                    rounded={false}
                     focus="center"
+                    sizes="(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 92vw"
+                    className="absolute inset-0"
                   />
                   {/*
                    * Safe by construction rather than by tuning. The text sits
