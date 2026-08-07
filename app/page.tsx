@@ -174,17 +174,17 @@ export default function HomePage() {
            *   text over white just looks smudged.
            */}
           <Container className="py-20 md:py-28">
-            <div className="[text-shadow:0_0_2px_rgb(var(--hoa-ink)),0_0_5px_rgb(var(--hoa-ink)),0_1px_4px_rgb(var(--hoa-ink)),0_2px_10px_rgb(var(--hoa-ink)),0_4px_22px_rgb(var(--hoa-ink)/0.95),0_8px_48px_rgb(var(--hoa-ink)/0.88)]">
-              <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
+            <div className="mx-auto max-w-4xl text-center [text-shadow:0_0_2px_rgb(var(--hoa-ink)),0_0_5px_rgb(var(--hoa-ink)),0_1px_4px_rgb(var(--hoa-ink)),0_2px_10px_rgb(var(--hoa-ink)),0_4px_22px_rgb(var(--hoa-ink)/0.95),0_8px_48px_rgb(var(--hoa-ink)/0.88)]">
+              <h1 className="font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
                 Websites for homeowner and condominium associations
               </h1>
-              <p className="mt-6 max-w-prose text-lg font-medium leading-relaxed text-accent-ink">
+              <p className="mx-auto mt-6 max-w-prose text-lg font-medium leading-relaxed text-accent-ink">
                 Most associations have no public website, or one that has not
                 been touched in a decade. We build a clear, mobile-friendly page
                 that shows residents, buyers, agents, and lenders that the
                 community exists and is well run.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <ButtonLink
                   href="#contact"
                   size="lg"
@@ -198,7 +198,7 @@ export default function HomePage() {
                   See the demos
                 </ButtonLink>
               </div>
-              <p className="mt-6 max-w-prose text-base font-medium text-accent-ink">
+              <p className="mx-auto mt-6 max-w-prose text-base font-medium text-accent-ink">
                 We build a concept for your community first, at no cost and with
                 no obligation.
               </p>
