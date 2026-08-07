@@ -17,9 +17,7 @@ import { ContactForm } from "./contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { associations } from "@/data/associations";
-import { designStyleNotes } from "@/lib/design-styles";
 import { organizationJsonLd, site } from "@/lib/site";
-import { themeLabels, themeStyle } from "@/lib/themes";
 
 /**
  * The public marketing page — the one part of this site that is meant to be
@@ -108,7 +106,7 @@ export default function HomePage() {
             <ul className="flex flex-wrap items-center gap-1">
               {[
                 ["What's included", "#included"],
-                ["Designs", "#designs"],
+                ["Demos", "#designs"],
                 ["Questions", "#faq"],
               ].map(([label, href]) => (
                 <li key={href}>
@@ -197,7 +195,7 @@ export default function HomePage() {
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </ButtonLink>
                 <ButtonLink href="#designs" size="lg" variant="inverse-outline">
-                  See the designs
+                  See the demos
                 </ButtonLink>
               </div>
               <p className="mt-6 max-w-prose text-base font-medium text-accent-ink">
@@ -257,71 +255,51 @@ export default function HomePage() {
         <Section id="designs" tone="surface" labelledBy="designs-heading">
           <SectionHeading
             id="designs-heading"
-            eyebrow="Five starting points"
-            title="Pick a look that suits the community"
-            description="Every design uses the same tested foundation — only the colour, type, and layout change. These examples use fictional communities."
+            eyebrow="Demos"
+            title="Every one of these is a different site"
+            description="Not one layout in five colours. Each is ordered around what its community actually leads with — the amenities, the paperwork, or the office. The communities shown are illustrative; we build yours before you decide."
           />
           <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {designExamples.map((example) => {
-              /*
-               * The theme wrapper does two jobs: it tints the fallback scene if
-               * a design ever loses its photograph, and it drives the palette
-               * swatches below, so the swatches can never disagree with the
-               * demo they describe.
-               */
-              const palette = themeStyle(example.accentTheme);
-
-              return (
-                <li key={example.slug}>
-                  <Card interactive className="group flex h-full flex-col overflow-hidden">
+            {designExamples.map((example) => (
+              <li key={example.slug}>
+                <Card interactive className="group flex h-full flex-col overflow-hidden">
+                  <CommunityImage
+                    image={example.heroImage}
+                    rounded={false}
+                    focus="center"
+                    sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
+                    className="aspect-[16/10] w-full border-b border-line"
+                  />
+                  <div className="flex flex-1 flex-col p-6">
                     {/*
-                     * The photograph leads. A board member decides whether a
-                     * design suits their community by looking at it; the
-                     * swatches and layout note underneath carry the detail.
+                     * The community leads, not the design. The palette swatches
+                     * and layout notes that used to sit here were accurate and
+                     * exactly wrong: they described a product being chosen from,
+                     * when the thing being sold is a site built around one
+                     * association. The design identity still exists in the data
+                     * and is still what drives the render — it just is not the
+                     * customer's problem.
                      */}
-                    <div style={palette} className="border-b border-line">
-                      <CommunityImage
-                        image={example.heroImage}
-                        rounded={false}
-                        focus="center"
-                        sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
-                        className="aspect-[16/10] w-full"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink-muted">
-                        {themeLabels[example.accentTheme]}
+                    <h3 className="font-display text-xl font-semibold text-ink">
+                      <Link
+                        href={`/demo/${example.slug}`}
+                        className="no-underline after:absolute after:inset-0 after:content-['']"
+                      >
+                        {example.shortName ?? example.name}
+                      </Link>
+                    </h3>
+                    {example.city || example.state ? (
+                      <p className="mt-1 text-sm text-ink-muted">
+                        {[example.city, example.state].filter(Boolean).join(", ")}
                       </p>
-                      <h3 className="mt-2 font-display text-xl font-semibold text-ink">
-                        <Link
-                          href={`/demo/${example.slug}`}
-                          className="no-underline after:absolute after:inset-0 after:content-['']"
-                        >
-                          {example.designName}
-                        </Link>
-                      </h3>
-                      <p className="mt-2 text-base leading-relaxed text-ink-soft">
-                        {example.designTagline}
-                      </p>
-                      <div className="mt-auto flex items-start gap-3 pt-5">
-                        <span
-                          aria-hidden="true"
-                          style={palette}
-                          className="mt-0.5 flex shrink-0 gap-1.5"
-                        >
-                          <span className="h-5 w-5 rounded-pill bg-accent ring-1 ring-inset ring-ink/10" />
-                          <span className="h-5 w-5 rounded-pill bg-secondary ring-1 ring-inset ring-ink/10" />
-                          <span className="h-5 w-5 rounded-pill bg-accent-soft ring-1 ring-inset ring-ink/10" />
-                        </span>
-                        <p className="text-sm leading-snug text-ink-muted">
-                          {designStyleNotes[example.designStyle]}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </li>
-              );
-            })}
+                    ) : null}
+                    <p className="mt-3 text-base leading-relaxed text-ink-soft">
+                      {example.shortDescription}
+                    </p>
+                  </div>
+                </Card>
+              </li>
+            ))}
           </ul>
         </Section>
 

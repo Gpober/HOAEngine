@@ -14,16 +14,34 @@ import { QuickLinks } from "@/components/site/QuickLinks";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { UpcomingMeetings } from "@/components/site/UpcomingMeetings";
-import { designStyleVars, designStyles } from "@/lib/design-styles";
+import { designStyleVars, designStyles, type SectionKey } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
 import type { Association } from "@/lib/types";
 
 /**
  * One association configuration in, one complete homepage out.
  *
- * The palette and the typography personality arrive as CSS custom properties on
- * this wrapper, so all five demos share exactly the same component tree.
+ * The palette and typography arrive as CSS custom properties on this wrapper.
+ * The *order* of the page comes from the design's `sectionOrder`, which is what
+ * stops five sites built from one component tree reading as one template in
+ * five colours — the first thing below the hero differs per design, and that is
+ * the thing a visitor actually registers.
  */
+/** Keyed so a design's `sectionOrder` is the only thing deciding what renders. */
+const SECTIONS: Record<
+  SectionKey,
+  ({ association }: { association: Association }) => React.ReactNode
+> = {
+  quickLinks: QuickLinks,
+  overview: CommunityOverview,
+  announcements: Announcements,
+  meetings: UpcomingMeetings,
+  documents: DocumentsAndForms,
+  amenities: Amenities,
+  contact: ManagementContact,
+  faq: FaqSection,
+};
+
 export function DemoSite({ association }: { association: Association }) {
   const design = designStyles[association.designStyle];
 
@@ -53,14 +71,10 @@ export function DemoSite({ association }: { association: Association }) {
 
       <main id="main-content">
         <HeroSection association={association} />
-        <QuickLinks association={association} />
-        <CommunityOverview association={association} />
-        <Announcements association={association} />
-        <UpcomingMeetings association={association} />
-        <DocumentsAndForms association={association} />
-        <Amenities association={association} />
-        <ManagementContact association={association} />
-        <FaqSection association={association} />
+        {design.sectionOrder.map((key) => {
+          const Section = SECTIONS[key];
+          return <Section key={key} association={association} />;
+        })}
       </main>
 
       <SiteFooter association={association} />

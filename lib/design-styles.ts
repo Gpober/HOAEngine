@@ -3,6 +3,26 @@ import type { DesignStyle } from "./types";
 
 export type HeroLayout = "split" | "overlay" | "stacked" | "panel";
 
+/**
+ * The sections a demo homepage can carry, below the hero.
+ *
+ * Order is per design, not global. Palette and type alone were never enough:
+ * five sites with identical information architecture read as one template
+ * wearing five coats of paint, however different the colours are. What a
+ * visitor actually registers is what comes first — a resort community that
+ * opens on its amenities is a different site from a self-managed HOA that
+ * opens on its documents, even before anyone notices the typeface.
+ */
+export type SectionKey =
+  | "quickLinks"
+  | "overview"
+  | "announcements"
+  | "meetings"
+  | "documents"
+  | "amenities"
+  | "contact"
+  | "faq";
+
 export interface DesignStyleTokens {
   /** Font stack for headings — a CSS value, usually a `next/font` variable. */
   fontDisplay: string;
@@ -26,6 +46,8 @@ export interface DesignStyleTokens {
   sectionPadding: string;
   /** Heading tracking. */
   headingTracking: string;
+  /** What follows the hero, in order. Every key appears exactly once. */
+  sectionOrder: SectionKey[];
 }
 
 export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
@@ -39,6 +61,12 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.015em",
+    // Waterfront condominium: the place sells itself, so the shared
+    // surroundings come before the paperwork.
+    sectionOrder: [
+      "overview", "amenities", "quickLinks", "announcements",
+      "meetings", "documents", "contact", "faq",
+    ],
   },
   "modern-resort": {
     fontDisplay: "var(--font-manrope), system-ui, sans-serif",
@@ -50,6 +78,12 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-28",
     headingTracking: "-0.02em",
+    // Resort master association: opens on what there is to do, because that
+    // is what its residents chose it for.
+    sectionOrder: [
+      "amenities", "overview", "announcements", "quickLinks",
+      "meetings", "documents", "contact", "faq",
+    ],
   },
   "friendly-community": {
     fontDisplay: "var(--font-nunito), system-ui, sans-serif",
@@ -62,6 +96,12 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
+    // Resident-resource forward: forms and documents are the reason people
+    // visit a small self-managed HOA's site at all.
+    sectionOrder: [
+      "quickLinks", "documents", "announcements", "meetings",
+      "overview", "amenities", "contact", "faq",
+    ],
   },
   "urban-condominium": {
     fontDisplay: "var(--font-inter), system-ui, -apple-system, sans-serif",
@@ -73,6 +113,12 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "caps",
     sectionPadding: "py-14 md:py-20",
     headingTracking: "-0.025em",
+    // Urban building: dense and operational. What is happening and what is
+    // filed, first; the tour second.
+    sectionOrder: [
+      "quickLinks", "meetings", "announcements", "documents",
+      "overview", "amenities", "contact", "faq",
+    ],
   },
   "active-adult": {
     fontDisplay: "var(--font-fraunces), Georgia, 'Times New Roman', serif",
@@ -85,6 +131,12 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
+    // Built for an audience that would rather telephone than hunt: the office
+    // is near the top, and everything below it is in plain order.
+    sectionOrder: [
+      "quickLinks", "contact", "meetings", "announcements",
+      "documents", "overview", "amenities", "faq",
+    ],
   },
 };
 
