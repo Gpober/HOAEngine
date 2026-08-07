@@ -7,6 +7,7 @@ import {
   CONCIERGE_MODEL,
   buildConciergePrompt,
 } from "@/lib/concierge/prompt";
+import { SITE_CONCIERGE_SLUG, buildSitePrompt } from "@/lib/concierge/site-prompt";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,13 +64,20 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Bad request." }, { status: 400 });
   }
 
+  /*
+   * Two guides share this route: the community concierge on enabled demos,
+   * and the site guide on the marketing page (a pseudo-slug, so it can never
+   * collide with a real association). Same limits, same key, different
+   * grounding.
+   */
   const slug = String(body.slug ?? "");
-  if (!CONCIERGE_SLUGS.has(slug)) {
+  const isSiteGuide = slug === SITE_CONCIERGE_SLUG;
+  if (!isSiteGuide && !CONCIERGE_SLUGS.has(slug)) {
     return NextResponse.json({ error: "Not available here." }, { status: 404 });
   }
 
-  const association = getAssociation(slug);
-  if (!association) {
+  const association = isSiteGuide ? null : getAssociation(slug);
+  if (!isSiteGuide && !association) {
     return NextResponse.json({ error: "Not available here." }, { status: 404 });
   }
 
@@ -125,7 +133,7 @@ export async function POST(request: NextRequest) {
     const response = await anthropic.messages.create({
       model: CONCIERGE_MODEL,
       max_tokens: CONCIERGE_MAX_TOKENS,
-      system: buildConciergePrompt(association),
+      system: association ? buildConciergePrompt(association) : buildSitePrompt(),
       messages,
     });
 

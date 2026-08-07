@@ -25,10 +25,16 @@ export function Concierge({
   slug,
   communityName,
   suggestions,
+  tagline = "Demo guide — answers from sample community information",
+  emptyHint = "Ask anything about the community — the amenities, the meetings, or how to reach the office.",
 }: {
   slug: string;
   communityName: string;
   suggestions: string[];
+  /** One line under the panel title. */
+  tagline?: string;
+  /** Shown in the empty transcript before the first question. */
+  emptyHint?: string;
 }) {
   const [open, setOpen] = useState(false);
   const [turns, setTurns] = useState<Turn[]>([]);
@@ -119,9 +125,7 @@ export function Concierge({
              * already carries the sample-design labelling; repeating it in each
              * reply would make the guide unusable to demonstrate.
              */}
-            <p className="text-xs text-ink-muted">
-              Demo guide — answers from sample community information
-            </p>
+            <p className="text-xs text-ink-muted">{tagline}</p>
           </div>
           <button
             type="button"
@@ -137,10 +141,7 @@ export function Concierge({
 
         <div ref={logRef} className="flex-1 space-y-3 overflow-y-auto px-5 py-4">
           {turns.length === 0 ? (
-            <p className="text-base leading-relaxed text-ink-soft">
-              Ask anything about the community — the amenities, the meetings, or
-              how to reach the office.
-            </p>
+            <p className="text-base leading-relaxed text-ink-soft">{emptyHint}</p>
           ) : null}
 
           {turns.map((turn, i) => (
