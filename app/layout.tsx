@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Inter, Manrope, Nunito } from "next/font/google";
-import { brand } from "@/lib/brand";
+import { site } from "@/lib/site";
 import "./globals.css";
 
 const inter = Inter({
@@ -29,18 +29,22 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  // Absolute URLs for Open Graph images. Set NEXT_PUBLIC_SITE_URL in Vercel to
-  // your deployment URL; localhost is only the local development fallback.
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  // Canonical origin, so Open Graph images and canonicals resolve absolutely.
+  metadataBase: new URL(site.url),
   title: {
-    default: `${brand.product} — Association Website Concepts by ${brand.name}`,
-    template: `%s | ${brand.product}`,
+    default: `${site.name} — ${site.tagline}`,
+    template: `%s | ${site.name}`,
   },
-  description:
-    "Unofficial website design concepts for homeowner and condominium associations, created for demonstration purposes by HOA Daddy.",
-  // These are unofficial concepts — they must never be indexed.
+  description: site.tagline,
+  /**
+   * `noindex` is the DEFAULT here on purpose, not a blanket ban.
+   *
+   * Most routes in this app are unofficial concepts naming real associations
+   * and must never be indexed. Making that the default means a page added later
+   * fails safe. Pages that genuinely should rank — currently just the marketing
+   * homepage — opt in by setting `robots: { index: true, follow: true }` in
+   * their own metadata, which replaces this.
+   */
   robots: {
     index: false,
     follow: false,
