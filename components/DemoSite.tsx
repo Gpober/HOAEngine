@@ -1,4 +1,7 @@
 import { ConceptBadge } from "@/components/ConceptBadge";
+import { Concierge } from "@/components/demo/Concierge";
+import { CONCIERGE_SLUGS } from "@/lib/concierge/enabled";
+import { suggestedQuestions } from "@/lib/concierge/context";
 import { Amenities } from "@/components/site/Amenities";
 import { Announcements } from "@/components/site/Announcements";
 import { CommunityOverview } from "@/components/site/CommunityOverview";
@@ -11,16 +14,34 @@ import { QuickLinks } from "@/components/site/QuickLinks";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { UpcomingMeetings } from "@/components/site/UpcomingMeetings";
-import { designStyleVars, designStyles } from "@/lib/design-styles";
+import { designStyleVars, designStyles, type SectionKey } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
 import type { Association } from "@/lib/types";
 
 /**
  * One association configuration in, one complete homepage out.
  *
- * The palette and the typography personality arrive as CSS custom properties on
- * this wrapper, so all five demos share exactly the same component tree.
+ * The palette and typography arrive as CSS custom properties on this wrapper.
+ * The *order* of the page comes from the design's `sectionOrder`, which is what
+ * stops five sites built from one component tree reading as one template in
+ * five colours — the first thing below the hero differs per design, and that is
+ * the thing a visitor actually registers.
  */
+/** Keyed so a design's `sectionOrder` is the only thing deciding what renders. */
+const SECTIONS: Record<
+  SectionKey,
+  ({ association }: { association: Association }) => React.ReactNode
+> = {
+  quickLinks: QuickLinks,
+  overview: CommunityOverview,
+  announcements: Announcements,
+  meetings: UpcomingMeetings,
+  documents: DocumentsAndForms,
+  amenities: Amenities,
+  contact: ManagementContact,
+  faq: FaqSection,
+};
+
 export function DemoSite({ association }: { association: Association }) {
   const design = designStyles[association.designStyle];
 
@@ -50,18 +71,32 @@ export function DemoSite({ association }: { association: Association }) {
 
       <main id="main-content">
         <HeroSection association={association} />
-        <QuickLinks association={association} />
-        <CommunityOverview association={association} />
-        <Announcements association={association} />
-        <UpcomingMeetings association={association} />
-        <DocumentsAndForms association={association} />
-        <Amenities association={association} />
-        <ManagementContact association={association} />
-        <FaqSection association={association} />
+        {design.sectionOrder.map((key) => {
+          const Section = SECTIONS[key];
+          return <Section key={key} association={association} />;
+        })}
       </main>
 
       <SiteFooter association={association} />
       <ConceptBadge />
+      {/*
+       * Rendered after the sales badge on purpose: both floating layers end up
+       * at z-50 when the guide is open, so DOM order is what puts the working
+       * panel in front of the badge rather than behind it.
+       *
+       * Only the slugs in `CONCIERGE_SLUGS` get one. The real-association
+       * concepts must not: those pages assert three facts each, so a guide there
+       * would refuse nearly everything and would be putting words in a named
+       * association's mouth.
+       */}
+      {CONCIERGE_SLUGS.has(association.slug) ? (
+        <Concierge
+          slug={association.slug}
+          communityName={association.shortName ?? association.name}
+          suggestions={suggestedQuestions(association)}
+        />
+      ) : null}
+
     </div>
   );
 }

@@ -116,8 +116,8 @@ export default async function DemoIndexPage() {
         <Section id="concepts" tone="surface" labelledBy="concepts-heading">
           <SectionHeading
             id="concepts-heading"
-            eyebrow={`${associations.length} design${associations.length === 1 ? "" : "s"}`}
-            title="Choose a concept to preview"
+            eyebrow={`${associations.length} concept${associations.length === 1 ? "" : "s"}`}
+            title="Concepts"
             description="Each demo is a full homepage — hero, quick links, announcements, meetings, documents, amenities, contact, and FAQ."
           />
           <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">

@@ -13,12 +13,11 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
 import { CommunityImage } from "@/components/ui/CommunityImage";
+import { ContactForm } from "./contact/ContactForm";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { associations } from "@/data/associations";
-import { designStyleNotes } from "@/lib/design-styles";
 import { organizationJsonLd, site } from "@/lib/site";
-import { themeLabels, themeStyle } from "@/lib/themes";
 
 /**
  * The public marketing page — the one part of this site that is meant to be
@@ -107,7 +106,7 @@ export default function HomePage() {
             <ul className="flex flex-wrap items-center gap-1">
               {[
                 ["What's included", "#included"],
-                ["Designs", "#designs"],
+                ["Demos", "#designs"],
                 ["Questions", "#faq"],
               ].map(([label, href]) => (
                 <li key={href}>
@@ -175,17 +174,17 @@ export default function HomePage() {
            *   text over white just looks smudged.
            */}
           <Container className="py-20 md:py-28">
-            <div className="[text-shadow:0_0_2px_rgb(var(--hoa-ink)),0_0_5px_rgb(var(--hoa-ink)),0_1px_4px_rgb(var(--hoa-ink)),0_2px_10px_rgb(var(--hoa-ink)),0_4px_22px_rgb(var(--hoa-ink)/0.95),0_8px_48px_rgb(var(--hoa-ink)/0.88)]">
-              <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
+            <div className="mx-auto max-w-4xl text-center [text-shadow:0_0_2px_rgb(var(--hoa-ink)),0_0_5px_rgb(var(--hoa-ink)),0_1px_4px_rgb(var(--hoa-ink)),0_2px_10px_rgb(var(--hoa-ink)),0_4px_22px_rgb(var(--hoa-ink)/0.95),0_8px_48px_rgb(var(--hoa-ink)/0.88)]">
+              <h1 className="font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
                 Websites for homeowner and condominium associations
               </h1>
-              <p className="mt-6 max-w-prose text-lg font-medium leading-relaxed text-accent-ink">
+              <p className="mx-auto mt-6 max-w-prose text-lg font-medium leading-relaxed text-accent-ink">
                 Most associations have no public website, or one that has not
                 been touched in a decade. We build a clear, mobile-friendly page
                 that shows residents, buyers, agents, and lenders that the
                 community exists and is well run.
               </p>
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <ButtonLink
                   href="#contact"
                   size="lg"
@@ -196,10 +195,10 @@ export default function HomePage() {
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </ButtonLink>
                 <ButtonLink href="#designs" size="lg" variant="inverse-outline">
-                  See the designs
+                  See the demos
                 </ButtonLink>
               </div>
-              <p className="mt-6 max-w-prose text-base font-medium text-accent-ink">
+              <p className="mx-auto mt-6 max-w-prose text-base font-medium text-accent-ink">
                 We build a concept for your community first, at no cost and with
                 no obligation.
               </p>
@@ -256,71 +255,51 @@ export default function HomePage() {
         <Section id="designs" tone="surface" labelledBy="designs-heading">
           <SectionHeading
             id="designs-heading"
-            eyebrow="Five starting points"
-            title="Pick a look that suits the community"
-            description="Every design uses the same tested foundation — only the colour, type, and layout change. These examples use fictional communities."
+            eyebrow="Demos"
+            title="Every one of these is a different site"
+            description="Not one layout in five colours. Each is ordered around what its community actually leads with — the amenities, the paperwork, or the office. The communities shown are illustrative; we build yours before you decide."
           />
           <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {designExamples.map((example) => {
-              /*
-               * The theme wrapper does two jobs: it tints the fallback scene if
-               * a design ever loses its photograph, and it drives the palette
-               * swatches below, so the swatches can never disagree with the
-               * demo they describe.
-               */
-              const palette = themeStyle(example.accentTheme);
-
-              return (
-                <li key={example.slug}>
-                  <Card interactive className="group flex h-full flex-col overflow-hidden">
+            {designExamples.map((example) => (
+              <li key={example.slug}>
+                <Card interactive className="group flex h-full flex-col overflow-hidden">
+                  <CommunityImage
+                    image={example.heroImage}
+                    rounded={false}
+                    focus="center"
+                    sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
+                    className="aspect-[16/10] w-full border-b border-line"
+                  />
+                  <div className="flex flex-1 flex-col p-6">
                     {/*
-                     * The photograph leads. A board member decides whether a
-                     * design suits their community by looking at it; the
-                     * swatches and layout note underneath carry the detail.
+                     * The community leads, not the design. The palette swatches
+                     * and layout notes that used to sit here were accurate and
+                     * exactly wrong: they described a product being chosen from,
+                     * when the thing being sold is a site built around one
+                     * association. The design identity still exists in the data
+                     * and is still what drives the render — it just is not the
+                     * customer's problem.
                      */}
-                    <div style={palette} className="border-b border-line">
-                      <CommunityImage
-                        image={example.heroImage}
-                        rounded={false}
-                        focus="center"
-                        sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
-                        className="aspect-[16/10] w-full"
-                      />
-                    </div>
-                    <div className="flex flex-1 flex-col p-6">
-                      <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink-muted">
-                        {themeLabels[example.accentTheme]}
+                    <h3 className="font-display text-xl font-semibold text-ink">
+                      <Link
+                        href={`/demo/${example.slug}`}
+                        className="no-underline after:absolute after:inset-0 after:content-['']"
+                      >
+                        {example.shortName ?? example.name}
+                      </Link>
+                    </h3>
+                    {example.city || example.state ? (
+                      <p className="mt-1 text-sm text-ink-muted">
+                        {[example.city, example.state].filter(Boolean).join(", ")}
                       </p>
-                      <h3 className="mt-2 font-display text-xl font-semibold text-ink">
-                        <Link
-                          href={`/demo/${example.slug}`}
-                          className="no-underline after:absolute after:inset-0 after:content-['']"
-                        >
-                          {example.designName}
-                        </Link>
-                      </h3>
-                      <p className="mt-2 text-base leading-relaxed text-ink-soft">
-                        {example.designTagline}
-                      </p>
-                      <div className="mt-auto flex items-start gap-3 pt-5">
-                        <span
-                          aria-hidden="true"
-                          style={palette}
-                          className="mt-0.5 flex shrink-0 gap-1.5"
-                        >
-                          <span className="h-5 w-5 rounded-pill bg-accent ring-1 ring-inset ring-ink/10" />
-                          <span className="h-5 w-5 rounded-pill bg-secondary ring-1 ring-inset ring-ink/10" />
-                          <span className="h-5 w-5 rounded-pill bg-accent-soft ring-1 ring-inset ring-ink/10" />
-                        </span>
-                        <p className="text-sm leading-snug text-ink-muted">
-                          {designStyleNotes[example.designStyle]}
-                        </p>
-                      </div>
-                    </div>
-                  </Card>
-                </li>
-              );
-            })}
+                    ) : null}
+                    <p className="mt-3 text-base leading-relaxed text-ink-soft">
+                      {example.shortDescription}
+                    </p>
+                  </div>
+                </Card>
+              </li>
+            ))}
           </ul>
         </Section>
 
@@ -357,41 +336,44 @@ export default function HomePage() {
 
         {/* Contact -------------------------------------------------------- */}
         <Section id="contact" tone="surface" labelledBy="contact-heading">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2
-              id="contact-heading"
-              className="font-display text-3xl font-semibold text-ink md:text-4xl"
-            >
-              Ask for a concept for your community
-            </h2>
-            <p className="mt-4 text-lg leading-relaxed text-ink-soft">
-              Tell us the association name and where it is. We will build a
-              concept and send you a link — free, and with nothing to sign.
-            </p>
-            {site.contactEmail || site.phone ? (
-              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                {site.contactEmail ? (
-                  <ButtonLink href={`mailto:${site.contactEmail}`} size="lg">
-                    Email us
-                  </ButtonLink>
-                ) : null}
-                {site.phone ? (
-                  <ButtonLink
-                    href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}
-                    size="lg"
-                    variant="outline"
-                  >
-                    {site.phone}
-                  </ButtonLink>
-                ) : null}
-              </div>
-            ) : (
-              <p className="mt-8 rounded-card border border-line bg-card p-5 text-base text-ink-soft shadow-soft">
-                Contact details are being set up. Add an email address or phone
-                number in <code className="font-mono text-sm">lib/site.ts</code>{" "}
-                and it will appear here.
+          <div className="mx-auto max-w-3xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2
+                id="contact-heading"
+                className="font-display text-3xl font-semibold text-ink md:text-4xl"
+              >
+                Ask for a concept for your community
+              </h2>
+              <p className="mt-4 text-lg leading-relaxed text-ink-soft">
+                Tell us the association name and where it is. We will build a
+                concept and send you a link — free, and with nothing to sign.
               </p>
-            )}
+            </div>
+
+            <div className="mt-8">
+              <ContactForm />
+            </div>
+
+            {/*
+             * The form is the route that always works, so it leads. A published
+             * address or number is an addition to it, never a replacement — and
+             * where neither is set nothing is shown, rather than an apology for
+             * a channel that does not exist.
+             */}
+            {site.contactEmail || site.phone ? (
+              <p className="mt-6 text-center text-base text-ink-soft">
+                Prefer not to use a form?{" "}
+                {site.contactEmail ? (
+                  <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+                ) : null}
+                {site.contactEmail && site.phone ? " or " : null}
+                {site.phone ? (
+                  <a href={`tel:${site.phone.replace(/[^\d+]/g, "")}`}>
+                    {site.phone}
+                  </a>
+                ) : null}
+              </p>
+            ) : null}
           </div>
         </Section>
       </main>

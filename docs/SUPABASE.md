@@ -144,6 +144,89 @@ stays labelled, and the disclaimers and `noindex` stay in place. Those labels
 are enforced in the application layer, so they cannot be switched off from the
 database — which is deliberate.
 
+## Enquiries: `public.hoa_leads`
+
+The contact form on the marketing page writes here. The security shape is
+deliberately asymmetric — **the public may write and may never read**:
+
+| Policy | Effect |
+| --- | --- |
+| `Anyone may submit a lead` | INSERT for everyone, but only where `source = 'website'`, `status = 'new'`, and `notes is null` |
+| `Admins read / update / delete hoa_leads` | Everything else requires `public.is_admin()` |
+
+There is no SELECT policy for anonymous callers at all, so a read is refused
+rather than filtered. A visitor who fills in the form cannot turn around and
+enumerate everyone else who did. The insert policy also pins `status` and
+`notes`, so a crafted request cannot file itself as already won or inject
+internal notes.
+
+**Never chain `.select()` onto an insert here.** Returning the inserted row
+needs SELECT permission on it, which the public role does not have, so
+`INSERT ... RETURNING` fails while the identical insert without it succeeds.
+`supabase-js`'s bare `.insert()` sends `Prefer: return=minimal` and is correct.
+
+Enquiries are read at `/admin/leads`, behind a Supabase session. That gate is a
+redirect for people, not the security boundary — RLS is. A request that somehow
+reached the page without an admin session would still read nothing.
+
+Authentication adds no new environment variables: `@supabase/ssr` uses the same
+`NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as the
+public read path, and there is no service-role key anywhere in the app.
+
+## Who may edit an association
+
+Three levels, named the way the business talks about them:
+
+| Level | Scope | May do |
+| --- | --- | --- |
+| `admin` | Global, via `public.admins` | Everything, on every association |
+| `hoa_admin` | **One** association | Edit its content, and add or remove people on it |
+| `member` | **One** association | Edit its content |
+
+Membership lives in `public.hoa_association_members`. The distinction that
+matters is not `admin` vs `hoa_admin` — both edit the same content — but
+*scope*: ours is global, theirs is one row.
+
+### Rows vs columns
+
+RLS decides which **rows** you may touch and can never restrict **columns**.
+Column-level `GRANT`s could, but our admins and their boards share the same
+`authenticated` Postgres role, so revoking `UPDATE` on `slug` would cripple
+admins too. A `before update` trigger is the only mechanism that can tell the
+two apart at write time, so `hoa_associations_guard_protected_columns()` does it.
+
+Protected from a board — everything that is ours rather than theirs:
+
+`slug` · `published` · `accent_theme` · `design_style` · `design_name` ·
+`design_tagline` · `condo_project_id` · `id` · `created_at`
+
+A board correcting its own phone number must not be able to silently unpublish,
+switch to a design it is not paying for, or move its own URL and break every
+link to it.
+
+### Verified, as a real non-admin user
+
+Simulated by setting the `authenticated` role plus the JWT claims Supabase
+reads, with a single `member` row on one association:
+
+| Attempt | Result |
+| --- | --- |
+| Edit own association's phone | 1 row changed |
+| Replace own meetings | 1 row changed |
+| Edit a **different** association | 0 rows — RLS filtered it |
+| Change own `slug` | rejected by the trigger |
+| Unpublish own site | rejected by the trigger |
+| Switch own design | rejected by the trigger |
+| Grant self access to another association | rejected by RLS |
+| Promote self from `member` to `hoa_admin` | 0 rows — RLS filtered it |
+
+Two things about that test are worth repeating, because the first version of it
+lied in both directions. An `UPDATE` that matches **zero rows raises no error**,
+so "no exception" is not evidence of success — count rows. And a probe whose
+setup runs in a transaction that later fails has no setup at all; the first run
+reported a member editing nothing because the membership insert had been rolled
+back.
+
 ## What lives where
 
 | | Source of truth | Why |
