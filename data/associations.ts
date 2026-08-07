@@ -1,4 +1,5 @@
 import { sampleLabels } from "@/lib/brand";
+import { prospectConcepts } from "./prospect-concepts";
 import type { Association, AssociationDocument } from "@/lib/types";
 
 /* -------------------------------------------------------------------------- *
@@ -541,12 +542,19 @@ const sunfieldVillage: Association = {
 
 /* -------------------------------------------------------------------------- */
 
+/**
+ * The five fictional design concepts, followed by the real, named associations
+ * in `prospect-concepts.ts`. Both sets carry the same disclaimers; the
+ * difference is that the prospect records name real organisations, so they
+ * assert only the three facts we can source (name, county, state).
+ */
 export const associations: Association[] = [
   harborlightPoint,
   velaRidge,
   cedarHollow,
   marquetteNinth,
   sunfieldVillage,
+  ...prospectConcepts,
 ];
 
 export function getAssociation(slug: string): Association | undefined {
