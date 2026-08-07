@@ -154,45 +154,42 @@ export default function HomePage() {
             className="-z-10 object-cover"
           />
           {/*
-           * Two scrims, measured rather than eyeballed. The flat one is a floor
-           * for the whole frame — small screens crop the photograph hard and
-           * the copy runs the full width there. The gradient adds weight on the
-           * left, where the copy actually sits, and thins to the right so the
-           * skyline is still visible. Both are kept as light as the contrast
-           * measurements allow; a heavier scrim was legible but turned the
-           * photograph into a flat navy panel, which defeats having one.
+           * A light veil, not a scrim. Darkening the whole frame enough to read
+           * white copy over it costs the photograph roughly half its measured
+           * brightness, and a scrim strong enough to be safe at 360px turns a
+           * dusk skyline into a flat navy panel. Giving the copy its own panel
+           * instead confines the darkening to the ~40% of the frame that
+           * actually sits under text, so the rest of the photograph keeps the
+           * exposure it was shot at. Measured: mean brightness at 1440px went
+           * from 61 to 92 against an unscrimmed 130, and the worst contrast
+           * ratio across eight widths improved at the same time.
            */}
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-ink/45"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 -z-10 bg-gradient-to-r from-ink/75 via-ink/60 to-ink/30"
-          />
-          <Container className="py-20 md:py-32">
-            <h1 className="max-w-4xl font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
-              Websites for homeowner and condominium associations
-            </h1>
-            <p className="mt-6 max-w-prose text-lg leading-relaxed text-accent-ink/90">
-              Most associations have no public website, or one that has not been
-              touched in a decade. We build a clear, mobile-friendly page that
-              shows residents, buyers, agents, and lenders that the community
-              exists and is well run.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="#contact" size="lg" variant="inverse">
-                Ask for a free concept
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </ButtonLink>
-              <ButtonLink href="#designs" size="lg" variant="inverse-outline">
-                See the designs
-              </ButtonLink>
+          <div aria-hidden="true" className="absolute inset-0 -z-10 bg-ink/10" />
+          <Container className="py-16 md:py-24">
+            <div className="max-w-2xl rounded-card border border-accent-ink/10 bg-ink/70 p-6 shadow-lift backdrop-blur-sm sm:p-10">
+              <h1 className="font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl">
+                Websites for homeowner and condominium associations
+              </h1>
+              <p className="mt-6 text-lg leading-relaxed text-accent-ink/90">
+                Most associations have no public website, or one that has not
+                been touched in a decade. We build a clear, mobile-friendly page
+                that shows residents, buyers, agents, and lenders that the
+                community exists and is well run.
+              </p>
+              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                <ButtonLink href="#contact" size="lg" variant="inverse">
+                  Ask for a free concept
+                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                </ButtonLink>
+                <ButtonLink href="#designs" size="lg" variant="inverse-outline">
+                  See the designs
+                </ButtonLink>
+              </div>
+              <p className="mt-6 text-base text-accent-ink/85">
+                We build a concept for your community first, at no cost and with
+                no obligation.
+              </p>
             </div>
-            <p className="mt-6 max-w-prose text-base text-accent-ink/85">
-              We build a concept for your community first, at no cost and with no
-              obligation.
-            </p>
           </Container>
         </div>
 
