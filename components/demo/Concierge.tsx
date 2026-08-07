@@ -83,21 +83,21 @@ export function Concierge({
   if (!open) {
     return (
       /*
-       * Lifted clear of the sales badge on small screens. The badge's container
-       * is `inset-x-0` and full width, so even though it is
-       * `pointer-events-none` its right-aligned button still lands on top of a
-       * left-aligned launcher once the two are wider than the viewport — which
-       * at 360px they are. Sitting them on separate rows is the only fix that
-       * does not depend on either label's length.
+       * On phones the launcher is a circular icon button: label-width pills on
+       * both sides of a 390px screen collide with the sales badge and bury the
+       * hero's scroll cue, and an icon bubble is what phone users expect a chat
+       * entry to be anyway. The full "Ask about …" pill returns from `sm:` up,
+       * where there is room for both labels on one row.
        */
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-start p-4 pb-20 print:hidden sm:p-6 sm:pb-6">
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 flex justify-start p-4 print:hidden sm:p-6">
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="pointer-events-auto inline-flex min-h-[3rem] items-center gap-2 rounded-pill bg-accent px-5 py-3 text-base font-semibold text-accent-ink shadow-lift transition-colors hover:bg-accent-strong"
+          aria-label={`Ask about ${communityName}`}
+          className="pointer-events-auto inline-flex min-h-[3.25rem] min-w-[3.25rem] items-center justify-center gap-2 rounded-pill bg-accent p-3.5 text-base font-semibold text-accent-ink shadow-lift transition-colors hover:bg-accent-strong sm:min-h-[3rem] sm:min-w-0 sm:px-5 sm:py-3"
         >
-          <MessageCircle className="h-5 w-5" aria-hidden="true" />
-          Ask about {communityName}
+          <MessageCircle className="h-6 w-6 sm:h-5 sm:w-5" aria-hidden="true" />
+          <span className="hidden sm:inline">Ask about {communityName}</span>
         </button>
       </div>
     );

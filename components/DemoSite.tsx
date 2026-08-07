@@ -68,10 +68,17 @@ export function DemoSite({ association }: { association: Association }) {
        * so the notice is on screen at every moment of the animation.
        */}
       <IntroReveal association={association}>
-        <DisclaimerBar />
-
         <main id="main-content">
-          <CinemaHero association={association} />
+          {/*
+           * Disclaimer and hero share one viewport-height column: the hero
+           * takes whatever the disclaimer leaves, so its bottom edge — and the
+           * scroll cue pinned to it — lands exactly on the fold at every
+           * screen size.
+           */}
+          <div className="flex min-h-[100svh] flex-col">
+            <DisclaimerBar />
+            <CinemaHero association={association} />
+          </div>
           {/* Anchor for the hero's scroll cue: whatever block a design puts
               first, this is where the chevron lands. */}
           <div id="explore" aria-hidden="true" />
