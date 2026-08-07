@@ -195,6 +195,56 @@ check that a change made to a row in Supabase appears on the corresponding
 the likely causes are missing environment variables (the app falls back
 silently by design) or `published` still being `false`.
 
+---
+
+## 6. Prospect concepts (real, named associations)
+
+`data/prospect-concepts.ts` holds 20 concepts that name **real** condominium
+associations, so the guardrails here are load-bearing rather than illustrative.
+
+**Method.** A prospect record was mapped from its database row and rendered
+through the full component tree, then asserted against.
+
+**Result: pass.**
+
+| Check | Result |
+| --- | --- |
+| Sample-design label, unofficial notice, footer disclaimer | Present |
+| Contact fields absent → standard fallback shown | Pass |
+| Amenities absent → section omitted entirely | Pass |
+| No residence count or founding year emitted | Pass |
+| No city emitted — state only | Pass |
+| Announcements and meetings still carry sample labels | Pass |
+| Resident login announced as demo-only | Pass |
+
+**What these records assert.** Exactly three facts, all sourced from the condo
+dataset: association name, county, state. Everything else is absent by
+construction rather than blanked at render time.
+
+**Why `city` is absent.** The source data holds counties. A county is not a
+city, so deriving "York, ME" from York County would place a fabricated fact on a
+real organisation's page. The header shows the state alone.
+
+**Standing constraint.** The financing-friendly badge is only truthful for a
+project with a `Full` review and an unexpired questionnaire — the
+`financing_badge_eligible` column in `hoa_outreach_targets` computes precisely
+that. It must never be shown for a lapsed project.
+
+---
+
+## 7. Deployment notes
+
+- The bundled records mean the site renders all 25 concepts with **no
+  environment variables**. Supabase credentials are additive: matching database
+  rows override bundled ones on `slug`.
+- Vercel builds production on a **push to the production branch**. Connecting a
+  project does not retroactively deploy the existing head, so a freshly
+  connected project shows preview deployments only until the next push to
+  `main` (or a preview is promoted to production).
+- Check deployment protection before sending any link to a prospect. Vercel
+  Authentication set to `all_except_custom_domains` puts every `*.vercel.app`
+  URL behind a login wall, which silently breaks outreach.
+
 ## Re-running this review
 
 ```bash
@@ -225,3 +275,4 @@ Then, against the running server:
 | Disclaimers and `noindex` | Pass on all six routes |
 | Visual consistency | Pass |
 | Supabase schema, RLS, mapping | Pass — live fetch unverified in this sandbox (see section 5) |
+| Prospect concepts (real associations) | Pass — see section 6 |
