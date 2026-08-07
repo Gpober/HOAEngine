@@ -38,7 +38,16 @@ export function ByTheNumbers({ association }: { association: Association }) {
   if (stats.length < 2) return null;
 
   return (
-    <section className="on-accent bg-accent py-14 text-accent-ink md:py-20">
+    /*
+     * Extra bottom padding clears the floating concept badge.
+     *
+     * The badge is fixed to the bottom-right of the viewport, so whatever
+     * section happens to be scrolled to the bottom sits under it. On this band
+     * that landed squarely on the fourth stat's label — the state showed but
+     * the city beneath it was covered. The figures are the point of the band,
+     * so it gives way rather than the badge.
+     */
+    <section className="on-accent bg-accent pb-28 pt-14 text-accent-ink md:pb-32 md:pt-20">
       <Container>
         <dl
           className="grid gap-10 text-center sm:gap-8"
