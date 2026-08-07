@@ -2,6 +2,7 @@
 
 import { MessageCircle, Send, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { MicButton } from "@/components/ui/MicButton";
 import { cn } from "@/lib/cn";
 
 interface Turn {
@@ -205,6 +206,21 @@ export function Concierge({
             maxLength={500}
             placeholder="Ask a question…"
             className="min-w-0 flex-1 rounded-pill border border-line bg-surface px-4 py-2.5 text-base text-ink outline-none focus:border-accent"
+          />
+          {/*
+           * Dictation appends rather than replaces, so someone can type part of
+           * a question and speak the rest. It does not auto-send: hearing your
+           * own words fired off before you have checked them is unnerving, and
+           * speech recognition mishears proper nouns constantly — which is most
+           * of what gets asked here.
+           */}
+          <MicButton
+            label="Ask by voice"
+            onText={(text) =>
+              setDraft((current) =>
+                (current ? `${current} ${text}` : text).slice(0, 500),
+              )
+            }
           />
           <button
             type="submit"

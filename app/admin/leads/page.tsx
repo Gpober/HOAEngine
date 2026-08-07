@@ -1,11 +1,10 @@
 import { Mail, Phone } from "lucide-react";
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
 import { site } from "@/lib/site";
 import { createServerSupabase } from "@/lib/supabase-server";
-import { signOut } from "@/app/login/actions";
+import { AdminHeader } from "../AdminHeader";
 
 export const metadata: Metadata = {
   title: `Enquiries — ${site.name}`,
@@ -64,25 +63,14 @@ export default async function LeadsPage() {
 
   return (
     <div className="min-h-screen bg-surface">
-      <header className="border-b border-line bg-card">
-        <Container className="flex flex-wrap items-center justify-between gap-4 py-5">
-          <div>
-            <h1 className="font-display text-xl font-semibold text-ink">
-              Enquiries
-            </h1>
-            <p className="text-sm text-ink-muted">
-              {error
-                ? "Could not load"
-                : `${leads.length} ${leads.length === 1 ? "enquiry" : "enquiries"}`}
-            </p>
-          </div>
-          <form action={signOut}>
-            <Button type="submit" variant="outline">
-              Sign out
-            </Button>
-          </form>
-        </Container>
-      </header>
+      <AdminHeader
+        title="Enquiries"
+        subtitle={
+          error
+            ? "Could not load"
+            : `${leads.length} ${leads.length === 1 ? "enquiry" : "enquiries"}`
+        }
+      />
 
       <main>
         <Container className="py-10">
