@@ -9,13 +9,15 @@ import {
 } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DemoThumbnail } from "@/components/portfolio/DemoThumbnail";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
+import { CommunityImage } from "@/components/ui/CommunityImage";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { associations } from "@/data/associations";
+import { designStyleNotes } from "@/lib/design-styles";
 import { organizationJsonLd, site } from "@/lib/site";
+import { themeLabels, themeStyle } from "@/lib/themes";
 
 /**
  * The public marketing page — the one part of this site that is meant to be
@@ -204,28 +206,66 @@ export default function HomePage() {
             description="Every design uses the same tested foundation — only the colour, type, and layout change. These examples use fictional communities."
           />
           <ul className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {designExamples.map((example) => (
-              <li key={example.slug}>
-                <Card interactive className="group h-full overflow-hidden">
-                  <div className="border-b border-line">
-                    <DemoThumbnail association={example} />
-                  </div>
-                  <div className="p-6">
-                    <h3 className="font-display text-xl font-semibold text-ink">
-                      <Link
-                        href={`/demo/${example.slug}`}
-                        className="no-underline after:absolute after:inset-0 after:content-['']"
-                      >
-                        {example.designName}
-                      </Link>
-                    </h3>
-                    <p className="mt-2 text-base leading-relaxed text-ink-soft">
-                      {example.designTagline}
-                    </p>
-                  </div>
-                </Card>
-              </li>
-            ))}
+            {designExamples.map((example) => {
+              /*
+               * The theme wrapper does two jobs: it tints the fallback scene if
+               * a design ever loses its photograph, and it drives the palette
+               * swatches below, so the swatches can never disagree with the
+               * demo they describe.
+               */
+              const palette = themeStyle(example.accentTheme);
+
+              return (
+                <li key={example.slug}>
+                  <Card interactive className="group flex h-full flex-col overflow-hidden">
+                    {/*
+                     * The photograph leads. A board member decides whether a
+                     * design suits their community by looking at it; the
+                     * swatches and layout note underneath carry the detail.
+                     */}
+                    <div style={palette} className="border-b border-line">
+                      <CommunityImage
+                        image={example.heroImage}
+                        rounded={false}
+                        focus="center"
+                        sizes="(min-width: 1280px) 30vw, (min-width: 768px) 46vw, 92vw"
+                        className="aspect-[16/10] w-full"
+                      />
+                    </div>
+                    <div className="flex flex-1 flex-col p-6">
+                      <p className="text-xs font-semibold uppercase tracking-eyebrow text-ink-muted">
+                        {themeLabels[example.accentTheme]}
+                      </p>
+                      <h3 className="mt-2 font-display text-xl font-semibold text-ink">
+                        <Link
+                          href={`/demo/${example.slug}`}
+                          className="no-underline after:absolute after:inset-0 after:content-['']"
+                        >
+                          {example.designName}
+                        </Link>
+                      </h3>
+                      <p className="mt-2 text-base leading-relaxed text-ink-soft">
+                        {example.designTagline}
+                      </p>
+                      <div className="mt-auto flex items-start gap-3 pt-5">
+                        <span
+                          aria-hidden="true"
+                          style={palette}
+                          className="mt-0.5 flex shrink-0 gap-1.5"
+                        >
+                          <span className="h-5 w-5 rounded-pill bg-accent ring-1 ring-inset ring-ink/10" />
+                          <span className="h-5 w-5 rounded-pill bg-secondary ring-1 ring-inset ring-ink/10" />
+                          <span className="h-5 w-5 rounded-pill bg-accent-soft ring-1 ring-inset ring-ink/10" />
+                        </span>
+                        <p className="text-sm leading-snug text-ink-muted">
+                          {designStyleNotes[example.designStyle]}
+                        </p>
+                      </div>
+                    </div>
+                  </Card>
+                </li>
+              );
+            })}
           </ul>
         </Section>
 

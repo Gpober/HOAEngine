@@ -1,9 +1,31 @@
+import Image from "next/image";
 import { PlaceholderScene } from "@/components/ui/CommunityImage";
 import { cn } from "@/lib/cn";
 import { monogramFor } from "@/lib/content";
 import { designStyleVars, designStyles } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
-import type { Association } from "@/lib/types";
+import type { Association, CommunityImage } from "@/lib/types";
+
+/**
+ * The hero slot inside the miniature. Real photography when the demo has it,
+ * the generated scene otherwise — so the preview matches the page it previews.
+ *
+ * Every call site is inside a `relative` box, which `fill` requires.
+ */
+function ThumbHero({ image }: { image: CommunityImage }) {
+  if (image.src) {
+    return (
+      <Image
+        src={image.src}
+        alt=""
+        fill
+        sizes="(min-width: 1280px) 15vw, (min-width: 768px) 25vw, 45vw"
+        className="object-cover"
+      />
+    );
+  }
+  return <PlaceholderScene scene={image.placeholder ?? "village"} alt="" />;
+}
 
 /**
  * A miniature of the demo homepage, rendered with that demo's own palette and
@@ -51,10 +73,7 @@ export function DemoThumbnail({ association }: { association: Association }) {
       >
         {overlay ? (
           <>
-            <PlaceholderScene
-              scene={association.heroImage.placeholder ?? "village"}
-              alt=""
-            />
+            <ThumbHero image={association.heroImage} />
             <div className="absolute inset-0 bg-gradient-to-r from-accent/90 to-accent/40" />
             <div className="absolute inset-0 flex flex-col justify-center gap-1.5 p-4">
               <span className="h-2 w-1/2 rounded-pill bg-accent-ink/90" />
@@ -68,10 +87,7 @@ export function DemoThumbnail({ association }: { association: Association }) {
             <span className="h-1.5 w-1/2 rounded-pill bg-ink/25" />
             <span className="mt-0.5 h-3 w-14 rounded-pill bg-accent" />
             <div className="relative mt-1 w-full flex-1 overflow-hidden rounded-t-card border border-line">
-              <PlaceholderScene
-                scene={association.heroImage.placeholder ?? "village"}
-                alt=""
-              />
+              <ThumbHero image={association.heroImage} />
             </div>
           </div>
         ) : (
@@ -93,10 +109,7 @@ export function DemoThumbnail({ association }: { association: Association }) {
                 design.heroFlip && "order-1",
               )}
             >
-              <PlaceholderScene
-                scene={association.heroImage.placeholder ?? "village"}
-                alt=""
-              />
+              <ThumbHero image={association.heroImage} />
             </div>
           </>
         )}
