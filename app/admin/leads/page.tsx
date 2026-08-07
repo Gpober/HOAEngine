@@ -1,4 +1,4 @@
-import { Mail, Phone } from "lucide-react";
+import { CalendarClock, Mail, Phone } from "lucide-react";
 import type { Metadata } from "next";
 import { Card } from "@/components/ui/Card";
 import { Container } from "@/components/ui/Container";
@@ -25,6 +25,29 @@ interface LeadRow {
   role: string | null;
   message: string | null;
   status: string;
+  preferred_date: string | null;
+  preferred_time: string | null;
+}
+
+const TIME_LABELS: Record<string, string> = {
+  morning: "morning",
+  afternoon: "afternoon",
+  evening: "evening",
+};
+
+function callRequestLabel(lead: LeadRow): string | null {
+  if (!lead.preferred_date && !lead.preferred_time) return null;
+  const day = lead.preferred_date
+    ? new Date(`${lead.preferred_date}T12:00:00Z`).toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+      })
+    : "Any day";
+  const window = lead.preferred_time
+    ? TIME_LABELS[lead.preferred_time] ?? lead.preferred_time
+    : "any time";
+  return `Call requested: ${day}, ${window}`;
 }
 
 const ROLE_LABELS: Record<string, string> = {
@@ -53,7 +76,7 @@ export default async function LeadsPage() {
     ? await supabase
         .from("hoa_leads")
         .select(
-          "id, created_at, name, email, phone, association_name, location, role, message, status",
+          "id, created_at, name, email, phone, association_name, location, role, message, status, preferred_date, preferred_time",
         )
         .order("created_at", { ascending: false })
         .limit(200)
@@ -115,6 +138,13 @@ export default async function LeadsPage() {
                         ]
                           .filter(Boolean)
                           .join(" · ")}
+                      </p>
+                    ) : null}
+
+                    {callRequestLabel(lead) ? (
+                      <p className="mt-3 inline-flex items-center gap-2 rounded-pill bg-accent-soft px-3 py-1.5 text-sm font-semibold text-accent">
+                        <CalendarClock className="h-4 w-4" aria-hidden="true" />
+                        {callRequestLabel(lead)}
                       </p>
                     ) : null}
 

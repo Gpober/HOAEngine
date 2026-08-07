@@ -53,6 +53,9 @@ function siteRecord(): string {
       ? `Contact: ${contact.join(", ")}, or the contact form on this page.`
       : "Contact: the contact form on this page (scroll to the bottom, or the Get Started button). There is no public phone number or email listed.",
   );
+  lines.push(
+    "Scheduling: the contact form has an optional 'Schedule a call' section — pick a day and a time of day (morning, afternoon, or evening) and the team confirms the exact time by email. It is a request, not an instant booking.",
+  );
   return lines.join("\n");
 }
 
