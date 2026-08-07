@@ -43,7 +43,7 @@ export function SectionHeading({
   eyebrowStyle = "caps",
   title,
   description,
-  align = "start",
+  align = "center",
   action,
 }: {
   id?: string;
@@ -51,6 +51,12 @@ export function SectionHeading({
   eyebrowStyle?: "caps" | "serif";
   title: string;
   description?: string;
+  /**
+   * Centred everywhere by default. Every section on both the marketing page
+   * and the demos reads as one centred column, which is why this is a default
+   * rather than a prop each caller remembers to pass. `start` remains for a
+   * heading that has to sit beside something.
+   */
   align?: "start" | "center";
   action?: ReactNode;
 }) {
@@ -60,7 +66,9 @@ export function SectionHeading({
     <div
       className={cn(
         "mb-10 flex flex-col gap-5 md:mb-14",
-        centered ? "items-center text-center" : "md:flex-row md:items-end md:justify-between",
+        centered
+          ? "items-center text-center"
+          : "md:flex-row md:items-end md:justify-between",
       )}
     >
       {/* `min-w-0` lets the copy column give way to the action chip on tablet

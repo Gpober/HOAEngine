@@ -70,8 +70,8 @@ export function CommunityOverview({ association }: { association: Association })
         description={association.shortDescription}
       />
 
-      <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
-        <div className="lg:col-span-7">
+      <div>
+        <div>
           {facts.length ? (
             <dl className="grid gap-4 sm:grid-cols-2">
               {facts.map((fact) => {
@@ -101,35 +101,48 @@ export function CommunityOverview({ association }: { association: Association })
             </Card>
           )}
 
-          <p className="mt-6 max-w-prose text-sm leading-relaxed text-ink-muted">
+          <p className="mx-auto mt-6 max-w-prose text-center text-sm leading-relaxed text-ink-muted">
             Only details supplied for this concept are shown. Anything the association
             has not provided is left blank rather than filled in.
           </p>
         </div>
 
-        {association.galleryImages.length ? (
-          <div className="lg:col-span-5">
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {association.galleryImages.slice(0, 3).map((image) => (
-                <li key={image.alt}>
-                  <figure>
-                    <CommunityImage
-                      image={image}
-                      sizes="(min-width: 1024px) 34vw, (min-width: 640px) 44vw, 92vw"
-                      className="aspect-[16/10] w-full"
-                    />
-                    {image.caption ? (
-                      <figcaption className="mt-2 text-sm text-ink-muted">
-                        {image.caption}
-                      </figcaption>
-                    ) : null}
-                  </figure>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
       </div>
+
+      {/*
+       * The photographs get the full width and equal weight.
+       *
+       * They used to sit in a five-column sidebar beside the facts, which laid
+       * three of them out one under another — 457x313 each, running a thousand
+       * pixels down the page while the text column ended level with the first
+       * one. Good photography rendered as a list of thumbnails.
+       *
+       * Equal columns, one shared aspect ratio, one gap: the three read as a
+       * set rather than a stack. The breakpoint goes straight from one column
+       * to three and never passes through two, because three items in two
+       * columns leaves an orphan on the second row — which is the asymmetry
+       * that makes a gallery look accidental.
+       */}
+      {association.galleryImages.length ? (
+        <ul className="mt-10 grid gap-5 md:grid-cols-3 md:gap-6">
+          {association.galleryImages.slice(0, 3).map((image) => (
+            <li key={image.alt}>
+              <figure className="flex h-full flex-col">
+                <CommunityImage
+                  image={image}
+                  sizes="(min-width: 768px) 31vw, 92vw"
+                  className="aspect-[4/3] w-full"
+                />
+                {image.caption ? (
+                  <figcaption className="mt-3 text-center text-sm font-semibold uppercase tracking-eyebrow text-ink-muted">
+                    {image.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </Section>
   );
 }
