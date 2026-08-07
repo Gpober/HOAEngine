@@ -144,9 +144,32 @@ stays labelled, and the disclaimers and `noindex` stay in place. Those labels
 are enforced in the application layer, so they cannot be switched off from the
 database — which is deliberate.
 
-## Keeping code and database in step
+## What lives where
 
-The five bundled records are seeded into the table, so the two match today. If
-you edit rows in Supabase, `data/associations.ts` becomes the stale copy — it
-still works as the offline fallback, but it is no longer what visitors see.
-Treat the database as authoritative once you start editing there.
+| | Source of truth | Why |
+| --- | --- | --- |
+| The five canonical **design** concepts | `data/associations.ts` | Templates, versioned with the code. Nobody edits them at runtime. |
+| **Prospect** concepts for real associations | `public.hoa_associations` | Created and edited by sales without a deploy. |
+
+`hoa_associations` **cannot** hold a canonical design slug — a check constraint
+(`hoa_associations_not_a_canonical_design`) rejects `coastal-classic`,
+`modern-resort`, `friendly-community`, `urban-condominium`, and
+`active-adult-community` on insert.
+
+That constraint exists because of a real failure. The five designs were
+originally seeded into the table as well. When the file later gained
+photography, the stale rows still had placeholder-only `hero_image` values, and
+because published rows override bundled records on matching slug, the live site
+kept rendering drawn placeholders. Nothing errored: the two sources simply
+disagreed and the stale one won.
+
+Holding a second copy of a template that is never edited at runtime bought
+nothing and cost correctness. Now it is impossible.
+
+For prospect concepts the override is deliberate and correct: edit the row and
+the change is live within the ISR window, no deploy. The bundled copies in
+`data/prospect-concepts.ts` are the offline fallback for when Supabase is
+unreachable or unconfigured.
+
+**If you change a prospect's images or content in the file, change the row too**
+— the row is what visitors see.
