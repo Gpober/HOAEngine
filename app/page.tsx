@@ -154,21 +154,41 @@ export default function HomePage() {
             className="-z-10 object-cover"
           />
           {/*
-           * No veil over the photograph at all. Everything that darkens sits
-           * inside the panel, so the picture keeps the exposure it was shot at
-           * — measured at 79–98% of the untouched file's mean brightness,
-           * depending on width, against 44–65% when a full-frame scrim carried
-           * the copy.
+           * Nothing darkens the photograph as a whole. The copy sits over a
+           * pool of shade sized to itself, so the rest of the frame keeps the
+           * exposure the picture was shot at.
            *
-           * The panel is `accent` rather than `ink` because navy is lighter
-           * than near-black at the same alpha and reads as part of the brand
-           * lockup rather than as a grey slab, and it is `max-w-xl` with a tall
-           * hero so more of the frame stays photograph. Every one of those
-           * choices was picked by measuring brightness and contrast together;
-           * the combination clears AA by 1.30x at its worst point.
+           * The pool is a blurred rectangle, which is the shape that survives
+           * both requirements. Blur leaves the middle flat, so the block of
+           * text sits on an even field, and feathers every edge, so there is no
+           * boundary left to read as a card. It is also the brightest option
+           * that clears AA — the feather does its work close in rather than
+           * spreading across the frame.
+           *
+           * Rejected, all measured: a card with a border and radius (brightest
+           * of all, but it is visibly an object dropped on the picture); a
+           * full-frame gradient (no edge, but 66–95 brightness, which dims the
+           * whole photograph — the thing this exists to avoid); a blurred
+           * ellipse (under-covers the corners of a rectangular block of text,
+           * fails AA at 0.65x); a left-anchored wipe (the fade must start where
+           * the copy ends, and that point moves with the viewport, so it fails
+           * between 1024 and 1280px); and the same rectangle bled past the
+           * hero's clipped top and bottom (no horizontal edge at all, but nine
+           * points darker — the soft edge is not worth that much light).
            */}
           <Container className="py-24 md:py-32">
-            <div className="max-w-xl rounded-card border border-accent-ink/10 bg-accent/80 p-6 shadow-lift backdrop-blur-sm sm:p-10">
+            {/*
+             * The padding is not decoration — it is half the feather distance.
+             * The shade is inset from this box, so the padding is what keeps
+             * the blur's falloff clear of the text. Removing it while keeping
+             * the insets pulls the soft edge in over the copy and drops four
+             * strings below AA.
+             */}
+            <div className="relative max-w-xl p-6 sm:p-8">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -inset-x-9 -inset-y-14 -z-10 bg-accent/80 blur-[56px]"
+              />
               <h1 className="font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl">
                 Websites for homeowner and condominium associations
               </h1>
