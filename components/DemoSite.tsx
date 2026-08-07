@@ -1,4 +1,7 @@
 import { ConceptBadge } from "@/components/ConceptBadge";
+import { Concierge } from "@/components/demo/Concierge";
+import { CONCIERGE_SLUGS } from "@/lib/concierge/enabled";
+import { suggestedQuestions } from "@/lib/concierge/context";
 import { Amenities } from "@/components/site/Amenities";
 import { Announcements } from "@/components/site/Announcements";
 import { CommunityOverview } from "@/components/site/CommunityOverview";
@@ -62,6 +65,24 @@ export function DemoSite({ association }: { association: Association }) {
 
       <SiteFooter association={association} />
       <ConceptBadge />
+      {/*
+       * Rendered after the sales badge on purpose: both floating layers end up
+       * at z-50 when the guide is open, so DOM order is what puts the working
+       * panel in front of the badge rather than behind it.
+       *
+       * Only the slugs in `CONCIERGE_SLUGS` get one. The real-association
+       * concepts must not: those pages assert three facts each, so a guide there
+       * would refuse nearly everything and would be putting words in a named
+       * association's mouth.
+       */}
+      {CONCIERGE_SLUGS.has(association.slug) ? (
+        <Concierge
+          slug={association.slug}
+          communityName={association.shortName ?? association.name}
+          suggestions={suggestedQuestions(association)}
+        />
+      ) : null}
+
     </div>
   );
 }
