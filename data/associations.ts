@@ -81,6 +81,7 @@ const harborlightPoint: Association = {
   state: "FL",
   shortDescription:
     "A waterfront condominium community where neighbours share a shoreline, a boardwalk, and a quiet stretch of the bay.",
+  tagline: "Private waterfront living on Marisol Bay",
   communityType: "Waterfront Condominium",
   residenceCount: 184,
   establishedYear: 1998,
@@ -192,6 +193,7 @@ const velaRidge: Association = {
   state: "AZ",
   shortDescription:
     "A resort-style community organised around its shared amenities, with wide walking paths and a calendar of neighbourhood events.",
+  tagline: "Resort living at the edge of the high desert",
   communityType: "Resort-Style Master Association",
   residenceCount: 412,
   establishedYear: 2006,
@@ -302,6 +304,7 @@ const cedarHollow: Association = {
   state: "NC",
   shortDescription:
     "A single-family neighbourhood of tree-lined streets, shared green space, and a clubhouse that stays busy year round.",
+  tagline: "A neighbourhood beneath the Carolina pines",
   communityType: "Single-Family Homeowners Association",
   residenceCount: 236,
   establishedYear: 1987,
@@ -411,6 +414,7 @@ const marquetteNinth: Association = {
   state: "IL",
   shortDescription:
     "A mid-rise condominium building downtown, with secured entry, structured parking, and shared spaces on the top floor.",
+  tagline: "City living, quietly done, on the corner of Ninth",
   communityType: "Mid-Rise Condominium",
   residenceCount: 96,
   establishedYear: 2014,
@@ -522,6 +526,7 @@ const sunfieldVillage: Association = {
   state: "SC",
   shortDescription:
     "An active adult community built around its clubhouse calendar, walking paths, and neighbours who look out for one another.",
+  tagline: "The best years, well spent, in the South Carolina sun",
   communityType: "Active Adult Community (55+)",
   residenceCount: 318,
   establishedYear: 2001,

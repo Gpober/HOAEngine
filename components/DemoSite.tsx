@@ -10,11 +10,11 @@ import { CommunityOverview } from "@/components/site/CommunityOverview";
 import { DisclaimerBar } from "@/components/site/DisclaimerBar";
 import { DocumentsAndForms } from "@/components/site/DocumentsAndForms";
 import { FaqSection } from "@/components/site/FaqSection";
-import { HeroSection } from "@/components/site/HeroSection";
+import { CinemaHero } from "@/components/site/CinemaHero";
+import { IntroReveal } from "@/components/site/IntroReveal";
 import { ManagementContact } from "@/components/site/ManagementContact";
 import { QuickLinks } from "@/components/site/QuickLinks";
 import { SiteFooter } from "@/components/site/SiteFooter";
-import { SiteHeader } from "@/components/site/SiteHeader";
 import { UpcomingMeetings } from "@/components/site/UpcomingMeetings";
 import { designStyleVars, designStyles, type SectionKey } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
@@ -70,37 +70,51 @@ export function DemoSite({ association }: { association: Association }) {
         Skip to main content
       </a>
 
-      <DisclaimerBar />
-      <SiteHeader association={association} />
-
-      <main id="main-content">
-        <HeroSection association={association} />
-        {design.sectionOrder.map((key) => {
-          const Section = SECTIONS[key];
-          return <Section key={key} association={association} />;
-        })}
-      </main>
-
-      <SiteFooter association={association} />
-      <ConceptBadge />
       {/*
-       * Rendered after the sales badge on purpose: both floating layers end up
-       * at z-50 when the guide is open, so DOM order is what puts the working
-       * panel in front of the badge rather than behind it.
-       *
-       * Only the slugs in `CONCIERGE_SLUGS` get one. The real-association
-       * concepts must not: those pages assert three facts each, so a guide there
-       * would refuse nearly everything and would be putting words in a named
-       * association's mouth.
+       * Everything visible sits inside the reveal so the circle opens over the
+       * whole page at once. The wash carries its own copy of the disclaimer,
+       * so the notice is on screen at every moment of the animation.
        */}
-      {CONCIERGE_SLUGS.has(association.slug) ? (
-        <Concierge
-          slug={association.slug}
-          communityName={association.shortName ?? association.name}
-          suggestions={suggestedQuestions(association)}
-        />
-      ) : null}
+      <IntroReveal association={association}>
+        <DisclaimerBar />
 
+        <main id="main-content">
+          <CinemaHero association={association} />
+          {/* Anchor for the hero's scroll cue: whatever section a design puts
+              first, this is where the chevron lands. */}
+          <div id="explore" aria-hidden="true" />
+          {design.sectionOrder.map((key) => {
+            const Section = SECTIONS[key];
+            return <Section key={key} association={association} />;
+          })}
+        </main>
+
+        <SiteFooter association={association} />
+
+        {/*
+         * The floating layers live inside the reveal on purpose. They are
+         * fixed to the viewport at z-50 — above the intro wash — so if they
+         * sat outside they would float over the wordmark during the opening.
+         * In here, the ancestor clip hides them until the circle opens.
+         *
+         * Concierge renders after the sales badge: both end up at z-50 when
+         * the guide is open, so DOM order is what puts the working panel in
+         * front of the badge rather than behind it.
+         *
+         * Only the slugs in `CONCIERGE_SLUGS` get one. The real-association
+         * concepts must not: those pages assert three facts each, so a guide
+         * there would refuse nearly everything and would be putting words in
+         * a named association's mouth.
+         */}
+        <ConceptBadge />
+        {CONCIERGE_SLUGS.has(association.slug) ? (
+          <Concierge
+            slug={association.slug}
+            communityName={association.shortName ?? association.name}
+            suggestions={suggestedQuestions(association)}
+          />
+        ) : null}
+      </IntroReveal>
     </div>
   );
 }

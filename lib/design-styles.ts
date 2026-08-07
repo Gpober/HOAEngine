@@ -1,8 +1,6 @@
 import type { CSSProperties } from "react";
 import type { DesignStyle } from "./types";
 
-export type HeroLayout = "split" | "overlay" | "stacked" | "panel";
-
 /**
  * The sections a demo homepage can carry, below the hero.
  *
@@ -39,9 +37,6 @@ export interface DesignStyleTokens {
    * (see the `[data-type-scale="large"]` rules in `app/globals.css`).
    */
   typeScale: "regular" | "large";
-  heroLayout: HeroLayout;
-  /** Flips the split hero so the image leads. */
-  heroFlip?: boolean;
   /** Eyebrow treatment above section headings. */
   eyebrow: "caps" | "serif";
   /** Extra vertical rhythm between sections. */
@@ -59,7 +54,6 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     radiusCard: "1rem",
     radiusPill: "999px",
     typeScale: "regular",
-    heroLayout: "split",
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.015em",
@@ -76,7 +70,6 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     radiusCard: "1.5rem",
     radiusPill: "999px",
     typeScale: "regular",
-    heroLayout: "overlay",
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-28",
     headingTracking: "-0.02em",
@@ -93,8 +86,6 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     radiusCard: "1.75rem",
     radiusPill: "999px",
     typeScale: "regular",
-    heroLayout: "split",
-    heroFlip: true,
     eyebrow: "caps",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
@@ -111,7 +102,6 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     radiusCard: "0.625rem",
     radiusPill: "0.5rem",
     typeScale: "regular",
-    heroLayout: "panel",
     eyebrow: "caps",
     sectionPadding: "py-14 md:py-20",
     headingTracking: "-0.025em",
@@ -129,7 +119,6 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     radiusPill: "999px",
     // Larger base type + roomier touch targets for an older resident audience.
     typeScale: "large",
-    heroLayout: "stacked",
     eyebrow: "serif",
     sectionPadding: "py-16 md:py-24",
     headingTracking: "-0.01em",
@@ -142,13 +131,19 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
   },
 };
 
-/** Portfolio-facing summary of what makes each style different. */
+/**
+ * Portfolio-facing summary of what makes each style different.
+ *
+ * Every concept now opens the same way — full-bleed photograph, split
+ * navigation, thin letterspaced wordmark — so what distinguishes them is the
+ * palette, the typeface, and what the page leads with once you scroll.
+ */
 export const designStyleNotes: Record<DesignStyle, string> = {
-  "coastal-classic": "Elegant serif headings, split hero, waterfront character.",
-  "modern-resort": "Full-bleed overlay hero, wide letter-spacing, luxury spacing.",
+  "coastal-classic": "Elegant serif headings, waterfront character, place before paperwork.",
+  "modern-resort": "Wide letter-spacing, luxury spacing, amenities up front.",
   "friendly-community": "Soft rounded cards, resident-resource forward, warm tone.",
-  "urban-condominium": "Structured grid hero, tighter radii, crisp city aesthetic.",
-  "active-adult": "Centred hero, enlarged type scale, extra-accessible navigation.",
+  "urban-condominium": "Tighter radii, crisp city aesthetic, operations first.",
+  "active-adult": "Enlarged type scale, office up top, extra-accessible navigation.",
 };
 
 export function designStyleVars(style: DesignStyle): CSSProperties {

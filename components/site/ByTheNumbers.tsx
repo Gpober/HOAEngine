@@ -50,10 +50,14 @@ export function ByTheNumbers({ association }: { association: Association }) {
     <section className="on-accent bg-accent pb-28 pt-14 text-accent-ink md:pb-32 md:pt-20">
       <Container>
         <dl
-          className="grid gap-10 text-center sm:gap-8"
-          style={{
-            gridTemplateColumns: `repeat(${Math.min(stats.length, 4)}, minmax(0, 1fr))`,
-          }}
+          /*
+           * Two columns on a phone, one per stat from `sm` up. Four across at
+           * 360px leaves ~50px columns, and an uppercase letterspaced label
+           * like "AMENITIES" is wider than that as a single unbreakable word —
+           * the page grew a horizontal scrollbar on the enlarged type scale.
+           */
+          className="grid grid-cols-2 gap-10 text-center sm:gap-8 sm:[grid-template-columns:repeat(var(--stat-count),minmax(0,1fr))]"
+          style={{ "--stat-count": Math.min(stats.length, 4) } as React.CSSProperties}
         >
           {stats.map((stat) => (
             <div key={stat.label}>

@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { PlaceholderScene } from "@/components/ui/CommunityImage";
-import { cn } from "@/lib/cn";
-import { monogramFor } from "@/lib/content";
-import { designStyleVars, designStyles } from "@/lib/design-styles";
+import { designStyleVars } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
 import type { Association, CommunityImage } from "@/lib/types";
 
@@ -31,16 +29,16 @@ function ThumbHero({ image }: { image: CommunityImage }) {
  * A miniature of the demo homepage, rendered with that demo's own palette and
  * radii. It is a real preview built from the same tokens — not a screenshot —
  * so it can never drift out of date.
+ *
+ * Every demo now opens the same way — full-bleed photograph, split navigation,
+ * thin letterspaced wordmark — so the miniature shows that opening, and the
+ * palette, radii, and section row below carry the differences.
  */
 export function DemoThumbnail({ association }: { association: Association }) {
-  const design = designStyles[association.designStyle];
   const style = {
     ...themeStyle(association.accentTheme),
     ...designStyleVars(association.designStyle),
   };
-  const monogram = monogramFor(association);
-  const overlay = design.heroLayout === "overlay";
-  const stacked = design.heroLayout === "stacked";
 
   return (
     <div
@@ -48,71 +46,33 @@ export function DemoThumbnail({ association }: { association: Association }) {
       style={style}
       className="relative aspect-[16/10] w-full overflow-hidden bg-surface"
     >
-      {/* Mini header */}
-      <div className="flex items-center justify-between gap-2 border-b border-line bg-card px-3 py-2">
-        <div className="flex items-center gap-1.5">
-          <span className="flex h-4 w-4 items-center justify-center rounded-pill bg-accent-soft text-[6px] font-bold text-accent">
-            {monogram}
-          </span>
-          <span className="h-1.5 w-12 rounded-pill bg-ink/25" />
-        </div>
-        <div className="flex items-center gap-1">
-          <span className="h-1 w-4 rounded-pill bg-ink/15" />
-          <span className="h-1 w-4 rounded-pill bg-ink/15" />
-          <span className="h-1 w-4 rounded-pill bg-ink/15" />
-          <span className="ml-1 h-3 w-8 rounded-pill bg-accent" />
-        </div>
-      </div>
+      {/* Mini cinematic hero: photograph edge to edge, nav over it. */}
+      <div className="relative h-[62%]">
+        <ThumbHero image={association.heroImage} />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/15 to-black/40" />
 
-      {/* Mini hero */}
-      <div
-        className={cn(
-          "relative",
-          overlay ? "h-[46%]" : stacked ? "h-[52%]" : "flex h-[46%] gap-2 bg-surface-alt p-3",
-        )}
-      >
-        {overlay ? (
-          <>
-            <ThumbHero image={association.heroImage} />
-            <div className="absolute inset-0 bg-gradient-to-r from-accent/90 to-accent/40" />
-            <div className="absolute inset-0 flex flex-col justify-center gap-1.5 p-4">
-              <span className="h-2 w-1/2 rounded-pill bg-accent-ink/90" />
-              <span className="h-1.5 w-2/3 rounded-pill bg-accent-ink/50" />
-              <span className="mt-1 h-3 w-14 rounded-pill bg-secondary-soft" />
-            </div>
-          </>
-        ) : stacked ? (
-          <div className="flex h-full flex-col items-center gap-1.5 bg-surface-alt px-4 pt-3">
-            <span className="h-2.5 w-2/3 rounded-pill bg-ink/70" />
-            <span className="h-1.5 w-1/2 rounded-pill bg-ink/25" />
-            <span className="mt-0.5 h-3 w-14 rounded-pill bg-accent" />
-            <div className="relative mt-1 w-full flex-1 overflow-hidden rounded-t-card border border-line">
-              <ThumbHero image={association.heroImage} />
-            </div>
+        {/* Mini split nav: links left, wordmark centre, links right. */}
+        <div className="absolute inset-x-0 top-0 flex items-center justify-between gap-2 px-3 py-2">
+          <div className="flex items-center gap-1">
+            <span className="h-1 w-4 rounded-pill bg-white/60" />
+            <span className="h-1 w-4 rounded-pill bg-white/60" />
           </div>
-        ) : (
-          <>
-            <div
-              className={cn(
-                "flex flex-1 flex-col justify-center gap-1.5",
-                design.heroFlip && "order-2",
-              )}
-            >
-              <span className="h-2.5 w-4/5 rounded-pill bg-ink/70" />
-              <span className="h-1.5 w-full rounded-pill bg-ink/20" />
-              <span className="h-1.5 w-3/5 rounded-pill bg-ink/20" />
-              <span className="mt-1 h-3 w-14 rounded-pill bg-accent" />
-            </div>
-            <div
-              className={cn(
-                "relative w-[44%] overflow-hidden rounded-card border border-line",
-                design.heroFlip && "order-1",
-              )}
-            >
-              <ThumbHero image={association.heroImage} />
-            </div>
-          </>
-        )}
+          <span className="h-1.5 w-16 rounded-pill bg-white/90" />
+          <div className="flex items-center gap-1">
+            <span className="h-1 w-4 rounded-pill bg-white/60" />
+            <span className="h-1 w-4 rounded-pill bg-white/60" />
+          </div>
+        </div>
+
+        {/* Mini headline: thin centred lines with the divider beneath. */}
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 px-6">
+          <span className="h-1 w-1/3 rounded-pill bg-white/60" />
+          <span className="h-2.5 w-2/3 rounded-pill bg-white/95" />
+          <span className="mt-0.5 h-px w-8 bg-white/70" />
+        </div>
+
+        {/* Mini scroll cue. */}
+        <span className="absolute bottom-1.5 left-1/2 h-1 w-2 -translate-x-1/2 rounded-pill bg-white/70" />
       </div>
 
       {/* Mini card row */}
