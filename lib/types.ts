@@ -160,6 +160,12 @@ export interface Association {
   city?: string;
   state?: string;
   shortDescription: string;
+  /**
+   * One short selling line for the cinematic hero — "Private waterfront
+   * living on Marisol Bay". Optional: without it the hero shows the name
+   * alone, which is also fine.
+   */
+  tagline?: string;
 
   /* community facts ------------------------------------------------------ */
   communityType?: string;
