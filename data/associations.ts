@@ -96,9 +96,24 @@ const harborlightPoint: Association = {
     placeholder: "waterfront",
   },
   galleryImages: [
-    { alt: "Placeholder illustration of the community pool deck.", placeholder: "pool", caption: "Pool deck" },
-    { alt: "Placeholder illustration of a shoreline boardwalk.", placeholder: "waterfront", caption: "Boardwalk" },
-    { alt: "Placeholder illustration of the clubhouse entry.", placeholder: "clubhouse", caption: "Clubhouse" },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/harborlight-gallery-1.png",
+      alt: "A pool deck overlooking calm bay water, with loungers and clipped hedges.",
+      placeholder: "pool",
+      caption: "Pool deck",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/harborlight-gallery-2.png",
+      alt: "A timber boardwalk curving along the shoreline through sea grasses.",
+      placeholder: "waterfront",
+      caption: "Boardwalk",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/harborlight-gallery-3.png",
+      alt: "The clubhouse entrance, cream stucco with a columned portico.",
+      placeholder: "clubhouse",
+      caption: "Clubhouse",
+    },
   ],
   amenities: ["pool", "clubhouse", "fitness", "waterfront", "dock", "parking", "security", "elevator"],
   announcements: [
@@ -191,10 +206,24 @@ const velaRidge: Association = {
     placeholder: "resort",
   },
   galleryImages: [
-    { alt: "Placeholder illustration of the resort pool.", placeholder: "pool", caption: "Pool courtyard" },
-    { alt: "Placeholder illustration of the fitness studio.", placeholder: "interior", caption: "Fitness studio" },
-    { alt: "Placeholder illustration of the event lawn.", placeholder: "garden", caption: "Event lawn" },
-    { alt: "Placeholder illustration of the clubhouse.", placeholder: "clubhouse", caption: "Clubhouse" },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/vela-ridge-gallery-1.png",
+      alt: "A long pool courtyard with cabanas and desert planting in late-afternoon light.",
+      placeholder: "pool",
+      caption: "Pool courtyard",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/vela-ridge-gallery-2.png",
+      alt: "A fitness studio with floor-to-ceiling windows and pale oak flooring.",
+      placeholder: "interior",
+      caption: "Fitness studio",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/vela-ridge-gallery-3.png",
+      alt: "An open event lawn at golden hour, ringed by palms and desert planting.",
+      placeholder: "garden",
+      caption: "Event lawn",
+    },
   ],
   amenities: ["pool", "clubhouse", "fitness", "tennis", "pickleball", "eventLawn", "grounds", "security", "guestSuites"],
   announcements: [
@@ -286,9 +315,24 @@ const cedarHollow: Association = {
     placeholder: "village",
   },
   galleryImages: [
-    { alt: "Placeholder illustration of the neighbourhood green.", placeholder: "garden", caption: "Neighbourhood green" },
-    { alt: "Placeholder illustration of the clubhouse porch.", placeholder: "clubhouse", caption: "Clubhouse" },
-    { alt: "Placeholder illustration of the community pool.", placeholder: "pool", caption: "Community pool" },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/cedar-hollow-gallery-1.png",
+      alt: "A neighbourhood green framed by mature oaks, with a bench beside a gravel path.",
+      placeholder: "garden",
+      caption: "Neighbourhood green",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/cedar-hollow-gallery-2.png",
+      alt: "The clubhouse with a wide covered porch and flower beds along the walkway.",
+      placeholder: "clubhouse",
+      caption: "Clubhouse",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/cedar-hollow-gallery-3.png",
+      alt: "The community pool with loungers under green umbrellas.",
+      placeholder: "pool",
+      caption: "Community pool",
+    },
   ],
   amenities: ["pool", "clubhouse", "grounds", "tennis", "petArea", "eventLawn", "parking"],
   announcements: [
@@ -382,9 +426,24 @@ const marquetteNinth: Association = {
     placeholder: "skyline",
   },
   galleryImages: [
-    { alt: "Placeholder illustration of the building lobby.", placeholder: "interior", caption: "Lobby" },
-    { alt: "Placeholder illustration of the rooftop terrace.", placeholder: "courtyard", caption: "Rooftop terrace" },
-    { alt: "Placeholder illustration of the fitness room.", placeholder: "interior", caption: "Fitness room" },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/marquette-gallery-1.png",
+      alt: "The lobby, with polished concrete, a navy feature wall and low seating.",
+      placeholder: "interior",
+      caption: "Lobby",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/marquette-gallery-2.png",
+      alt: "The rooftop terrace at dusk, with planters and a communal table above the city.",
+      placeholder: "courtyard",
+      caption: "Rooftop terrace",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/marquette-gallery-3.png",
+      alt: "The fitness room, with a mirrored wall and tall windows onto street trees.",
+      placeholder: "interior",
+      caption: "Fitness room",
+    },
   ],
   amenities: ["fitness", "parking", "security", "elevator", "evCharging", "clubhouse", "petArea"],
   announcements: [
@@ -477,9 +536,24 @@ const sunfieldVillage: Association = {
     placeholder: "clubhouse",
   },
   galleryImages: [
-    { alt: "Placeholder illustration of the clubhouse gathering room.", placeholder: "interior", caption: "Gathering room" },
-    { alt: "Placeholder illustration of the walking path and gardens.", placeholder: "garden", caption: "Walking paths" },
-    { alt: "Placeholder illustration of the pickleball courts.", placeholder: "courtyard", caption: "Courts" },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/sunfield-gallery-1.png",
+      alt: "The clubhouse gathering room, with armchairs around a low table and a coffee station.",
+      placeholder: "interior",
+      caption: "Gathering room",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/sunfield-gallery-2.png",
+      alt: "A wide level walking path curving through the gardens, with benches at intervals.",
+      placeholder: "garden",
+      caption: "Walking paths",
+    },
+    {
+      src: "https://whlrbqdqxrpipthxmcbs.supabase.co/storage/v1/object/public/hoa-engine-media/designs/sunfield-gallery-3.png",
+      alt: "Two pickleball courts with fresh line markings and a shaded bench.",
+      placeholder: "courtyard",
+      caption: "Courts",
+    },
   ],
   amenities: ["clubhouse", "pool", "fitness", "pickleball", "grounds", "eventLawn", "security", "parking"],
   announcements: [
