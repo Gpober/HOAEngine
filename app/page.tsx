@@ -13,7 +13,12 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
 import { CommunityImage } from "@/components/ui/CommunityImage";
+import { Concierge } from "@/components/demo/Concierge";
 import { ContactForm } from "./contact/ContactForm";
+import {
+  SITE_CONCIERGE_SLUG,
+  SITE_CONCIERGE_SUGGESTIONS,
+} from "@/lib/concierge/site-prompt";
 import { Container } from "@/components/ui/Container";
 import { Section, SectionHeading } from "@/components/ui/Section";
 import { associations } from "@/data/associations";
@@ -392,6 +397,19 @@ export default function HomePage() {
           </p>
         </Container>
       </footer>
+
+      {/*
+       * The site guide: the same widget as the community concierge, grounded
+       * in the company record instead of a community record — for the visitor
+       * who wants to know what this is before filling in a form.
+       */}
+      <Concierge
+        slug={SITE_CONCIERGE_SLUG}
+        communityName={site.name}
+        suggestions={[...SITE_CONCIERGE_SUGGESTIONS]}
+        tagline="Answers about what we do, from the site itself"
+        emptyHint="Ask what Condoseen does, how the demos work, or how to get started."
+      />
     </div>
   );
 }
