@@ -1,4 +1,4 @@
-import { HoaDaddyBadge } from "@/components/HoaDaddyBadge";
+import { ConceptBadge } from "@/components/ConceptBadge";
 import { Amenities } from "@/components/site/Amenities";
 import { Announcements } from "@/components/site/Announcements";
 import { CommunityOverview } from "@/components/site/CommunityOverview";
@@ -61,7 +61,7 @@ export function DemoSite({ association }: { association: Association }) {
       </main>
 
       <SiteFooter association={association} />
-      <HoaDaddyBadge />
+      <ConceptBadge />
     </div>
   );
 }

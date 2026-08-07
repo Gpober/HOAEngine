@@ -13,7 +13,7 @@ import type { Association, AssociationDocument } from "@/lib/types";
  *    · email addresses use the reserved example.com / example.org domains
  *
  *  Replace these records with a real association only after reading
- *  `docs/REPLACING-DATA.md`. The "Sample Design by HOA Daddy" label and the
+ *  `docs/REPLACING-DATA.md`. The sample-design label and the
  *  unofficial-concept disclaimer stay visible either way.
  * -------------------------------------------------------------------------- */
 

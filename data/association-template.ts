@@ -14,7 +14,7 @@ import type { Association } from "@/lib/types";
  *    2. Never copy text, photographs, seals, or logos from an association's
  *       existing website or documents.
  *    3. Sample content stays labelled as sample content.
- *    4. The "Sample Design by HOA Daddy" label, the unofficial-concept notice,
+ *    4. The sample-design label, the unofficial-concept notice,
  *       and the `noindex` metadata stay in place.
  *
  *  Then register the record in `data/associations.ts`:
