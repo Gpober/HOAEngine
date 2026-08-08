@@ -61,6 +61,18 @@ export function demoPages(slug: string): DemoNavItem[] {
       description: "Reach the office, the management company, and the FAQ.",
       href: `${base}/contact`,
     },
+    /*
+     * Kept last on purpose: the split nav's left/right picks use fixed
+     * indexes 0/1/3/4 and the corner nav shows the first five, so appending
+     * here changes no existing navigation. Lenders mostly arrive by search
+     * or direct link; the menu, footer, and explore cards carry this page.
+     */
+    {
+      segment: "lenders",
+      label: "For Lenders",
+      description: "Questionnaires, budgets, and insurance — what financing needs.",
+      href: `${base}/lenders`,
+    },
   ];
 }
 
