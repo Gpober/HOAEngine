@@ -5,7 +5,6 @@ import { useActionState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { amenityCatalogue, amenityKeys } from "@/lib/amenities";
-import { designStyleNotes } from "@/lib/design-styles";
 import { submitIntake, type IntakeState } from "./actions";
 
 const initialState: IntakeState = { status: "idle" };
@@ -15,13 +14,20 @@ const fieldClass =
 
 const labelClass = "mb-1.5 block text-sm font-semibold text-ink-soft";
 
-const DESIGN_OPTIONS = [
-  { value: "", label: "Let Condoseen choose", note: "We pick the design that fits your community best." },
-  { value: "coastal-classic", label: "Coastal Classic", note: designStyleNotes["coastal-classic"] },
-  { value: "modern-resort", label: "Modern Resort", note: designStyleNotes["modern-resort"] },
-  { value: "friendly-community", label: "Friendly Community", note: designStyleNotes["friendly-community"] },
-  { value: "urban-condominium", label: "Urban Condominium", note: designStyleNotes["urban-condominium"] },
-  { value: "active-adult", label: "Active Adult", note: designStyleNotes["active-adult"] },
+/**
+ * Community character, not product names. Nothing here is a thing we sell
+ * off a shelf — these words describe *their* community, and the studio
+ * translates the answer into design decisions. The submitted values are
+ * deliberately neutral adjectives; the mapping to anything internal happens
+ * server-side and is never shown.
+ */
+const CHARACTER_OPTIONS = [
+  { value: "", label: "Design it around us", note: "Tell us nothing — we read what you've written above and design from that." },
+  { value: "classic", label: "Classic & established", note: "Timeless and elegant. A community with history and standards." },
+  { value: "resort", label: "Resort feel", note: "Spacious and polished, with the amenities front and centre." },
+  { value: "warm", label: "Warm & neighbourly", note: "Friendly and welcoming. People wave here." },
+  { value: "modern", label: "Sleek & modern", note: "Crisp, contemporary, city energy." },
+  { value: "relaxed", label: "Relaxed & easygoing", note: "Unhurried, comfortable, easy to read for everyone." },
 ];
 
 export function IntakeForm() {
@@ -155,24 +161,24 @@ export function IntakeForm() {
           </div>
         </fieldset>
 
-        {/* The look ---------------------------------------------------------- */}
+        {/* Character --------------------------------------------------------- */}
         <fieldset>
           <legend className="font-display text-xl font-semibold text-ink">
-            The look
+            Your community&apos;s character
           </legend>
           <p className="mt-1 text-sm text-ink-muted">
-            Pick a starting point, or leave it to us — every concept is refined
-            before you see it.
+            Every site is designed one at a time, around the community it&apos;s
+            for. This just tells our designers who you are.
           </p>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {DESIGN_OPTIONS.map((option, index) => (
+            {CHARACTER_OPTIONS.map((option, index) => (
               <label
                 key={option.value}
                 className="flex cursor-pointer items-start gap-3 rounded-card border border-line bg-card p-4 transition-colors has-[:checked]:border-accent has-[:checked]:bg-accent-soft"
               >
                 <input
                   type="radio"
-                  name="design_style"
+                  name="character"
                   value={option.value}
                   defaultChecked={index === 0}
                   className="mt-1 h-5 w-5 accent-[rgb(var(--hoa-accent))]"
