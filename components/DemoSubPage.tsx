@@ -55,7 +55,13 @@ export function DemoSubPage({
       </a>
 
       <DisclaimerBar />
-      <CinemaNav association={association} variant="solid" />
+      <CinemaNav
+        association={association}
+        variant="solid"
+        // The nav arrangement follows the design's opening, so a concept's
+        // sub-pages read as the same site as its homepage.
+        layout={design.opening === "cinema" ? "split" : "corner"}
+      />
 
       <main id="main-content">
         <PageHero association={association} title={title} lede={lede} />

@@ -12,7 +12,24 @@ import type { DesignStyle } from "./types";
  */
 export type SectionKey = "photos" | "numbers" | "highlights" | "explore";
 
+/**
+ * How a demo *opens* — the thing a visitor registers before any palette or
+ * typeface. Three openings exist so that clicking through the portfolio never
+ * reads as one website in five coats of paint:
+ *
+ * - `cinema`: the wash-and-circle intro, full-viewport photograph, split nav,
+ *   thin letterspaced capitals. The luxury-property arrival.
+ * - `editorial`: no intro. Full-height photograph with the headline set low
+ *   and left like a magazine cover; wordmark in the corner.
+ * - `warm`: no intro, no full-bleed drama. A friendly solid-colour opening
+ *   with a rounded photograph and sentence-case type; nav solid from the
+ *   first paint.
+ */
+export type OpeningStyle = "cinema" | "editorial" | "warm";
+
 export interface DesignStyleTokens {
+  /** How the homepage arrives. */
+  opening: OpeningStyle;
   /** Font stack for headings — a CSS value, usually a `next/font` variable. */
   fontDisplay: string;
   /** Font stack for body copy. */
@@ -38,6 +55,7 @@ export interface DesignStyleTokens {
 
 export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
   "coastal-classic": {
+    opening: "cinema",
     fontDisplay: "var(--font-fraunces), Georgia, 'Times New Roman', serif",
     fontBody: "var(--font-inter), system-ui, -apple-system, sans-serif",
     radiusCard: "1rem",
@@ -51,6 +69,7 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     sectionOrder: ["photos", "numbers", "highlights", "explore"],
   },
   "modern-resort": {
+    opening: "cinema",
     fontDisplay: "var(--font-manrope), system-ui, sans-serif",
     fontBody: "var(--font-inter), system-ui, -apple-system, sans-serif",
     radiusCard: "1.5rem",
@@ -64,6 +83,7 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     sectionOrder: ["photos", "highlights", "numbers", "explore"],
   },
   "friendly-community": {
+    opening: "warm",
     fontDisplay: "var(--font-nunito), system-ui, sans-serif",
     fontBody: "var(--font-inter), system-ui, -apple-system, sans-serif",
     radiusCard: "1.75rem",
@@ -77,6 +97,7 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     sectionOrder: ["explore", "highlights", "photos", "numbers"],
   },
   "urban-condominium": {
+    opening: "editorial",
     fontDisplay: "var(--font-inter), system-ui, -apple-system, sans-serif",
     fontBody: "var(--font-inter), system-ui, -apple-system, sans-serif",
     radiusCard: "0.625rem",
@@ -90,6 +111,7 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
     sectionOrder: ["numbers", "highlights", "photos", "explore"],
   },
   "active-adult": {
+    opening: "cinema",
     fontDisplay: "var(--font-fraunces), Georgia, 'Times New Roman', serif",
     fontBody: "var(--font-inter), system-ui, -apple-system, sans-serif",
     radiusCard: "1.25rem",
@@ -106,18 +128,15 @@ export const designStyles: Record<DesignStyle, DesignStyleTokens> = {
 };
 
 /**
- * Portfolio-facing summary of what makes each style different.
- *
- * Every concept now opens the same way — full-bleed photograph, split
- * navigation, thin letterspaced wordmark — so what distinguishes them is the
- * palette, the typeface, and what the page leads with once you scroll.
+ * Portfolio-facing summary of what makes each style different: the opening,
+ * the palette, the typeface, and what the page leads with once you scroll.
  */
 export const designStyleNotes: Record<DesignStyle, string> = {
-  "coastal-classic": "Elegant serif headings, waterfront character, place before paperwork.",
-  "modern-resort": "Wide letter-spacing, luxury spacing, amenities up front.",
-  "friendly-community": "Soft rounded cards, resident-resource forward, warm tone.",
-  "urban-condominium": "Tighter radii, crisp city aesthetic, operations first.",
-  "active-adult": "Enlarged type scale, office up top, extra-accessible navigation.",
+  "coastal-classic": "Cinematic arrival, elegant serif headings, place before paperwork.",
+  "modern-resort": "Cinematic arrival, wide letter-spacing, luxury spacing.",
+  "friendly-community": "Warm welcome page, soft rounded cards, resident-resource forward.",
+  "urban-condominium": "Editorial cover opening, crisp city aesthetic, operations first.",
+  "active-adult": "Cinematic arrival, enlarged type scale, extra-accessible navigation.",
 };
 
 export function designStyleVars(style: DesignStyle): CSSProperties {
