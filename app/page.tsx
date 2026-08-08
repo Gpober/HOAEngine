@@ -191,12 +191,12 @@ export default function HomePage() {
               </p>
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
                 <ButtonLink
-                  href="#contact"
+                  href="/start"
                   size="lg"
                   variant="inverse"
                   className="[text-shadow:none]"
                 >
-                  Ask for a free concept
+                  Start your free concept
                   <ArrowRight className="h-5 w-5" aria-hidden="true" />
                 </ButtonLink>
                 <ButtonLink href="#designs" size="lg" variant="inverse-outline">

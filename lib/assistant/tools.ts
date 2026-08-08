@@ -10,15 +10,32 @@ import { associations as builtInDesigns } from "@/data/associations";
  * what the account is allowed to see. There is no service-role key anywhere
  * in this app, and the assistant does not get one either.
  *
- * Reads run freely. The one write (`update_enquiry`) is an ACTION tool: the
- * loop never executes it — it surfaces a confirmation card, and the human
- * clicking Confirm posts it to `/api/assistant/action`.
+ * Reads run freely. The writes (`update_enquiry`, `create_concept`) are
+ * ACTION tools: the loop never executes them — each surfaces a confirmation
+ * card, and the human clicking Confirm posts it to `/api/assistant/action`.
  */
 
 const LEAD_STATUSES = ["new", "contacted", "qualified", "won", "lost"] as const;
 type LeadStatus = (typeof LEAD_STATUSES)[number];
+const INTAKE_STATUSES = ["new", "built", "declined"] as const;
 
-export const ACTION_TOOLS = ["update_enquiry"];
+export const ACTION_TOOLS = ["update_enquiry", "create_concept"];
+
+/**
+ * Per-design defaults used when an intake is converted to a concept: the
+ * paired palette, the portfolio name, and the placeholder scene the hero
+ * renders until real photography exists.
+ */
+const DESIGN_DEFAULTS: Record<
+  string,
+  { theme: string; name: string; scene: string }
+> = {
+  "coastal-classic": { theme: "coastal", name: "Coastal Classic", scene: "waterfront" },
+  "modern-resort": { theme: "resort", name: "Modern Resort", scene: "resort" },
+  "friendly-community": { theme: "sage", name: "Friendly Community", scene: "village" },
+  "urban-condominium": { theme: "urban", name: "Urban Condominium", scene: "skyline" },
+  "active-adult": { theme: "heritage", name: "Active Adult", scene: "garden" },
+};
 
 export const ASSISTANT_TOOLS: Anthropic.Tool[] = [
   {
@@ -85,6 +102,33 @@ export const ASSISTANT_TOOLS: Anthropic.Tool[] = [
           description: "Window in days, 1–365. Default 30.",
         },
       },
+    },
+  },
+  {
+    name: "list_intakes",
+    description:
+      "Concept intake requests from the Start page, newest first — a board described its community (name, location, type, residence count, amenity list, design preference) and asked for a concept. status: new = not yet built, built = converted to a concept, declined.",
+    input_schema: {
+      type: "object",
+      properties: {
+        status: {
+          type: "string",
+          enum: [...INTAKE_STATUSES, "all"],
+          description: "Filter by intake status. Default: all.",
+        },
+      },
+    },
+  },
+  {
+    name: "create_concept",
+    description:
+      "GATED ACTION — propose converting an intake into an unpublished website concept (a new hoa_associations row built from exactly what the intake says: name, location, type, residence count, amenities, design preference). It does not run until the human confirms. The concept stays unpublished for review. Use the intake id from list_intakes; only 'new' intakes can be converted.",
+    input_schema: {
+      type: "object",
+      properties: {
+        intake_id: { type: "string", description: "The intake's id (uuid)." },
+      },
+      required: ["intake_id"],
     },
   },
   {
@@ -290,6 +334,8 @@ export function toolRunner(
           return await getCommunity(supabase, input);
         case "interest_summary":
           return await interestSummary(supabase, input);
+        case "list_intakes":
+          return await listIntakes(supabase, input);
         default:
           return `Unknown tool: ${name}`;
       }
@@ -299,8 +345,30 @@ export function toolRunner(
   };
 }
 
+async function listIntakes(
+  supabase: SupabaseClient,
+  input: unknown,
+): Promise<string> {
+  const { status } = asRecord(input);
+  let query = supabase
+    .from("hoa_intakes")
+    .select("*")
+    .order("created_at", { ascending: false })
+    .limit(50);
+  if (
+    typeof status === "string" &&
+    (INTAKE_STATUSES as readonly string[]).includes(status)
+  ) {
+    query = query.eq("status", status);
+  }
+  const { data, error } = await query;
+  if (error) return `Could not read intakes: ${error.message}`;
+  if (!data?.length) return "No intakes match.";
+  return JSON.stringify(data);
+}
+
 /* -------------------------------------------------------------------------- */
-/*  The confirmed action — called from /api/assistant/action only              */
+/*  The confirmed actions — called from /api/assistant/action only             */
 /* -------------------------------------------------------------------------- */
 
 export async function runUpdateEnquiry(
@@ -333,5 +401,126 @@ export async function runUpdateEnquiry(
   return {
     ok: true,
     message: `Updated ${data.name} — status ${data.status}${patch.notes !== undefined ? ", notes saved" : ""}.`,
+  };
+}
+
+/** "Oakwood Commons Condominium Association" → "oakwood-commons-condominium-association". */
+function slugify(name: string): string {
+  return name
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 60)
+    .replace(/-+$/g, "");
+}
+
+/**
+ * Convert an intake into an unpublished concept. Runs only after human
+ * confirmation, as the signed-in admin — inserting into `hoa_associations`
+ * requires `is_admin()` under RLS, which is exactly the guarantee that the
+ * public's reach ends at the intake table.
+ *
+ * Every field on the new row comes from the intake or from the design's
+ * fixed defaults. Nothing is invented: no announcements, no meetings, no
+ * documents — those stay empty until real content exists.
+ */
+export async function runCreateConcept(
+  supabase: SupabaseClient,
+  input: unknown,
+): Promise<{ ok: boolean; message: string }> {
+  const { intake_id: intakeId } = asRecord(input);
+  if (typeof intakeId !== "string" || !intakeId.trim()) {
+    return { ok: false, message: "Missing intake id." };
+  }
+
+  const { data: intake, error: intakeError } = await supabase
+    .from("hoa_intakes")
+    .select("*")
+    .eq("id", intakeId.trim())
+    .maybeSingle();
+  if (intakeError) return { ok: false, message: `Could not read the intake: ${intakeError.message}` };
+  if (!intake) return { ok: false, message: "No intake with that id." };
+  if (intake.status !== "new") {
+    return { ok: false, message: `That intake is already ${intake.status}.` };
+  }
+
+  const designStyle: string = DESIGN_DEFAULTS[intake.design_style]
+    ? intake.design_style
+    : "coastal-classic";
+  const defaults = DESIGN_DEFAULTS[designStyle];
+  const accentTheme: string =
+    typeof intake.accent_theme === "string" && intake.accent_theme
+      ? intake.accent_theme
+      : defaults.theme;
+
+  const location = [intake.city, intake.state].filter(Boolean).join(", ");
+  const shortDescription = [
+    `${intake.association_name} is a ${intake.community_type?.toLowerCase() ?? "community association"}`,
+    location ? ` in ${location}` : "",
+    intake.residence_count ? ` with ${intake.residence_count} residences` : "",
+    ".",
+  ].join("");
+
+  const amenities = Array.isArray(intake.amenities)
+    ? intake.amenities.filter((a: unknown): a is string => typeof a === "string")
+    : [];
+
+  const base = slugify(intake.association_name) || "community";
+  let created: { slug: string } | null = null;
+  let lastError = "";
+  // The canonical-design slugs and any existing row will collide on the
+  // unique/check constraints; walk suffixes until one lands.
+  for (let attempt = 0; attempt < 5 && !created; attempt++) {
+    const slug = attempt === 0 ? base : `${base}-${attempt + 1}`;
+    const { data, error } = await supabase
+      .from("hoa_associations")
+      .insert({
+        slug,
+        name: intake.association_name,
+        city: intake.city,
+        state: intake.state,
+        community_type: intake.community_type,
+        residence_count: intake.residence_count,
+        short_description: shortDescription,
+        hero_image: {
+          alt: `Illustrative placeholder scene for the ${intake.association_name} concept.`,
+          placeholder: defaults.scene,
+        },
+        gallery_images: [],
+        amenities,
+        announcements: [],
+        meetings: [],
+        documents: [],
+        accent_theme: accentTheme,
+        design_style: designStyle,
+        design_name: defaults.name,
+        design_tagline: "Concept prepared from the association's intake.",
+        published: false,
+      })
+      .select("slug")
+      .maybeSingle();
+    if (data) created = data;
+    else lastError = error?.message ?? "unknown error";
+  }
+  if (!created) {
+    return { ok: false, message: `Could not create the concept: ${lastError}` };
+  }
+
+  const { error: markError } = await supabase
+    .from("hoa_intakes")
+    .update({ status: "built" })
+    .eq("id", intakeId.trim());
+  if (markError) {
+    return {
+      ok: true,
+      message: `Concept created at /demo/${created.slug} (unpublished), but the intake could not be marked built: ${markError.message}`,
+    };
+  }
+
+  return {
+    ok: true,
+    message: `Concept created as "${created.slug}", unpublished. Flip published to true (Supabase → hoa_associations) and it goes live at /demo/${created.slug} within five minutes.`,
   };
 }

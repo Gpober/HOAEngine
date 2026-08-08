@@ -56,6 +56,9 @@ function siteRecord(): string {
   lines.push(
     "Scheduling: the contact form has an optional 'Schedule a call' section — pick a day and a time of day (morning, afternoon, or evening) and the team confirms the exact time by email. It is a request, not an instant booking.",
   );
+  lines.push(
+    "Starting a concept: the Start page (/start, or the 'Start your free concept' button) is a five-minute intake — association name, location, amenities, and a design preference. The team builds the concept from those answers and emails a private link to review. Free, no obligation, and nothing is published without the association's say-so.",
+  );
   return lines.join("\n");
 }
 

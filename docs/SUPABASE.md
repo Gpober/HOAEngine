@@ -179,6 +179,20 @@ Authentication adds no new environment variables: `@supabase/ssr` uses the same
 `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` as the
 public read path, and there is no service-role key anywhere in the app.
 
+## Intakes: `public.hoa_intakes`
+
+The Start page (`/start`) writes here: a board describes its community (name,
+location, type, residence count, amenity keys, design preference) and asks for
+a concept. Same asymmetric shape as `hoa_leads` — **the public may write and
+may never read** — and the insert policy pins `status = 'new'`.
+
+The public never writes to `hoa_associations`. Converting an intake into an
+unpublished concept row is Zordon's gated `create_concept` action: an admin
+confirms the card, the insert runs as that admin under RLS, the intake is
+marked `built`, and the concept stays `published = false` until reviewed. The
+Start page also files a normal `hoa_leads` entry so the pipeline sees the
+prospect.
+
 ## Who may edit an association
 
 Three levels, named the way the business talks about them:
