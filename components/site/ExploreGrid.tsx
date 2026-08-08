@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  FileCheck2,
   FileText,
   Landmark,
   Newspaper,
@@ -20,6 +21,7 @@ const icons: Record<string, LucideIcon> = {
   news: Newspaper,
   documents: FileText,
   contact: PhoneCall,
+  lenders: FileCheck2,
 };
 
 /**
@@ -46,7 +48,7 @@ export function ExploreGrid({ association }: { association: Association }) {
         description="Everything practical has a page of its own — pick where you're headed."
       />
 
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {pages.map((page) => {
           const Icon = icons[page.segment] ?? Landmark;
           return (

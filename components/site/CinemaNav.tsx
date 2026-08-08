@@ -171,7 +171,9 @@ export function CinemaNav({
               className="hidden xl:block"
             >
               <ul className="flex items-center gap-1">
-                {(layout === "corner" ? pages : rightNav).map((item) => (
+                {/* Corner shows the first five; the lender page rides in the
+                    menu, footer, and explore cards rather than the bar. */}
+                {(layout === "corner" ? pages.slice(0, 5) : rightNav).map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}
