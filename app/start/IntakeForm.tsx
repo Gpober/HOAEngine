@@ -35,7 +35,7 @@ export function IntakeForm() {
 
   if (state.status === "success") {
     return (
-      <Card className="p-8 text-center">
+      <Card className="p-8 text-center shadow-lift">
         <span
           aria-hidden="true"
           className="mx-auto flex h-12 w-12 items-center justify-center rounded-pill bg-accent-soft text-accent"
@@ -53,7 +53,7 @@ export function IntakeForm() {
   }
 
   return (
-    <Card className="p-6 text-left sm:p-8">
+    <Card className="p-6 text-left shadow-lift sm:p-8">
       <form action={formAction} className="space-y-8">
         {/* Honeypot — hidden from people and assistive technology alike. */}
         <input
