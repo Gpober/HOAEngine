@@ -1,7 +1,7 @@
 # HOA Engine
 
 Sample homepage concepts for homeowner and condominium associations, built for
-sales demonstrations by **Condoseen**.
+sales demonstrations by **Condo Seen**.
 
 Five visually distinct designs share one component system. Each site is
 generated from a single configuration object, so a new concept is a data change
@@ -9,7 +9,7 @@ rather than a design project.
 
 > **Every page carries these two labels, and they are not optional:**
 >
-> - **Sample Design by Condoseen**
+> - **Sample Design by Condo Seen**
 > - **Unofficial concept. Not affiliated with or endorsed by the association.**
 
 ---
@@ -29,7 +29,7 @@ rather than a design project.
 Every homepage includes: header with resident-login (marked **Demo**), hero,
 quick links, community overview, announcements, upcoming meetings, documents and
 forms, amenities, management contact, FAQ, and footer with the watermark and
-disclaimer — plus the floating **Website Concept by Condoseen** badge and modal.
+disclaimer — plus the floating **Website Concept by Condo Seen** badge and modal.
 
 ## Setup
 

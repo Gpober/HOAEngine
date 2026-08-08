@@ -376,7 +376,7 @@ export default function HomePage() {
         communityName={site.name}
         suggestions={[...SITE_CONCIERGE_SUGGESTIONS]}
         tagline="Answers about what we do, from the site itself"
-        emptyHint="Ask what Condoseen does, how the demos work, or how to get started."
+        emptyHint="Ask what Condo Seen does, how the demos work, or how to get started."
       />
       </SiteIntro>
     </div>
