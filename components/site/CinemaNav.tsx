@@ -22,13 +22,23 @@ import type { Association } from "@/lib/types";
  *   into a solid fixed bar once the visitor scrolls past the hero.
  * - `solid` (every sub-page): solid and sticky from the first paint — there is
  *   no full-bleed photograph to float over.
+ *
+ * Two layouts, chosen by the design's opening so different concepts read as
+ * different sites:
+ *
+ * - `split`: links left, wordmark dead centre, links right — the
+ *   luxury-property arrangement the cinema opening uses.
+ * - `corner`: wordmark in the left corner, everything else on the right —
+ *   the conventional arrangement the editorial and warm openings use.
  */
 export function CinemaNav({
   association,
   variant = "hero",
+  layout = "split",
 }: {
   association: Association;
   variant?: "hero" | "solid";
+  layout?: "split" | "corner";
 }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -102,35 +112,44 @@ export function CinemaNav({
             // minmax(0,…) lets the wordmark column actually shrink, so a long
             // name truncates on a phone instead of pushing the page wider
             // than the viewport (the enlarged type scale found this one).
-            "grid grid-cols-[1fr_minmax(0,auto)_1fr] items-center gap-4",
+            layout === "split"
+              ? "grid grid-cols-[1fr_minmax(0,auto)_1fr] items-center gap-4"
+              : "flex items-center justify-between gap-4",
             solid ? "py-3" : "py-5 md:py-6",
           )}
         >
-          <nav
-            aria-label="Primary"
-            className="hidden justify-self-start xl:block"
-          >
-            <ul className="flex items-center gap-1">
-              {leftNav.map((item) => (
-                <li key={item.href}>
-                  <Link
-                    href={item.href}
-                    aria-current={isCurrent(item.href) ? "page" : undefined}
-                    className={linkClass(item.href)}
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          {/* Empty grid cell keeps the wordmark centred below xl. */}
-          <span aria-hidden="true" className="justify-self-start xl:hidden" />
+          {layout === "split" ? (
+            <>
+              <nav
+                aria-label="Primary"
+                className="hidden justify-self-start xl:block"
+              >
+                <ul className="flex items-center gap-1">
+                  {leftNav.map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        aria-current={isCurrent(item.href) ? "page" : undefined}
+                        className={linkClass(item.href)}
+                      >
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              {/* Empty grid cell keeps the wordmark centred below xl. */}
+              <span aria-hidden="true" className="justify-self-start xl:hidden" />
+            </>
+          ) : null}
 
           <Link
             href={home}
             className={cn(
-              "min-w-0 max-w-full justify-self-center truncate text-center font-display text-base font-light uppercase tracking-[0.24em] no-underline sm:text-lg",
+              "min-w-0 max-w-full truncate no-underline",
+              layout === "split"
+                ? "justify-self-center text-center font-display text-base font-light uppercase tracking-[0.24em] sm:text-lg"
+                : "text-left font-display text-base font-semibold tracking-tight sm:text-lg",
               solid ? "text-ink" : "text-white",
             )}
           >
@@ -141,10 +160,18 @@ export function CinemaNav({
             <span className="sr-only"> — home</span>
           </Link>
 
-          <div className="flex items-center justify-self-end xl:gap-1">
-            <nav aria-label="Primary continued" className="hidden xl:block">
+          <div
+            className={cn(
+              "flex items-center xl:gap-1",
+              layout === "split" && "justify-self-end",
+            )}
+          >
+            <nav
+              aria-label={layout === "corner" ? "Primary" : "Primary continued"}
+              className="hidden xl:block"
+            >
               <ul className="flex items-center gap-1">
-                {rightNav.map((item) => (
+                {(layout === "corner" ? pages : rightNav).map((item) => (
                   <li key={item.href}>
                     <Link
                       href={item.href}

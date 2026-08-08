@@ -1,15 +1,19 @@
+import type { ReactNode } from "react";
 import { ConceptBadge } from "@/components/ConceptBadge";
 import { Concierge } from "@/components/demo/Concierge";
 import { CONCIERGE_SLUGS } from "@/lib/concierge/enabled";
 import { suggestedQuestions } from "@/lib/concierge/context";
 import { ByTheNumbers } from "@/components/site/ByTheNumbers";
 import { CinemaHero } from "@/components/site/CinemaHero";
+import { CinemaNav } from "@/components/site/CinemaNav";
 import { DisclaimerBar } from "@/components/site/DisclaimerBar";
+import { EditorialHero } from "@/components/site/EditorialHero";
 import { ExploreGrid } from "@/components/site/ExploreGrid";
 import { HomeHighlights } from "@/components/site/HomeHighlights";
 import { IntroReveal } from "@/components/site/IntroReveal";
 import { PhotoBand } from "@/components/site/PhotoBand";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { WarmHero } from "@/components/site/WarmHero";
 import { designStyleVars, designStyles, type SectionKey } from "@/lib/design-styles";
 import { themeStyle } from "@/lib/themes";
 import type { Association } from "@/lib/types";
@@ -17,16 +21,15 @@ import type { Association } from "@/lib/types";
 /**
  * The demo homepage: the showpiece and nothing else.
  *
- * Cinematic opening, photography, the numbers, a glimpse of what's new, and
- * doors to the rest of the site. About, amenities, documents, the full
- * schedule, FAQ, and contact each live on their own page (see `DemoSubPage`
- * and `app/demo/[slug]/*`), because a homepage that carries everything is a
- * homepage nobody reads.
+ * Opening, photography, numbers, a glimpse of what's new, and doors to the
+ * rest of the site. Everything practical lives on its own page (see
+ * `DemoSubPage` and `app/demo/[slug]/*`).
  *
- * The palette and typography arrive as CSS custom properties on the wrapper;
- * the *order* of the four blocks below the hero comes from the design's
- * `sectionOrder`, so the five concepts still differ in what a visitor sees
- * first.
+ * Two axes keep five concepts from reading as one template: the design's
+ * `opening` decides how the page *arrives* (cinema curtain, editorial cover,
+ * or a warm welcome), and its `sectionOrder` decides what a visitor sees
+ * first below it. Palette and typography ride in as CSS custom properties on
+ * the wrapper.
  */
 const SECTIONS: Record<
   SectionKey,
@@ -46,6 +49,76 @@ export function DemoSite({ association }: { association: Association }) {
     ...designStyleVars(association.designStyle),
   };
 
+  /*
+   * The opening block. The full-viewport openings share one viewport-height
+   * column with the disclaimer so their bottom edge — and the scroll cue —
+   * lands exactly on the fold. The warm opening has no fold to hit: the nav
+   * is solid from the first paint and the page simply begins.
+   */
+  let openingBlock: ReactNode;
+  if (design.opening === "editorial") {
+    openingBlock = (
+      <div className="flex min-h-[100svh] flex-col">
+        <DisclaimerBar />
+        <EditorialHero association={association} />
+      </div>
+    );
+  } else if (design.opening === "warm") {
+    openingBlock = (
+      <>
+        <DisclaimerBar />
+        <CinemaNav association={association} variant="solid" layout="corner" />
+        <WarmHero association={association} />
+      </>
+    );
+  } else {
+    openingBlock = (
+      <div className="flex min-h-[100svh] flex-col">
+        <DisclaimerBar />
+        <CinemaHero association={association} />
+      </div>
+    );
+  }
+
+  const page = (
+    <>
+      <main id="main-content">
+        {openingBlock}
+        {/* Anchor for the hero's scroll cue: whatever block a design puts
+            first, this is where the chevron lands. */}
+        <div id="explore" aria-hidden="true" />
+        {design.sectionOrder.map((key) => {
+          const Section = SECTIONS[key];
+          return <Section key={key} association={association} />;
+        })}
+      </main>
+
+      <SiteFooter association={association} />
+
+      {/*
+       * Floating layers. Under the cinema opening they must live inside the
+       * reveal: they are fixed at z-50 — above the intro wash — and outside
+       * it they would float over the wordmark during the opening. The other
+       * openings have no wash, so placement only matters for DOM order:
+       * Concierge renders after the badge so the working panel wins when
+       * both sit at z-50 with the guide open.
+       *
+       * Only the slugs in `CONCIERGE_SLUGS` get a guide. The real-association
+       * concepts must not: those pages assert three facts each, so a guide
+       * there would refuse nearly everything and would be putting words in a
+       * named association's mouth.
+       */}
+      <ConceptBadge />
+      {CONCIERGE_SLUGS.has(association.slug) ? (
+        <Concierge
+          slug={association.slug}
+          communityName={association.shortName ?? association.name}
+          suggestions={suggestedQuestions(association)}
+        />
+      ) : null}
+    </>
+  );
+
   return (
     <div
       id="top"
@@ -62,58 +135,11 @@ export function DemoSite({ association }: { association: Association }) {
         Skip to main content
       </a>
 
-      {/*
-       * Everything visible sits inside the reveal so the circle opens over the
-       * whole page at once. The wash carries its own copy of the disclaimer,
-       * so the notice is on screen at every moment of the animation.
-       */}
-      <IntroReveal association={association}>
-        <main id="main-content">
-          {/*
-           * Disclaimer and hero share one viewport-height column: the hero
-           * takes whatever the disclaimer leaves, so its bottom edge — and the
-           * scroll cue pinned to it — lands exactly on the fold at every
-           * screen size.
-           */}
-          <div className="flex min-h-[100svh] flex-col">
-            <DisclaimerBar />
-            <CinemaHero association={association} />
-          </div>
-          {/* Anchor for the hero's scroll cue: whatever block a design puts
-              first, this is where the chevron lands. */}
-          <div id="explore" aria-hidden="true" />
-          {design.sectionOrder.map((key) => {
-            const Section = SECTIONS[key];
-            return <Section key={key} association={association} />;
-          })}
-        </main>
-
-        <SiteFooter association={association} />
-
-        {/*
-         * The floating layers live inside the reveal on purpose. They are
-         * fixed to the viewport at z-50 — above the intro wash — so if they
-         * sat outside they would float over the wordmark during the opening.
-         * In here, the ancestor clip hides them until the circle opens.
-         *
-         * Concierge renders after the sales badge: both end up at z-50 when
-         * the guide is open, so DOM order is what puts the working panel in
-         * front of the badge rather than behind it.
-         *
-         * Only the slugs in `CONCIERGE_SLUGS` get one. The real-association
-         * concepts must not: those pages assert three facts each, so a guide
-         * there would refuse nearly everything and would be putting words in
-         * a named association's mouth.
-         */}
-        <ConceptBadge />
-        {CONCIERGE_SLUGS.has(association.slug) ? (
-          <Concierge
-            slug={association.slug}
-            communityName={association.shortName ?? association.name}
-            suggestions={suggestedQuestions(association)}
-          />
-        ) : null}
-      </IntroReveal>
+      {design.opening === "cinema" ? (
+        <IntroReveal association={association}>{page}</IntroReveal>
+      ) : (
+        page
+      )}
     </div>
   );
 }
