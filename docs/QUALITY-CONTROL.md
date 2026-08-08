@@ -105,7 +105,7 @@ string; inspected robots metadata.
 
 | Requirement | Status |
 | --- | --- |
-| "Sample Design by Condoseen" | Present on all six routes — top bar and footer watermark |
+| "Sample Design by Condo Seen" | Present on all six routes — top bar and footer watermark |
 | "Unofficial concept. Not affiliated with or endorsed by the association." | Present on all six routes — top bar and footer |
 | Full footer disclaimer | Present on all six routes; also in the badge modal and the contact panel |
 | `noindex, nofollow` meta | `<meta name="robots" content="noindex, nofollow, nocache">` on every route |

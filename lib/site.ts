@@ -12,7 +12,7 @@
  */
 export const site = {
   /** Legal/company name used in metadata and structured data. */
-  name: "Condoseen",
+  name: "Condo Seen",
 
   /** Short tagline used under the wordmark. */
   tagline: "Websites for homeowner and condominium associations",

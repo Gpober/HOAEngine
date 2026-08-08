@@ -8,7 +8,7 @@ their official website.
 
 These apply to every concept you build for a named, real-world association.
 
-1. **The labels stay.** *"Sample Design by Condoseen"* and *"Unofficial concept.
+1. **The labels stay.** *"Sample Design by Condo Seen"* and *"Unofficial concept.
    Not affiliated with or endorsed by the association."* appear at the top of
    the page and again in the footer. Do not remove, shrink, or hide them.
 2. **`noindex` stays on.** Nothing here should ever be indexed.

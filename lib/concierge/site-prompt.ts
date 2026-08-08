@@ -14,7 +14,7 @@ import { associations } from "@/data/associations";
 export const SITE_CONCIERGE_SLUG = "__condoseen__";
 
 export const SITE_CONCIERGE_SUGGESTIONS = [
-  "What does Condoseen do?",
+  "What does Condo Seen do?",
   "Can we see a demo for our community?",
   "Does this replace our resident portal?",
   "How do we get started?",
