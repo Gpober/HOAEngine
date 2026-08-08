@@ -6,7 +6,7 @@
  * outward-facing company — the part that is meant to be found in search.
  *
  * ── CHANGE THESE BEFORE LAUNCH ───────────────────────────────────────────────
- * `contactEmail` and `phone` are placeholders. Nothing invents a real contact
+ * `phone` is still a placeholder. Nothing invents a real contact
  * detail: where a value is left empty the marketing page omits that route
  * entirely rather than showing a number nobody answers.
  */
@@ -26,7 +26,7 @@ export const site = {
    */
   // Typed as `string` (not the empty-string literal) so real values can be
   // dropped in without fighting the `as const` narrowing below.
-  contactEmail: "" as string,
+  contactEmail: "gpober@iamcfo.com" as string,
   phone: "" as string,
 
   /** Service area, stated honestly — the condo dataset spans 48 states. */
