@@ -1,7 +1,7 @@
 import {
-  ArrowRight,
   Building2,
   CalendarDays,
+  ChevronDown,
   FileText,
   Link2,
   Smartphone,
@@ -14,6 +14,8 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Card, IconWell } from "@/components/ui/Card";
 import { CommunityImage } from "@/components/ui/CommunityImage";
 import { Concierge } from "@/components/demo/Concierge";
+import { MarketingNav } from "@/components/marketing/MarketingNav";
+import { SiteIntro } from "@/components/marketing/SiteIntro";
 import { ContactForm } from "./contact/ContactForm";
 import {
   SITE_CONCIERGE_SLUG,
@@ -74,7 +76,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div id="top" className="min-h-screen bg-surface">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
@@ -91,55 +93,21 @@ export default function HomePage() {
         Skip to main content
       </a>
 
-      <header className="border-b border-line bg-card">
-        <Container className="flex flex-wrap items-center justify-between gap-4 py-5">
-          <div className="flex items-center gap-3">
-            <span
-              aria-hidden="true"
-              className="flex h-11 w-11 items-center justify-center rounded-pill bg-accent font-display text-lg font-bold text-accent-ink"
-            >
-              CS
-            </span>
-            <div>
-              <p className="font-display text-lg font-semibold leading-tight text-ink">
-                {site.name}
-              </p>
-              <p className="text-sm text-ink-muted">{site.tagline}</p>
-            </div>
-          </div>
-          <nav aria-label="Primary">
-            <ul className="flex flex-wrap items-center gap-1">
-              {[
-                ["What's included", "#included"],
-                ["Demos", "#designs"],
-                ["Questions", "#faq"],
-              ].map(([label, href]) => (
-                <li key={href}>
-                  <a
-                    href={href}
-                    className="inline-flex min-h-[2.75rem] items-center rounded-pill px-3.5 text-base font-medium text-ink-soft no-underline hover:bg-accent-soft hover:text-accent"
-                  >
-                    {label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </Container>
-      </header>
-
+      <SiteIntro>
       <main id="main">
         {/* Hero ----------------------------------------------------------- */}
         {/*
-         * `on-accent` inverts the focus ring for this subtree; `isolate` keeps
-         * the -z-10 photograph and scrims behind the copy but in front of the
-         * page background, rather than letting them escape the stacking context.
-         *
-         * The photograph is site chrome supplied by the site owner — a city
-         * skyline, not any client community — so it carries no alt text and
-         * makes no claim about an association.
+         * The same opening the demo sites make — full-viewport photograph,
+         * transparent split navigation, thin wide-tracked capitals — because
+         * the company's own site must not look one class below the work it
+         * sells. The photograph is site chrome supplied by the site owner — a
+         * city skyline, not any client community — so it carries no alt text
+         * and makes no claim about an association.
          */}
-        <div className="on-accent relative isolate overflow-hidden border-b border-line">
+        <section
+          aria-labelledby="hero-heading"
+          className="on-accent relative isolate flex min-h-[100svh] flex-col bg-ink"
+        >
           <Image
             src="/hero-skyline.webp"
             alt=""
@@ -147,69 +115,67 @@ export default function HomePage() {
             fill
             priority
             sizes="100vw"
-            /*
-             * Horizontal position only — `cover` on a 2:1 source in a tall
-             * phone-width frame crops the sides, never the top and bottom, so
-             * the vertical value does nothing. Biased right of centre because
-             * that slice holds the densest run of towers; dead centre lands on
-             * a gap in the skyline and reads as empty sky on a phone.
-             */
+            // Horizontal position only — `cover` on a 2:1 source in a tall
+            // phone frame crops the sides, never the top and bottom. Biased
+            // right of centre for the densest run of towers.
             style={{ objectPosition: "68% 50%" }}
             className="-z-10 object-cover"
           />
-          {/*
-           * Nothing sits between the copy and the photograph — no box, no
-           * panel, no scrim, not even a gradient. The picture is delivered as
-           * shot.
-           *
-           * What makes that possible is putting the darkening on the letters
-           * instead of behind them. A halo hugging each glyph darkens only the
-           * pixels the eye compares that letter against, which is a few
-           * thousand of them rather than the whole frame. Measured at the
-           * glyph pixels themselves the worst string clears AA by 1.3x, and the
-           * hero runs at 83-95% of the untouched file's brightness.
-           *
-           * Two details make it work and both were found by measuring:
-           *
-           * - The body copy is `font-medium`. A heavier stroke carries a denser
-           *   halo, and the thin 16px line was the binding constraint every
-           *   time — at `font-normal` it needed a real scrim behind it.
-           * - `text-shadow` inherits, so it is declared once here. The solid
-           *   CTA opts out: it has an opaque fill, and a dark halo on navy
-           *   text over white just looks smudged.
-           */}
-          <Container className="py-20 md:py-28">
-            <div className="mx-auto max-w-4xl text-center [text-shadow:0_0_2px_rgb(var(--hoa-ink)),0_0_5px_rgb(var(--hoa-ink)),0_1px_4px_rgb(var(--hoa-ink)),0_2px_10px_rgb(var(--hoa-ink)),0_4px_22px_rgb(var(--hoa-ink)/0.95),0_8px_48px_rgb(var(--hoa-ink)/0.88)]">
-              <h1 className="font-display text-4xl font-semibold leading-[1.1] text-accent-ink md:text-5xl lg:text-6xl">
-                Websites for homeowner and condominium associations
-              </h1>
-              <p className="mx-auto mt-6 max-w-prose text-lg font-medium leading-relaxed text-accent-ink">
-                Most associations have no public website, or one that has not
-                been touched in a decade. We build a clear, mobile-friendly page
-                that shows residents, buyers, agents, and lenders that the
-                community exists and is well run.
-              </p>
-              <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-                <ButtonLink
-                  href="/start"
-                  size="lg"
-                  variant="inverse"
-                  className="[text-shadow:none]"
-                >
-                  Start your free concept
-                  <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                </ButtonLink>
-                <ButtonLink href="#designs" size="lg" variant="inverse-outline">
-                  See the demos
-                </ButtonLink>
-              </div>
-              <p className="mx-auto mt-6 max-w-prose text-base font-medium text-accent-ink">
-                We build a concept for your community first, at no cost and with
-                no obligation.
-              </p>
+          {/* Top scrim for the transparent nav, bottom for the scroll cue,
+              and a radial pool behind the headline — thin letterspaced caps
+              over a photograph is the hardest legibility case there is. */}
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/20 to-black/45"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_60%_45%_at_50%_52%,rgba(0,0,0,0.45),transparent_70%)]"
+          />
+
+          <MarketingNav />
+
+          <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-24 pt-28 text-center">
+            <p className="hoa-hero-line text-sm font-medium uppercase tracking-eyebrow text-white/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
+              Designed one community at a time
+            </p>
+            <h1
+              id="hero-heading"
+              className="hoa-hero-line max-w-5xl font-display font-light uppercase leading-[1.2] text-white [animation-delay:150ms] text-[clamp(1.6rem,4.6vw,3.4rem)] tracking-[0.12em] md:tracking-[0.2em] [text-shadow:0_1px_3px_rgba(0,0,0,0.75),0_4px_28px_rgba(0,0,0,0.6)]"
+            >
+              Websites for homeowner &amp; condominium associations
+            </h1>
+            <span
+              aria-hidden="true"
+              className="hoa-hero-line h-px w-16 bg-white/60 [animation-delay:300ms]"
+            />
+            <p className="hoa-hero-line max-w-xl text-base font-light leading-relaxed text-white/90 [animation-delay:300ms] [text-shadow:0_1px_3px_rgba(0,0,0,0.7)] md:text-lg">
+              Clear, mobile-first, and public — so residents, buyers, agents,
+              and lenders can see your community is well run. We design a free
+              concept before you decide anything.
+            </p>
+            <div className="hoa-hero-line mt-2 flex flex-col items-center gap-3 [animation-delay:450ms] sm:flex-row sm:justify-center">
+              <ButtonLink href="/start" size="lg" variant="inverse">
+                Start your free concept
+              </ButtonLink>
+              <ButtonLink href="#designs" size="lg" variant="inverse-outline">
+                See our work
+              </ButtonLink>
             </div>
-          </Container>
-        </div>
+          </div>
+
+          <a
+            href="#explore-site"
+            aria-label="Scroll to explore"
+            className="absolute bottom-20 left-1/2 z-20 flex h-12 w-12 -translate-x-1/2 items-center justify-center rounded-pill text-white/90 transition-colors hover:text-white sm:bottom-6"
+          >
+            <ChevronDown
+              className="hoa-bob h-7 w-7 drop-shadow-[0_1px_3px_rgba(0,0,0,0.7)]"
+              aria-hidden="true"
+            />
+          </a>
+        </section>
+        <div id="explore-site" aria-hidden="true" />
 
         {/* Positioning ---------------------------------------------------- */}
         <Section tone="surface" labelledBy="positioning-heading">
@@ -401,7 +367,9 @@ export default function HomePage() {
       {/*
        * The site guide: the same widget as the community concierge, grounded
        * in the company record instead of a community record — for the visitor
-       * who wants to know what this is before filling in a form.
+       * who wants to know what this is before filling in a form. Inside the
+       * reveal on purpose: it is fixed at z-40, and outside it would float
+       * over the intro wash.
        */}
       <Concierge
         slug={SITE_CONCIERGE_SLUG}
@@ -410,6 +378,7 @@ export default function HomePage() {
         tagline="Answers about what we do, from the site itself"
         emptyHint="Ask what Condoseen does, how the demos work, or how to get started."
       />
+      </SiteIntro>
     </div>
   );
 }
