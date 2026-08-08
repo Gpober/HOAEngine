@@ -38,6 +38,7 @@ const SUGGESTIONS = [
 
 const ACTION_LABELS: Record<string, string> = {
   update_enquiry: "Update enquiry",
+  create_concept: "Create concept from intake",
 };
 
 export function AssistantChat() {

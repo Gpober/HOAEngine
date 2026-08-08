@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createServerSupabase } from "@/lib/supabase-server";
-import { runUpdateEnquiry } from "@/lib/assistant/tools";
+import { runCreateConcept, runUpdateEnquiry } from "@/lib/assistant/tools";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -31,8 +31,17 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  if (body.name === "update_enquiry") {
-    const result = await runUpdateEnquiry(supabase, body.input);
+  const runners: Record<
+    string,
+    (input: unknown) => Promise<{ ok: boolean; message: string }>
+  > = {
+    update_enquiry: (input) => runUpdateEnquiry(supabase, input),
+    create_concept: (input) => runCreateConcept(supabase, input),
+  };
+
+  const run = body.name ? runners[body.name] : undefined;
+  if (run) {
+    const result = await run(body.input);
     return NextResponse.json(
       result.ok ? { ok: true, message: result.message } : { ok: false, error: result.message },
       { status: result.ok ? 200 : 400 },
