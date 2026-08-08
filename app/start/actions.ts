@@ -11,15 +11,22 @@ export interface IntakeState {
 const isEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
 
 const ROLES = new Set(["board", "manager", "resident", "other"]);
-const DESIGN_STYLES = new Set([
-  "coastal-classic",
-  "modern-resort",
-  "friendly-community",
-  "urban-condominium",
-  "active-adult",
-]);
 const THEMES = new Set(["coastal", "resort", "sage", "urban", "heritage"]);
 const AMENITIES = new Set<string>(amenityKeys);
+
+/**
+ * The form asks about the community's *character* in plain adjectives; this
+ * is where those words become a starting design. Server-side and never shown
+ * to the visitor — the client describes themselves, the studio decides how
+ * that translates.
+ */
+const CHARACTER_TO_DESIGN: Record<string, string> = {
+  classic: "coastal-classic",
+  resort: "modern-resort",
+  warm: "friendly-community",
+  modern: "urban-condominium",
+  relaxed: "active-adult",
+};
 
 function clean(value: FormDataEntryValue | null, max: number): string {
   return String(value ?? "")
@@ -51,7 +58,8 @@ export async function submitIntake(
   const state = clean(formData.get("state"), 40);
   const communityType = clean(formData.get("community_type"), 80);
   const residenceCountRaw = clean(formData.get("residence_count"), 10);
-  const designStyle = clean(formData.get("design_style"), 40);
+  const character = clean(formData.get("character"), 40);
+  const designStyle = CHARACTER_TO_DESIGN[character] ?? "";
   const accentTheme = clean(formData.get("accent_theme"), 40);
   const notes = clean(formData.get("notes"), 4000);
   const contactName = clean(formData.get("contact_name"), 200);
@@ -99,7 +107,7 @@ export async function submitIntake(
     community_type: communityType || null,
     residence_count: residenceCount,
     amenities,
-    design_style: DESIGN_STYLES.has(designStyle) ? designStyle : null,
+    design_style: designStyle || null,
     accent_theme: THEMES.has(accentTheme) ? accentTheme : null,
     notes: notes || null,
     contact_name: contactName,
@@ -131,7 +139,7 @@ export async function submitIntake(
     role: ROLES.has(contactRole) ? contactRole : null,
     message: [
       `Concept intake submitted from the Start page.`,
-      designStyle ? `Design preference: ${designStyle}.` : null,
+      character ? `Character: ${character}.` : null,
       amenities.length ? `Amenities: ${amenities.join(", ")}.` : null,
       notes ? `Notes: ${notes.slice(0, 500)}` : null,
     ]

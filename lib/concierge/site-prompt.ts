@@ -1,6 +1,5 @@
 import { brand } from "@/lib/brand";
 import { site } from "@/lib/site";
-import { designStyleNotes } from "@/lib/design-styles";
 import { associations } from "@/data/associations";
 
 /**
@@ -32,14 +31,14 @@ function siteRecord(): string {
   lines.push("What the product includes (every line is something that exists):");
   for (const f of site.features) lines.push(`- ${f.title}: ${f.body}`);
   lines.push("");
-  lines.push("Design concepts on this site:");
+  lines.push(
+    "Example community sites to explore (each designed for the community it depicts):",
+  );
   for (const a of associations) {
-    lines.push(
-      `- "${a.designName ?? a.designStyle}" (view at /demo/${a.slug}): ${designStyleNotes[a.designStyle]}`,
-    );
+    lines.push(`- ${a.name} — /demo/${a.slug}`);
   }
   lines.push(
-    "There are also website concepts built for real, named associations — all clearly labelled unofficial samples, not published to search engines.",
+    "There are also website concepts built for real, named associations — all clearly labelled unofficial samples, not published to search engines. Every site is designed individually around its community: its setting, its amenities, its character. Never describe the work as templates, themes, or packages to choose from.",
   );
   lines.push("");
   lines.push("Questions and answers, verbatim from the site:");
