@@ -38,6 +38,7 @@ export interface AssociationRow {
   city: string | null;
   state: string | null;
   short_description: string;
+  tagline: string | null;
   community_type: string | null;
   residence_count: number | null;
   established_year: number | null;
@@ -61,7 +62,7 @@ export interface AssociationRow {
 }
 
 const COLUMNS = `
-  slug, name, short_name, monogram, city, state, short_description,
+  slug, name, short_name, monogram, city, state, short_description, tagline,
   community_type, residence_count, established_year,
   management_company, phone, email, office_hours, emergency_contact, office_address,
   hero_image, gallery_images, amenities, announcements, meetings, documents, faqs,
@@ -111,6 +112,7 @@ export function mapRowToAssociation(row: AssociationRow): Association | null {
     ...(row.city ? { city: row.city } : {}),
     ...(row.state ? { state: row.state } : {}),
     shortDescription: row.short_description ?? "",
+    ...(row.tagline ? { tagline: row.tagline } : {}),
 
     ...(row.community_type ? { communityType: row.community_type } : {}),
     ...(row.residence_count ? { residenceCount: row.residence_count } : {}),
