@@ -4,6 +4,9 @@ import {
   ChevronDown,
   FileText,
   Link2,
+  LockKeyhole,
+  MonitorSmartphone,
+  ShieldCheck,
   Smartphone,
   Type,
 } from "lucide-react";
@@ -176,6 +179,26 @@ export default function HomePage() {
           </a>
         </section>
         <div id="explore-site" aria-hidden="true" />
+
+        {/* Trust band ------------------------------------------------------ */}
+        <div className="border-b border-line bg-card">
+          <Container className="flex flex-wrap items-center justify-center gap-x-10 gap-y-3 py-5">
+            {[
+              { icon: ShieldCheck, label: "Compliant" },
+              { icon: LockKeyhole, label: "Secure" },
+              { icon: FileText, label: "Transparent" },
+              { icon: MonitorSmartphone, label: "Accessible" },
+            ].map(({ icon: Icon, label }) => (
+              <span
+                key={label}
+                className="inline-flex items-center gap-2.5 text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft"
+              >
+                <Icon className="h-5 w-5 text-accent" aria-hidden="true" />
+                {label}
+              </span>
+            ))}
+          </Container>
+        </div>
 
         {/* Positioning ---------------------------------------------------- */}
         <Section tone="surface" labelledBy="positioning-heading">
