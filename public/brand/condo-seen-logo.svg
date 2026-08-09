@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 330" role="img" aria-label="Condo Seen — Florida condo websites and compliance">
+  <g font-family="'Century Gothic', 'Futura', 'Avenir Next', 'Trebuchet MS', Helvetica, sans-serif">
+    <!-- CONDO -->
+    <text x="70" y="190" font-size="120" letter-spacing="18" fill="#152A47" font-weight="500">CONDO</text>
+    <!-- s -->
+    <text x="634" y="190" font-size="120" fill="#152A47" font-weight="500">s</text>
+
+    <!-- binoculars replacing the double-e -->
+    <g>
+      <!-- bridge across the top -->
+      <rect x="731" y="86" width="149" height="26" rx="10" fill="#152A47"/>
+      <!-- knobs -->
+      <rect x="741" y="72" width="30" height="18" rx="5" fill="#152A47"/>
+      <rect x="840" y="72" width="30" height="18" rx="5" fill="#152A47"/>
+      <!-- lenses -->
+      <circle cx="756" cy="143" r="40" fill="#FFFFFF" stroke="#152A47" stroke-width="13"/>
+      <circle cx="855" cy="143" r="40" fill="#FFFFFF" stroke="#152A47" stroke-width="13"/>
+      <!-- blue e's -->
+      <text x="756" y="166" font-size="64" fill="#2E7CF6" font-weight="700" text-anchor="middle">e</text>
+      <text x="855" y="166" font-size="64" fill="#2E7CF6" font-weight="700" text-anchor="middle">e</text>
+    </g>
+
+    <!-- n -->
+    <text x="915" y="190" font-size="120" fill="#152A47" font-weight="500">n</text>
+
+    <!-- tagline -->
+    <g>
+      <rect x="38" y="270" width="72" height="3" rx="1.5" fill="#2E7CF6"/>
+      <text x="524" y="282" font-size="28" letter-spacing="5" fill="#152A47" font-weight="600" text-anchor="middle">FLORIDA CONDO WEBSITES <tspan fill="#2E7CF6">+</tspan> COMPLIANCE</text>
+      <rect x="940" y="270" width="72" height="3" rx="1.5" fill="#2E7CF6"/>
+    </g>
+  </g>
+</svg>

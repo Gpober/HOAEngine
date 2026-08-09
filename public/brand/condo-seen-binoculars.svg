@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Condo Seen">
+  <g font-family="'Century Gothic', 'Futura', 'Avenir Next', 'Trebuchet MS', Helvetica, sans-serif">
+    <rect x="41" y="72" width="178" height="30" rx="11" fill="#152A47"/>
+    <rect x="51" y="56" width="34" height="20" rx="6" fill="#152A47"/>
+    <rect x="155" y="56" width="34" height="20" rx="6" fill="#152A47"/>
+    <circle cx="61" cy="140" r="48" fill="#FFFFFF" stroke="#152A47" stroke-width="14"/>
+    <circle cx="179" cy="140" r="48" fill="#FFFFFF" stroke="#152A47" stroke-width="14"/>
+    <text x="61" y="167" font-size="78" fill="#2E7CF6" font-weight="700" text-anchor="middle">e</text>
+    <text x="179" y="167" font-size="78" fill="#2E7CF6" font-weight="700" text-anchor="middle">e</text>
+  </g>
+</svg>

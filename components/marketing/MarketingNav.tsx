@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Container } from "@/components/ui/Container";
+import { Wordmark } from "@/components/marketing/Wordmark";
 import { cn } from "@/lib/cn";
 import { site } from "@/lib/site";
 
@@ -90,12 +91,13 @@ export function MarketingNav() {
 
           <a
             href="#top"
+            aria-label={`${site.name} — top of page`}
             className={cn(
-              "min-w-0 max-w-full justify-self-center truncate text-center font-display text-base font-light uppercase tracking-[0.24em] no-underline sm:text-lg",
+              "min-w-0 justify-self-center no-underline",
               solid ? "text-ink" : "text-white",
             )}
           >
-            {site.name}
+            <Wordmark tone={solid ? "ink" : "white"} className="h-8 w-auto sm:h-9" />
           </a>
 
           <div className="flex items-center justify-self-end gap-1">
