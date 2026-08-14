@@ -148,8 +148,10 @@ function authorized(request: Request): boolean {
 const guarded = (request: Request) =>
   authorized(request)
     ? handler(request)
-    : new Response(JSON.stringify({ error: "unauthorized" }), {
-        status: 401,
+    : new Response(JSON.stringify({ error: "forbidden" }), {
+        // 403, not 401: a 401 tells MCP clients to attempt an OAuth sign-in
+        // flow this server does not have. A bad key should fail flat.
+        status: 403,
         headers: { "Content-Type": "application/json" },
       });
 

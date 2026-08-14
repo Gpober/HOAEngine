@@ -26,7 +26,7 @@ businesses on the shared Supabase project as tools for claude.ai:
 
 2. **Connector token** — generate a long random token
    (`openssl rand -hex 24`) and add it as `MCP_CONNECTOR_SECRET` in the same
-   place. An unset token means the endpoint answers 401 to everyone —
+   place. An unset token means the endpoint answers 403 to everyone —
    unconfigured is closed.
 
 3. **Redeploy** so the environment variables take effect.
