@@ -165,6 +165,9 @@ export default function HomePage() {
                 See our work
               </ButtonLink>
             </div>
+            <p className="hoa-hero-line text-sm font-light tracking-wide text-white/85 [animation-delay:600ms] [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
+              Plans from {site.priceFrom} — the concept is free.
+            </p>
           </div>
 
           <a

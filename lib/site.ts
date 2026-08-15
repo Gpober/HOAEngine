@@ -32,6 +32,13 @@ export const site = {
   /** Service area, stated honestly — the condo dataset spans 48 states. */
   serviceArea: "United States",
 
+  /**
+   * Published starting price. The one number stated everywhere — the marketing
+   * page, /start, the guide, and print material all read from here, so a price
+   * change is a one-line edit.
+   */
+  priceFrom: "$299 a month",
+
   /** What the product actually does. Every line here is something that exists. */
   features: [
     {
@@ -85,6 +92,10 @@ export const site = {
       a: "Yes. We build a concept for your community first, with no obligation. Concepts are clearly labelled as unofficial and are not published to search engines.",
     },
     {
+      q: "What does it cost?",
+      a: "Plans start at $299 a month, flat — design, hosting, updates, and document publishing included. Larger communities with more documents and more frequent updates are quoted individually, and you see your concept before committing to anything.",
+    },
+    {
       q: "Who owns the site and the content?",
       a: "The association does. Documents, photographs, and text supplied by the association remain the association's property.",
     },
@@ -113,6 +124,7 @@ export function organizationJsonLd() {
     description: site.tagline,
     areaServed: site.serviceArea,
     serviceType: "Website design for homeowner and condominium associations",
+    priceRange: `From ${site.priceFrom}`,
     ...contactPoint,
   };
 }

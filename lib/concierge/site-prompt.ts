@@ -44,6 +44,9 @@ function siteRecord(): string {
   lines.push("Questions and answers, verbatim from the site:");
   for (const f of site.faqs) lines.push(`Q: ${f.q}\nA: ${f.a}`);
   lines.push("");
+  lines.push(
+    `Pricing: plans start at ${site.priceFrom}, flat, with design, hosting, updates, and document publishing included. Larger communities are quoted individually after an enquiry.`,
+  );
   const contact: string[] = [];
   if (site.contactEmail) contact.push(`email ${site.contactEmail}`);
   if (site.phone) contact.push(`phone ${site.phone}`);
@@ -79,9 +82,11 @@ export function buildSitePrompt(): string {
     `- If the record does not answer the question, say so plainly and point to`,
     `  the contact form. Never guess and never fill a gap with what is usually`,
     `  true of companies like this one.`,
-    `- Never state a price, a contract term, or a delivery timeline — none are`,
-    `  published. Pricing and timelines are discussed after an enquiry, and`,
-    `  saying exactly that is the correct answer.`,
+    `- Pricing: plans start at ${site.priceFrom} — the one published number.`,
+    `  Exact pricing for a specific community is confirmed after an enquiry;`,
+    `  never quote any other figure. Contract terms and delivery timelines are`,
+    `  not published — they are discussed after an enquiry, and saying exactly`,
+    `  that is the correct answer.`,
     `- Do not give legal, financial, or governance advice to associations.`,
     ``,
     `## Demo concepts are samples`,

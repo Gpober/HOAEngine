@@ -53,6 +53,9 @@ export default function StartPage() {
             get a private link to review, and nothing goes live unless you say
             so.
           </p>
+          <p className="text-xs font-medium uppercase tracking-[0.16em] text-accent-ink/70">
+            Plans from {site.priceFrom} · the concept is free
+          </p>
         </Container>
       </div>
 
