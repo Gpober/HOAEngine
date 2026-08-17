@@ -24,10 +24,13 @@ export const financing = {
   company: "The Rate Outlet",
   companyNmls: "NMLS #2013978",
 
-  /** Contact + application. Leave a value empty and that route is hidden. */
+  /** Contact + application. Leave a value empty and that route is hidden.
+   *  phone: found (305) 999-1823 in a directory — confirm before adding, so an
+   *  unverified number never appears in mortgage advertising. */
   phone: "" as string,
   email: "" as string,
-  applyUrl: "" as string, // secure online application link
+  applyUrl:
+    "https://therateoutlet.com/?utm_source=condoseen&utm_medium=community-site&utm_campaign=financing" as string,
 
   /** Standard required disclosures. Edit only with the company's approval. */
   disclosure:
