@@ -20,6 +20,7 @@ const LEFT_NAV = [
   { label: "What's Included", href: "#included" },
 ];
 const RIGHT_NAV = [
+  { label: "Pricing", href: "#pricing" },
   { label: "Questions", href: "#faq" },
   { label: "Contact", href: "#contact" },
 ];

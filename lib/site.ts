@@ -39,6 +39,64 @@ export const site = {
    */
   priceFrom: "$99 a month",
 
+  /** One-time setup, charged on engagement. The concept itself stays free. */
+  setupFee: "$499",
+  setupNote: "One-time setup — waived when billed annually.",
+
+  /**
+   * The three service tiers. Every feature listed is something the product
+   * does today or a service commitment we can keep by hand — nothing
+   * aspirational. Caps steer larger communities to the right tier without
+   * turning any size away.
+   */
+  plans: [
+    {
+      name: "Essentials",
+      price: "$99",
+      cadence: "per month",
+      blurb: "The compliant public website, handled — for communities up to 50 residences.",
+      features: [
+        "Custom-designed public website for your community",
+        "Statute-mapped document center (§ 718.111(12)(g) structure)",
+        "Owners-only area for protected records",
+        "Meeting notices & agendas posted for you",
+        "Hosting, security, SSL, and maintenance included",
+        "Content updates posted within 5 business days",
+      ],
+      highlighted: false,
+    },
+    {
+      name: "Community",
+      price: "$199",
+      cadence: "per month",
+      blurb: "Faster updates and a managed presence — for communities up to 150 residences.",
+      features: [
+        "Everything in Essentials",
+        "Unlimited document & notice updates, posted within 2 business days",
+        "News & announcements page managed for you",
+        "AI resident concierge answering questions from your site",
+        "Photo gallery refreshed with your seasonal photography",
+        "Call-scheduling contact forms for the office",
+      ],
+      highlighted: true,
+    },
+    {
+      name: "Signature",
+      price: "$299",
+      cadence: "per month",
+      blurb: "White-glove service for larger communities — unlimited residences.",
+      features: [
+        "Everything in Community",
+        "Same-day posting for statutory notices",
+        "Realtor & lender information page with enquiry routing",
+        "Private board area for minutes and working documents",
+        "Annual compliance review with a written report for the board",
+        "Priority support with a dedicated contact",
+      ],
+      highlighted: false,
+    },
+  ],
+
   /** What the product actually does. Every line here is something that exists. */
   features: [
     {
@@ -93,7 +151,7 @@ export const site = {
     },
     {
       q: "What does it cost?",
-      a: "Plans start at $99 a month, flat — design, hosting, updates, and document publishing included. Larger communities with more documents and more frequent updates are quoted individually, and you see your concept before committing to anything.",
+      a: "Three plans: Essentials at $99 a month (communities up to 50 residences), Community at $199 (up to 150), and Signature at $299 (unlimited) — each flat, with design, hosting, security, and document publishing included. There is a one-time $499 setup, waived when billed annually, and you see your concept free before committing to anything.",
     },
     {
       q: "Who owns the site and the content?",
