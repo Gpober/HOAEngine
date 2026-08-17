@@ -13,16 +13,16 @@
  */
 export const financing = {
   /** Master switch. Off = the module never renders (cold demos stay clean). */
-  enabled: false,
+  enabled: true,
 
   /** The individual loan originator. */
-  officerName: "[Loan Officer Name]",
+  officerName: "Gonzalo De Leon",
   officerTitle: "Mortgage Loan Originator",
-  officerNmls: "[NMLS #______]",
+  officerNmls: "NMLS #1017196",
 
   /** The licensed company the originator works under. */
   company: "The Rate Outlet",
-  companyNmls: "[Company NMLS #______]",
+  companyNmls: "NMLS #2013978",
 
   /** Contact + application. Leave a value empty and that route is hidden. */
   phone: "" as string,
@@ -38,9 +38,14 @@ export const financing = {
     "association. Equal Housing Lender.",
 } as const;
 
-/** True only when the real details are in — the render guard. */
+/**
+ * The render guard. True only when it's switched on, the required NMLS
+ * disclosures are real (no bracketed placeholders), AND there is at least one
+ * way to get in touch — so the module can never render as a dead-end card.
+ */
 export const financingReady =
   financing.enabled &&
   !financing.officerName.includes("[") &&
   !financing.officerNmls.includes("[") &&
-  !financing.companyNmls.includes("[");
+  !financing.companyNmls.includes("[") &&
+  Boolean(financing.phone || financing.email || financing.applyUrl);
