@@ -27,16 +27,18 @@ export function CinemaHero({ association }: { association: Association }) {
 
   return (
     /*
-     * No viewport height of its own: the homepage wraps the disclaimer and
-     * this section in one `min-h-[100svh]` column and the hero takes `flex-1`,
-     * so it fills exactly what the disclaimer leaves. A self-measured 100svh
-     * here would push the bottom of the hero — and the scroll cue — below the
-     * fold by the height of the disclaimer, which on a phone is two lines.
+     * No viewport height of its own: the homepage wraps the disclaimer, the
+     * solid bar, and this section in one `min-h-[100svh]` column and the hero
+     * takes `flex-1`, so it fills exactly what the bar and disclaimer leave.
+     * The navigation renders above the photograph — the boutique-property
+     * arrangement — rather than floating transparent over it.
      */
-    <section
-      aria-labelledby="hero-heading"
-      className="relative isolate flex flex-1 flex-col bg-ink"
-    >
+    <>
+      <CinemaNav association={association} />
+      <section
+        aria-labelledby="hero-heading"
+        className="relative isolate flex flex-1 flex-col bg-ink"
+      >
       <div className="absolute inset-0">
         <CommunityImage
           image={association.heroImage}
@@ -49,10 +51,10 @@ export function CinemaHero({ association }: { association: Association }) {
         />
       </div>
 
-      {/* Top scrim for the transparent nav, bottom scrim for the scroll cue. */}
+      {/* Gentle top scrim for depth, bottom scrim for the scroll cue. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/15 to-black/45"
+        className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/15 to-black/45"
       />
       {/* Pool of darkness behind the headline, fading out well before the edges. */}
       <div
@@ -60,9 +62,7 @@ export function CinemaHero({ association }: { association: Association }) {
         className="absolute inset-0 bg-[radial-gradient(ellipse_60%_45%_at_50%_52%,rgba(0,0,0,0.45),transparent_70%)]"
       />
 
-      <CinemaNav association={association} />
-
-      <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-24 pt-28 text-center">
+      <div className="relative flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-24 pt-16 text-center">
         {eyebrow ? (
           <p className="hoa-hero-line text-sm font-medium uppercase tracking-eyebrow text-white/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
             {eyebrow}
@@ -118,6 +118,7 @@ export function CinemaHero({ association }: { association: Association }) {
        * No "demo concept" chip here: the floating ConceptBadge already owns
        * the bottom-right corner, and the disclaimer bar sits above the fold.
        */}
-    </section>
+      </section>
+    </>
   );
 }
