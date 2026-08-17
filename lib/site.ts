@@ -37,7 +37,7 @@ export const site = {
    * page, /start, the guide, and print material all read from here, so a price
    * change is a one-line edit.
    */
-  priceFrom: "$299 a month",
+  priceFrom: "$99 a month",
 
   /** What the product actually does. Every line here is something that exists. */
   features: [
@@ -93,7 +93,7 @@ export const site = {
     },
     {
       q: "What does it cost?",
-      a: "Plans start at $299 a month, flat — design, hosting, updates, and document publishing included. Larger communities with more documents and more frequent updates are quoted individually, and you see your concept before committing to anything.",
+      a: "Plans start at $99 a month, flat — design, hosting, updates, and document publishing included. Larger communities with more documents and more frequent updates are quoted individually, and you see your concept before committing to anything.",
     },
     {
       q: "Who owns the site and the content?",
