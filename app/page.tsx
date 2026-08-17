@@ -300,6 +300,77 @@ export default function HomePage() {
           </ul>
         </Section>
 
+        {/* Pricing --------------------------------------------------------- */}
+        <Section id="pricing" tone="surface" labelledBy="pricing-heading">
+          <SectionHeading
+            id="pricing-heading"
+            eyebrow="Pricing"
+            title="Three plans. Everything handled."
+            description="Every plan includes design, hosting, security, and document publishing — and starts with a free concept."
+          />
+          <ul className="grid gap-6 lg:grid-cols-3">
+            {site.plans.map((plan) => (
+              <li key={plan.name}>
+                <Card
+                  className={
+                    plan.highlighted
+                      ? "relative flex h-full flex-col gap-5 border-accent p-7 shadow-lift ring-1 ring-accent"
+                      : "flex h-full flex-col gap-5 p-7"
+                  }
+                >
+                  {plan.highlighted ? (
+                    <span className="absolute -top-3 left-6 rounded-pill bg-accent px-3 py-1 text-xs font-bold uppercase tracking-eyebrow text-accent-ink">
+                      Most chosen
+                    </span>
+                  ) : null}
+                  <div>
+                    <h3 className="font-display text-lg font-semibold uppercase tracking-eyebrow text-ink">
+                      {plan.name}
+                    </h3>
+                    <p className="mt-3 flex items-baseline gap-2">
+                      <span className="font-display text-4xl font-semibold text-ink">
+                        {plan.price}
+                      </span>
+                      <span className="text-sm text-ink-muted">{plan.cadence}</span>
+                    </p>
+                    <p className="mt-3 text-base leading-relaxed text-ink-soft">
+                      {plan.blurb}
+                    </p>
+                  </div>
+                  <ul className="flex flex-col gap-2.5 border-t border-line pt-5">
+                    {plan.features.map((feature) => (
+                      <li
+                        key={feature}
+                        className="flex items-start gap-2.5 text-base leading-snug text-ink-soft"
+                      >
+                        <ShieldCheck
+                          className="mt-0.5 h-4 w-4 shrink-0 text-accent"
+                          aria-hidden="true"
+                        />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-auto pt-2">
+                    <ButtonLink
+                      href="/start"
+                      size="md"
+                      variant={plan.highlighted ? "primary" : "outline"}
+                      className="w-full justify-center"
+                    >
+                      Start with a free concept
+                    </ButtonLink>
+                  </div>
+                </Card>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-6 text-center text-sm text-ink-muted">
+            One-time setup {site.setupFee}, waived when billed annually. The
+            concept is free either way.
+          </p>
+        </Section>
+
         {/* FAQ ------------------------------------------------------------ */}
         <Section id="faq" tone="alt" labelledBy="faq-heading">
           <SectionHeading

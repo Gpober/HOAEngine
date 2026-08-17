@@ -44,8 +44,12 @@ function siteRecord(): string {
   lines.push("Questions and answers, verbatim from the site:");
   for (const f of site.faqs) lines.push(`Q: ${f.q}\nA: ${f.a}`);
   lines.push("");
+  lines.push("Pricing plans (each flat, with design, hosting, security, and document publishing included):");
+  for (const p of site.plans) {
+    lines.push(`- ${p.name}, ${p.price}/month: ${p.blurb} Includes: ${p.features.join("; ")}.`);
+  }
   lines.push(
-    `Pricing: plans start at ${site.priceFrom}, flat, with design, hosting, updates, and document publishing included. Larger communities are quoted individually after an enquiry.`,
+    `One-time setup: ${site.setupFee}, waived when billed annually. The concept itself is always free.`,
   );
   const contact: string[] = [];
   if (site.contactEmail) contact.push(`email ${site.contactEmail}`);
@@ -82,11 +86,12 @@ export function buildSitePrompt(): string {
     `- If the record does not answer the question, say so plainly and point to`,
     `  the contact form. Never guess and never fill a gap with what is usually`,
     `  true of companies like this one.`,
-    `- Pricing: plans start at ${site.priceFrom} — the one published number.`,
-    `  Exact pricing for a specific community is confirmed after an enquiry;`,
-    `  never quote any other figure. Contract terms and delivery timelines are`,
-    `  not published — they are discussed after an enquiry, and saying exactly`,
-    `  that is the correct answer.`,
+    `- Pricing: quote only the published plans — ${site.plans
+      .map((p) => `${p.name} at ${p.price}/month`)
+      .join(", ")} — plus the one-time ${site.setupFee} setup (waived when`,
+    `  billed annually). Which plan fits a specific community is confirmed`,
+    `  after an enquiry; never invent any other figure, discount, contract`,
+    `  term, or delivery timeline.`,
     `- Do not give legal, financial, or governance advice to associations.`,
     ``,
     `## Demo concepts are samples`,
