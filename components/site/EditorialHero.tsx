@@ -23,10 +23,12 @@ export function EditorialHero({ association }: { association: Association }) {
     .join("  ·  ");
 
   return (
-    <section
-      aria-labelledby="hero-heading"
-      className="relative isolate flex flex-1 flex-col bg-ink"
-    >
+    <>
+      <CinemaNav association={association} layout="corner" />
+      <section
+        aria-labelledby="hero-heading"
+        className="relative isolate flex flex-1 flex-col bg-ink"
+      >
       <div className="absolute inset-0">
         <CommunityImage
           image={association.heroImage}
@@ -42,16 +44,14 @@ export function EditorialHero({ association }: { association: Association }) {
       {/* Scrim weighted to the bottom-left, where the type lives. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/10 to-black/70"
+        className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/10 to-black/70"
       />
       <div
         aria-hidden="true"
         className="absolute inset-0 bg-[linear-gradient(75deg,rgba(0,0,0,0.55),transparent_55%)]"
       />
 
-      <CinemaNav association={association} layout="corner" />
-
-      <Container className="relative flex flex-1 flex-col justify-end pb-20 pt-28 md:pb-24">
+      <Container className="relative flex flex-1 flex-col justify-end pb-20 pt-16 md:pb-24">
         <div className="max-w-3xl">
           {eyebrow ? (
             <p className="hoa-hero-line text-sm font-semibold uppercase tracking-eyebrow text-white/85 [text-shadow:0_1px_2px_rgba(0,0,0,0.7)]">
@@ -88,6 +88,7 @@ export function EditorialHero({ association }: { association: Association }) {
           aria-hidden="true"
         />
       </a>
-    </section>
+      </section>
+    </>
   );
 }
