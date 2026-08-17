@@ -3,9 +3,10 @@
 import { CheckCircle2, Loader2, UploadCloud, X } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 import { getSupabase } from "@/lib/supabase";
+import { DOC_CATEGORIES } from "@/lib/onboard/categories";
 
 type Status = "queued" | "uploading" | "done" | "error";
-type Item = { id: string; file: File; kind: string; status: Status };
+type Item = { id: string; file: File; kind: string; docCategory: string; status: Status };
 
 const KIND_OPTIONS = [
   { value: "photo", label: "Community photo" },
@@ -30,6 +31,7 @@ export function UploadForm({ token }: { token: string }) {
       id: `${file.name}-${file.size}-${Math.random().toString(36).slice(2, 8)}`,
       file,
       kind: guessKind(file),
+      docCategory: "",
       status: "queued" as Status,
     }));
     setItems((prev) => [...prev, ...next]);
@@ -54,6 +56,7 @@ export function UploadForm({ token }: { token: string }) {
           filename: item.file.name,
           contentType: item.file.type,
           kind: item.kind,
+          docCategory: item.docCategory,
         }),
       });
       if (!res.ok) throw new Error(String(res.status));
@@ -63,6 +66,15 @@ export function UploadForm({ token }: { token: string }) {
         .uploadToSignedUrl(path, signedToken, item.file, { contentType: item.file.type });
       if (error) throw error;
       setItem(item.id, { status: "done" });
+      // Fire-and-forget: let the server read documents and suggest a statutory
+      // category. Never blocks the upload or the board.
+      if (item.kind === "document") {
+        fetch("/api/onboard/classify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ token, path }),
+        }).catch(() => {});
+      }
     } catch {
       setItem(item.id, { status: "error" });
     }
@@ -109,45 +121,67 @@ export function UploadForm({ token }: { token: string }) {
           {items.map((item) => (
             <li
               key={item.id}
-              className="flex items-center gap-3 rounded-xl border border-line bg-card p-3"
+              className="flex flex-col gap-2 rounded-xl border border-line bg-card p-3"
             >
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-medium text-ink">{item.file.name}</p>
-                <p className="text-xs text-ink-muted">
-                  {(item.file.size / 1_048_576).toFixed(1)} MB
-                </p>
+              <div className="flex items-center gap-3">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-medium text-ink">{item.file.name}</p>
+                  <p className="text-xs text-ink-muted">
+                    {(item.file.size / 1_048_576).toFixed(1)} MB
+                  </p>
+                </div>
+                <select
+                  value={item.kind}
+                  disabled={item.status === "uploading" || item.status === "done"}
+                  onChange={(e) => setItem(item.id, { kind: e.target.value })}
+                  className="rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-ink"
+                  aria-label={`What is ${item.file.name}?`}
+                >
+                  {KIND_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center">
+                  {item.status === "uploading" ? (
+                    <Loader2 className="h-5 w-5 animate-spin text-accent" aria-label="Uploading" />
+                  ) : item.status === "done" ? (
+                    <CheckCircle2 className="h-5 w-5 text-accent" aria-label="Uploaded" />
+                  ) : item.status === "error" ? (
+                    <span className="text-xs font-semibold text-red-600">Retry</span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => setItems((prev) => prev.filter((it) => it.id !== item.id))}
+                      aria-label={`Remove ${item.file.name}`}
+                      className="text-ink-muted hover:text-ink"
+                    >
+                      <X className="h-4 w-4" aria-hidden="true" />
+                    </button>
+                  )}
+                </span>
               </div>
-              <select
-                value={item.kind}
-                disabled={item.status === "uploading" || item.status === "done"}
-                onChange={(e) => setItem(item.id, { kind: e.target.value })}
-                className="rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-ink"
-                aria-label={`What is ${item.file.name}?`}
-              >
-                {KIND_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-              <span className="flex h-6 w-6 shrink-0 items-center justify-center">
-                {item.status === "uploading" ? (
-                  <Loader2 className="h-5 w-5 animate-spin text-accent" aria-label="Uploading" />
-                ) : item.status === "done" ? (
-                  <CheckCircle2 className="h-5 w-5 text-accent" aria-label="Uploaded" />
-                ) : item.status === "error" ? (
-                  <span className="text-xs font-semibold text-red-600">Retry</span>
-                ) : (
-                  <button
-                    type="button"
-                    onClick={() => setItems((prev) => prev.filter((it) => it.id !== item.id))}
-                    aria-label={`Remove ${item.file.name}`}
-                    className="text-ink-muted hover:text-ink"
-                  >
-                    <X className="h-4 w-4" aria-hidden="true" />
-                  </button>
-                )}
-              </span>
+
+              {/* Optional statutory category — only for documents, and never
+                  required. Blank means the team files it (and the AI suggests
+                  one from the file itself). */}
+              {item.kind === "document" ? (
+                <select
+                  value={item.docCategory}
+                  disabled={item.status === "uploading" || item.status === "done"}
+                  onChange={(e) => setItem(item.id, { docCategory: e.target.value })}
+                  className="w-full rounded-lg border border-line bg-surface px-2 py-1.5 text-sm text-ink-soft"
+                  aria-label={`Which document is ${item.file.name}? (optional)`}
+                >
+                  <option value="">Which document? — optional, we&apos;ll sort it</option>
+                  {DOC_CATEGORIES.map((c) => (
+                    <option key={c.value} value={c.value}>
+                      {c.label}
+                    </option>
+                  ))}
+                </select>
+              ) : null}
             </li>
           ))}
         </ul>

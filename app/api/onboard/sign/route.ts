@@ -43,7 +43,13 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Uploads are not configured." }, { status: 503 });
   }
 
-  let body: { token?: string; filename?: string; contentType?: string; kind?: string };
+  let body: {
+    token?: string;
+    filename?: string;
+    contentType?: string;
+    kind?: string;
+    docCategory?: string;
+  };
   try {
     body = await request.json();
   } catch {
@@ -52,6 +58,10 @@ export async function POST(request: Request) {
 
   const { token, filename, contentType } = body;
   const kind = KINDS.has(body.kind ?? "") ? body.kind! : "other";
+  // The board's optional statutory pick — stored as-is; the AI classifier
+  // fills suggested_category separately. Empty means "let Condo Seen sort it".
+  const docCategory =
+    kind === "document" && body.docCategory ? String(body.docCategory).slice(0, 40) : null;
   if (!token || !filename || !contentType) {
     return NextResponse.json({ error: "Missing fields." }, { status: 400 });
   }
@@ -82,6 +92,8 @@ export async function POST(request: Request) {
     original_name: safeName(filename),
     content_type: contentType,
     kind,
+    doc_category: docCategory,
+    classify_status: kind === "document" ? "pending" : null,
   });
 
   return NextResponse.json({ path: signed.path, token: signed.token });
