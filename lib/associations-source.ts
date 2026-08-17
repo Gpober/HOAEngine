@@ -152,10 +152,13 @@ async function fetchPublished(): Promise<Association[]> {
   const supabase = getSupabase();
   if (!supabase) return [];
 
+  // Only `listed` rows: prospect concepts are published (their direct links
+  // work) but never advertised in the /demo gallery or prebuilt params.
   const { data, error } = await supabase
     .from("hoa_associations")
     .select(COLUMNS)
     .eq("published", true)
+    .eq("listed", true)
     .order("created_at", { ascending: true });
 
   if (error) {
@@ -169,7 +172,27 @@ async function fetchPublished(): Promise<Association[]> {
     .filter((association): association is Association => association !== null);
 }
 
-/** All demo concepts: bundled records, with published database rows layered on top. */
+/** Single published row by slug, listed or not — the route for direct links. */
+async function fetchRowBySlug(slug: string): Promise<Association | undefined> {
+  const supabase = getSupabase();
+  if (!supabase) return undefined;
+
+  const { data, error } = await supabase
+    .from("hoa_associations")
+    .select(COLUMNS)
+    .eq("published", true)
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error || !data) return undefined;
+  return mapRowToAssociation(data as unknown as AssociationRow) ?? undefined;
+}
+
+/**
+ * Listed demo concepts: bundled records, with listed published database rows
+ * layered on top. Feeds the /demo gallery and static params — unlisted
+ * prospect concepts are deliberately absent here.
+ */
 export async function getAllAssociations(): Promise<Association[]> {
   if (!supabaseConfigured) return bundledAssociations;
 
@@ -185,5 +208,10 @@ export async function getAssociationBySlug(
   slug: string,
 ): Promise<Association | undefined> {
   const all = await getAllAssociations();
-  return all.find((association) => association.slug === slug);
+  return (
+    all.find((association) => association.slug === slug) ??
+    // Not in the gallery set — try a direct lookup so unlisted concepts
+    // (prospect QR links) still resolve.
+    (await fetchRowBySlug(slug))
+  );
 }
