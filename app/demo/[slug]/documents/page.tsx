@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DemoSubPage } from "@/components/DemoSubPage";
+import { ComplianceRegistry } from "@/components/site/ComplianceRegistry";
 import { DocumentsAndForms } from "@/components/site/DocumentsAndForms";
 import { getAllAssociations, getAssociationBySlug } from "@/lib/associations-source";
 import { demoSubPageMetadata } from "@/lib/seo";
@@ -33,8 +34,9 @@ export default async function DocumentsPage({ params }: PageProps) {
     <DemoSubPage
       association={association}
       title="Documents & Forms"
-      lede="Governing documents, forms, and everyday resident resources."
+      lede="The association's official records, budgets, and meeting notices — organised the way Florida law expects them."
     >
+      <ComplianceRegistry association={association} />
       <DocumentsAndForms association={association} />
     </DemoSubPage>
   );
