@@ -191,6 +191,29 @@
   }
 }
 
+/*
+ * Cinematic settle for the hero photograph: it lands very slightly zoomed in
+ * and drifts to rest as the opening reveals. Transform-only (compositor-cheap,
+ * no layout, no WebGL), so it stays smooth on the older phones our boards use.
+ * One-shot, not a loop — the hero is alive on arrival, then calm. Killed by the
+ * reduced-motion block below. Needs an `overflow-hidden` clip on the parent so
+ * the over-scale never shows an edge.
+ */
+.hoa-kenburns {
+  animation: hoa-kenburns 18s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+@keyframes hoa-kenburns {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 /* The scroll cue's slow bob. Killed by the reduced-motion block below. */
 .hoa-bob {
   animation: hoa-bob 2.2s ease-in-out infinite;

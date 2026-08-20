@@ -37,9 +37,11 @@ export function CinemaHero({ association }: { association: Association }) {
       <CinemaNav association={association} />
       <section
         aria-labelledby="hero-heading"
-        className="relative isolate flex flex-1 flex-col bg-ink"
+        className="relative isolate flex flex-1 flex-col overflow-hidden bg-ink"
       >
-      <div className="absolute inset-0">
+      {/* Slow cinematic settle on the photograph — see .hoa-kenburns. The
+          overflow-hidden on the section clips the brief over-scale. */}
+      <div className="hoa-kenburns absolute inset-0">
         <CommunityImage
           image={association.heroImage}
           priority
